@@ -14,6 +14,8 @@ class UserManagement extends Component {
 
             <br></br><br></br><br></br><br></br><br></br>
             <h1>This is the UserManagement page</h1>
+
+            <p>{this.props.sessionID}</p>
         
             </div>
         );

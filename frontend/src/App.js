@@ -48,10 +48,22 @@ class App extends Component {
       {/* <Route path="latest" components={{sidebar: Sidebar, content: ContentLayout}} something="foo" /> */}
 
       <Switch>
-        <Route path="/Upload" component={Upload} />
-        <Route path="/Download" component={Download} />
-        <Route path="/UserManagement" component={UserManagement} />
-        <Route path="/" component={Home} />
+        <Route path="/Upload" 
+        render={(props) => <Upload {...props} sessionID={this.state.sessionID} />}  
+        />
+
+        <Route path="/Download" 
+        render={() => <Download sessionID={this.state.sessionID} />}  
+        />
+
+        <Route path="/UserManagement" 
+        render={() => <UserManagement sessionID={this.state.sessionID} />}  
+        />
+
+        <Route path="/" 
+        render={() => <Home sessionID={this.state.sessionID} />}  
+        />
+        
       </Switch>
 
 

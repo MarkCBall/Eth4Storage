@@ -15,6 +15,9 @@ class Download extends Component {
             <br></br><br></br><br></br><br></br><br></br>
             <h1>This is the download page</h1>
         
+            <p>{this.props.sessionID}</p>
+
+
             </div>
         );
     };
