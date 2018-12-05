@@ -15,13 +15,26 @@ class App extends Component {
     }
   }
 
+    handleLogin() {
+      this.setState({   sessionID : 100000  } )
+    }
+
+    handleLogout() {
+      this.setState({   sessionID : 0  } )
+    }
+
+
   //state.sessionID = 0;
 
   render() {
     return (
       <div className="App">
 
-      <Header sessionID={this.state.sessionID}/>
+      <Header handleLogin={this.handleLogin.bind(this)}
+        handleLogout={this.handleLogout.bind(this)} 
+        sessionID={this.state.sessionID}
+
+      />
 
       <p>heeeeexxeeee</p>
 

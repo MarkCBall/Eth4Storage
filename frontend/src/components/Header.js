@@ -6,16 +6,8 @@ import './Header.css';
 
 class Header extends Component {
 
-    // handleSelection(e) {
-    //     if (this.state.activeSelection == null){
-    //         this.setState({   activeSelection : e.target.id  } )
-    //         console.log("state set to " + e.target.id)
-    //     }
-    //     else{
-    //         this.setState({   activeSelection : null  } )
-    //         console.log("state set to null")
-    //     }
-    // } 
+
+
     render() {
         return (
             <div className="header-box">
@@ -25,10 +17,15 @@ class Header extends Component {
                     <div className="row">
                         <div className="col-sm">
                             {/* if sessionID is 0, then you are not logged in */}
-                            {this.props.sessionID ? 
-                            <p> logged in <br></br>Session id is {this.props.sessionID}<br></br><button>Click here to change login</button></p> 
+                            {   
+                                this.props.sessionID 
+                            ?
+                                <p> logged in <br></br>
+                                Session id is {this.props.sessionID}<br></br>
+                                <br></br>Click here to change login</p> 
                             : 
-                            <p><br></br><button>CLick here to log in</button><br></br></p>}
+                                <p><br></br><button onClick={this.props.handleLogin}>CLick here to log in</button><br></br></p>
+                            }
 
                         </div>
                         <div className="col-sm">
@@ -41,7 +38,7 @@ class Header extends Component {
                         User Management page
                         </div>
                         <div className="col-sm">
-                        <button>Logout</button>
+                        <button onClick={this.props.handleLogout}>Logout</button>
                         </div>
                     </div>
                 </div>
