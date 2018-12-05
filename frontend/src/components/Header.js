@@ -4,6 +4,9 @@ import React, { Component } from 'react';
 //CSS Files
 import './Header.css';
 
+
+import { Link } from 'react-router-dom'
+
 class Header extends Component {
 
 
@@ -29,13 +32,13 @@ class Header extends Component {
 
                         </div>
                         <div className="col-sm">
-                        Upload Page
+                        <Link to="Upload">Upload Page</Link>
                         </div>
                         <div className="col-sm">
-                        Download page
+                        <Link to="Download">Download Page</Link>
                         </div>
                         <div className="col-sm">
-                        User Management page
+                        <Link to="UserManagement">UserManagement Page</Link>
                         </div>
                         <div className="col-sm">
                         <button onClick={this.props.handleLogout}>Logout</button>

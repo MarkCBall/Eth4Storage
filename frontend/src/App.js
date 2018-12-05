@@ -3,6 +3,16 @@ import React, { Component } from 'react';
 //Relative Imports
 //import './components/Header'
 import Header from './components/Header'
+import Upload from './components/Upload'
+import Download from './components/Download'
+import UserManagement from './components/UserManagement'
+import Home from './components/Home'
+
+// test
+//import { BrowserRouter } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
+
+
 
 //CSS Files
 import './App.css';
@@ -15,8 +25,8 @@ class App extends Component {
     }
   }
 
-    handleLogin() {
-      this.setState({   sessionID : 100000  } )
+    handleLogin = () => {
+      this.setState({   sessionID : Math.floor(Math.random()*100000)  } )
     }
 
     handleLogout() {
@@ -30,13 +40,20 @@ class App extends Component {
     return (
       <div className="App">
 
-      <Header handleLogin={this.handleLogin.bind(this)}
+      <Header handleLogin={this.handleLogin}
         handleLogout={this.handleLogout.bind(this)} 
         sessionID={this.state.sessionID}
-
       />
 
-      <p>heeeeexxeeee</p>
+      {/* <Route path="latest" components={{sidebar: Sidebar, content: ContentLayout}} something="foo" /> */}
+
+      <Switch>
+        <Route path="/Upload" component={Upload} />
+        <Route path="/Download" component={Download} />
+        <Route path="/UserManagement" component={UserManagement} />
+        <Route path="/" component={Home} />
+      </Switch>
+
 
       </div>
     );
