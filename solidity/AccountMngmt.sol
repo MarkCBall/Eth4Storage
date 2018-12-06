@@ -1,18 +1,26 @@
 pragma solidity ^0.4.25;
 
+
+
+//this isn't ideal because there is no constant anchor in the blockchain for the database to anchor _addToApproive
+//reimpliment it to include a clientID
+
 contract AccountMngmt {
     address owner;
-    //make accounts into an array
-    struct Family {uint Balance; address[4] secondaryAccts
-    //address Acct2; address Acct3; address Acct4; address Acct5;}
-    mapping (address => Family) public Families;
+    //an account exists when it has a balance
+    mapping (address => uint) public AcctBalances;
+    //an account can be accessed by permissioned addresses
+    struct Permission {address LinkedAcct; bool CanWrite; bool CanSpend;}
+    mapping (address => Permission) public Permissions;
     
     constructor() public {
     owner = msg.sender;
     }
     
+    //note that permissions need to be re-created manually after an ownership change
     function giveownership(address _newowner) public {
-        require(Families[msg.sender] > 0); //or address2-5 != 0
+        require(AcctBalances[msg.sender] > 0);
+        Acct
         Families[_newowner]=Families[msg.sender];
         delete Families[msg.sender];
         
