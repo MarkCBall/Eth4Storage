@@ -1,32 +1,74 @@
 pragma solidity ^0.4.25;
 
-
-
-//this isn't ideal because there is no constant anchor in the blockchain for the database to anchor _addToApproive
-//reimpliment it to include a clientID
-
 contract AccountMngmt {
     address owner;
-    //an account exists when it has a balance
-    struct Admin {address AdminAddr; uint Bal};
-    mapping (uint => Admin) public Accts;
-    //an account can be accessed by permissioned addresses
-    struct User {address AcctID; bool IsAdmin; bool CanWrite; bool CanSpend;}
-    mapping (address => Permission) public Permissions;
+    uint numAccts=0;
+    //map of accounts - owning address + eth balance
+    struct Admin {address AdminAddr; uint Bal;}
+    mapping (uint => Admin) public Accounts;
+    //map of users - associated account + write access --> all users have view permission
+    struct UserStruct {uint AcctId; bool CanWrite;}
+    mapping (address => UserStruct) public Users;
+    
+    //UPDATE THIS TO CHARGE FEES??
     
     constructor() public {
-    owner = msg.sender;
+        owner = msg.sender;
     }
-    
-    //note that permissions need to be re-created manually after an ownership change
-    function giveownership(uint _AcctId, address _newowner) public {
-        require(Accts[AcctId].AdminAddr == msg.sender);
-        Accts[AcctId].AdminAddr = _newowner
-
+    function giveOwnership(uint _Acct, address _newowner) public {
+        //ensure the message sender is the admin of the account
+        require(Accounts[_Acct].AdminAddr == msg.sender);
+        //change the account's admin
+        Accounts[_Acct].AdminAddr = _newowner;
     }
-    
-    function approve(address _addToApproive){
-        reqwuire
-        Families[msg.sender].secondaryAccts.push(_addToApproive)
+    function approveViewer(uint _Acct, address _User) public {
+        //ensure the message sender is the admin of the account
+        require(Accounts[_Acct].AdminAddr == msg.sender);
+        //add the user linked to the account
+        Users[_User].AcctId = _Acct;
     }
-    
+    function approveWriter(uint _Acct, address _User) public {
+        //ensure the message sender is the admin of the account
+        require(Accounts[_Acct].AdminAddr == msg.sender);
+        //add the user linked to the account and give write permission
+        Users[_User].AcctId = _Acct;
+        Users[_User].CanWrite = true;
+    }
+    function deleteUser(uint _Acct, address _User) public {
+        //ensure the message sender is the admin of the account
+        require(Accounts[_Acct].AdminAddr == msg.sender);
+        //delete the user
+        delete Users[_User];
+    }
+    function disallowWrite(uint _Acct, address _User) public {
+        //ensure the message sender is the admin of the account
+        require(Accounts[_Acct].AdminAddr == msg.sender);
+        //remove the user's write access
+        Users[_User].CanWrite = false;
+    }
+    function ownerWithdraw(uint _Amount) public{
+        require(msg.sender == owner);
+        //msg.sender.send(_Amount);
+        msg.sender.transfer(_Amount);
+        //require(msg.sender.send(_Amount));
+    }
+    //create an account only with a specific function call to minimize mistakes
+    function createAccount() public payable{
+        //minimum price to hold an account is 1 eth
+        require(msg.value > 1); // 1 or 1 000 000 or 1eth?
+        //set up account
+        Accounts[numAccts].AdminAddr = msg.sender;
+        Accounts[numAccts].Bal = 1;
+        //if extra eth was sent, return it
+        if (msg.value > 1){
+            msg.sender.transfer(msg.value-1);  
+        }
+        //counter for current account number
+        numAccts++;
+    }
+    function() payable external{
+        //prevents fallback and returns eth sent
+        //can this be done better?
+        revert();
+    }
+}
