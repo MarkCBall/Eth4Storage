@@ -1,8 +1,8 @@
 pragma solidity ^0.4.25;
 
 contract AccountMngmt {
-    address owner;
-    uint numAccts=0;
+    address public owner;
+    uint public numAccts=0;
     //map of accounts - owning address + eth balance
     struct Admin {address AdminAddr; uint Bal;}
     mapping (uint => Admin) public Accounts;
@@ -53,22 +53,24 @@ contract AccountMngmt {
         //require(msg.sender.send(_Amount));
     }
     //create an account only with a specific function call to minimize mistakes
-    function createAccount() public payable{
+    function createAccount() public payable returns(uint){
         //minimum price to hold an account is 1 eth
-        require(msg.value > 1); // 1 or 1 000 000 or 1eth?
+        require(msg.value > 1 ether); // 1 or 1 000 000 or 1eth?
         //set up account
         Accounts[numAccts].AdminAddr = msg.sender;
         Accounts[numAccts].Bal = 1;
         //if extra eth was sent, return it
-        if (msg.value > 1){
-            msg.sender.transfer(msg.value-1);  
+        if (msg.value > 1 ether){
+            msg.sender.transfer(msg.value-1 ether);  
         }
         //counter for current account number
         numAccts++;
+        return (numAccts-1);
+        //combine into return(numAccts++) as ++ done after return? 
     }
     function() payable external{
-        //prevents fallback and returns eth sent
         //can this be done better?
         revert();
     }
+    
 }
