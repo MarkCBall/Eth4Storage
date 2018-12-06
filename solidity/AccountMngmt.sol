@@ -8,9 +8,10 @@ pragma solidity ^0.4.25;
 contract AccountMngmt {
     address owner;
     //an account exists when it has a balance
-    mapping (address => uint) public AcctBalances;
+    struct Admin {address AdminAddr; uint Bal};
+    mapping (uint => Admin) public Accts;
     //an account can be accessed by permissioned addresses
-    struct Permission {address LinkedAcct; bool CanWrite; bool CanSpend;}
+    struct User {address AcctID; bool IsAdmin; bool CanWrite; bool CanSpend;}
     mapping (address => Permission) public Permissions;
     
     constructor() public {
@@ -18,13 +19,10 @@ contract AccountMngmt {
     }
     
     //note that permissions need to be re-created manually after an ownership change
-    function giveownership(address _newowner) public {
-        require(AcctBalances[msg.sender] > 0);
-        Acct
-        Families[_newowner]=Families[msg.sender];
-        delete Families[msg.sender];
-        
-        Families[_newowner} = Families[msg.sender]
+    function giveownership(uint _AcctId, address _newowner) public {
+        require(Accts[AcctId].AdminAddr == msg.sender);
+        Accts[AcctId].AdminAddr = _newowner
+
     }
     
     function approve(address _addToApproive){
@@ -32,13 +30,3 @@ contract AccountMngmt {
         Families[msg.sender].secondaryAccts.push(_addToApproive)
     }
     
-    
-   
-   
-    
-    //fallback function
-    function() payable external{
-        Families[msg.sender].Balance += msg.value;
-    }
-    
-}
