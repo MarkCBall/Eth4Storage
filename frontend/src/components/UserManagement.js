@@ -20,14 +20,13 @@ class UserManagement extends Component {
     GetData() {
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
 
-        MyContract.owner.call(
-            (e,response) => {   this.setState({r:response})   }
-        )
-
-        //how can I make this work with a bind?
         // MyContract.owner.call(
-        //     function (e,response) {   this.setState({r:response})   }
+        //     (e,response) => {   this.setState({r:response})   }
         // )
+
+        MyContract.owner.call(
+            function (e,response) {   this.setState({r:response})   }.bind(this)
+        )
 
     }
 
