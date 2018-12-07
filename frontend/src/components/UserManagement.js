@@ -14,13 +14,13 @@ class UserManagement extends Component {
             numAccts: -1,
             contractBal:-1,
             accounts:[
-                {own:"addy1",balv1:2,balv2:2.1},
-                {own:"addy2",balv1:2,balv2:2.1}
+                {key:0, own:"addy1", balv1:2, balv2:2.1},
+                {key:1, own:"addy2", balv1:2, balv2:2.1}
             ]
         }
 
-        console.log(this.state.accounts[0].own)
-        console.log(this.state.accounts)
+        //console.log(this.state.accounts[0].own)
+        //console.log(this.state.accounts)
     this.GetData();
     }
     //this.state.r = "yyy"
@@ -36,16 +36,29 @@ class UserManagement extends Component {
         MyContract.numAccts.call( (e,response) => {
             this.setState({numAccts:response.c[0]})//FIX THIS WEIRDNESS!
             //AccountsArray
-            let arr = [];
+            let arr = []//new Array()
             for (let i=0;i<response.c[0];i++){
                 MyContract.Accounts(
                     i,
                     (e,res) => {
                         let ownr = res[0];
-                        let balv1r = res[1].c[0];
-                        let balv2r = res[1].s;
-                        arr[i]={own:"addy1xx",balv1:20,balv2:20.1};//{own:ownr,balv1:balv1r,balv2:balv2r};
+                        //im not sure which one is the correct balance and can't check now as all bals are exactly 1
+                        let b1 = res[1].c[0];
+                        let b2 = res[1].s;
+                        //arr.push({"own":"addy1xx","balv1":20,"balv2":20.1});//{own:ownr,balv1:balv1r,balv2:balv2r};
+                        //console.log(Array.isArray(arr))
+                        //console.log(arr)
+
+                        arr.push({key:i,own:ownr,balv1:b1,balv2:b2});
                         
+                        //only render on the last looping to save processing - but last loop may be finished first??
+                        //if (i>=response.c[0])
+                            this.setState({accounts:arr})
+                        
+                        
+                            //console.log(arr);
+                        
+
                         // console.log("accXXcount# "+i)
                         // console.log(i+"The owner is " +response[0])
                         // console.log(i+"double check bal is " +response[1].c[0])
@@ -56,8 +69,12 @@ class UserManagement extends Component {
             
             //arr[0]={own:"addy1xx",balv1:20,balv2:20.1};
             //arr[1]={own:"addy2xx",balv1:20,balv2:20.1};
-            console.log(arr);
-            console.log(arr[0])
+            //console.log(arr);
+
+
+
+            //console.log(result)
+            //debugger;
             //this.setState({accounts:arr})
 
         });
@@ -80,9 +97,16 @@ class UserManagement extends Component {
             <p>The smart contract holds <strong>{this.state.numAccts}</strong> accounts</p>
             <p>The smart contract holds <strong>{this.state.contractBal/1000000000000000000}</strong> eth</p>
             
-            <p>
+            
+            {this.state.accounts.map((acct) => (
+                <p key={acct.key}>
+                Keyorder:{acct.key}<br></br> 
+                Owned by:{acct.own}<br></br> 
+                with balance of: {acct.balv1} or {acct.balv2}
+                </p>
+            ))}
             {/* {this.state.accounts[0].own} */}
-            </p>
+           
             {/* <p>{this.state.accounts[1]}</p> */}
 
 
