@@ -28,7 +28,10 @@ class UserManagement extends Component {
         //owner field
         MyContract.owner.call( (e,response) => {this.setState({owner:response})} );
         //Contract balance
-        window.web3.eth.getBalance(ContractAddress, (e,response) => {this.setState({contractBal:response.c[1]})} );//WHHHYYYY????
+        window.web3.eth.getBalance(ContractAddress, (e,response) => {
+            this.setState({contractBal:response.toString(10)} )//CHECK BIG NUMBER DOCS FOR WHY!
+        })
+
         //numAccounts
         MyContract.numAccts.call( (e,response) => {
             this.setState({numAccts:response.c[0]})//FIX THIS WEIRDNESS!
