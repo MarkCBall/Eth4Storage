@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
+
 import ContractABI, {ContractAddress} from '../ContractABI';
 
 
 //CSS Files
-//import './Header.css';
+import './UserManagement.css'
 
 class UserManagement extends Component {
     constructor(props){
@@ -18,12 +19,8 @@ class UserManagement extends Component {
                 {key:1, own:"addy2", balv1:2, balv2:2.1}
             ]
         }
-
-        //console.log(this.state.accounts[0].own)
-        //console.log(this.state.accounts)
     this.GetData();
     }
-    //this.state.r = "yyy"
 
     GetData() {
         //make an instance of the contract
@@ -35,8 +32,8 @@ class UserManagement extends Component {
         //numAccounts
         MyContract.numAccts.call( (e,response) => {
             this.setState({numAccts:response.c[0]})//FIX THIS WEIRDNESS!
-            //AccountsArray
-            let arr = []//new Array()
+            //AccountsArray - done inside callback
+            let arr = []
             for (let i=0;i<response.c[0];i++){
                 MyContract.Accounts(
                     i,
@@ -45,38 +42,11 @@ class UserManagement extends Component {
                         //im not sure which one is the correct balance and can't check now as all bals are exactly 1
                         let b1 = res[1].c[0];
                         let b2 = res[1].s;
-                        //arr.push({"own":"addy1xx","balv1":20,"balv2":20.1});//{own:ownr,balv1:balv1r,balv2:balv2r};
-                        //console.log(Array.isArray(arr))
-                        //console.log(arr)
-
                         arr.push({key:i,own:ownr,balv1:b1,balv2:b2});
-                        
-                        //only render on the last looping to save processing - but last loop may be finished first??
-                        //if (i>=response.c[0])
-                            this.setState({accounts:arr})
-                        
-                        
-                            //console.log(arr);
-                        
-
-                        // console.log("accXXcount# "+i)
-                        // console.log(i+"The owner is " +response[0])
-                        // console.log(i+"double check bal is " +response[1].c[0])
-                        // console.log(i+"or is the bal "+ response[1].s)
+                        this.setState({accounts:arr})
                     }
                 )
             }
-            
-            //arr[0]={own:"addy1xx",balv1:20,balv2:20.1};
-            //arr[1]={own:"addy2xx",balv1:20,balv2:20.1};
-            //console.log(arr);
-
-
-
-            //console.log(result)
-            //debugger;
-            //this.setState({accounts:arr})
-
         });
         
         //UsersArray?? need to provide specific addy? diff for each Acct?
@@ -87,27 +57,35 @@ class UserManagement extends Component {
 
     render() {
         return (
-            <div className="main-tile">
+            <div className="main-tile tabbed">
 
-            <br></br><br></br><br></br><br></br><br></br>
-            <h1>This is the UserManagement page</h1>
-            <p>Session ID:{this.props.sessionID}</p>
+                <br></br><br></br><br></br><br></br><br></br>
+                <h1>This is the UserManagement page</h1>
+                <p>Session ID:{this.props.sessionID}</p>
 
-            <p>The owner of the account is: <strong>{this.state.owner}</strong></p>
-            <p>The smart contract holds <strong>{this.state.numAccts}</strong> accounts</p>
-            <p>The smart contract holds <strong>{this.state.contractBal/1000000000000000000}</strong> eth</p>
-            
-            
-            {this.state.accounts.map((acct) => (
-                <p key={acct.key}>
-                Keyorder:{acct.key}<br></br> 
-                Owned by:{acct.own}<br></br> 
-                with balance of: {acct.balv1} or {acct.balv2}
+                <p>The owner of the contract is: <strong>{this.state.owner}</strong></p>
+                <p>
+                    The smart contract holds <strong>{this.state.numAccts}</strong> accounts and 
+                    <strong>{this.state.contractBal/1000000000000000000}</strong> eth
                 </p>
-            ))}
-            {/* {this.state.accounts[0].own} */}
-           
-            {/* <p>{this.state.accounts[1]}</p> */}
+                <hr></hr><br></br>
+                
+                
+                {this.state.accounts.map(
+                    (acct) => (
+                        <div className="Accounts" key={acct.key}>
+                            <strong>AccountID: </strong>{acct.key}<br></br> 
+                            <strong>Owned by: </strong>{acct.own}<br></br> 
+                            <strong>with balance of: </strong>{acct.balv1} or {acct.balv2}<br></br>
+                            <div className="tabbed">
+                                <strong>Address Permissions:</strong><br></br>
+                                {/* how to let the user add stuff here?? */}
+                                Permissioned User Address:<input type="text"></input>
+                            </div>
+                        <br></br></div>
+                    )
+                )}
+
 
 
 
