@@ -59,7 +59,11 @@ class UserManagement extends Component {
                         });
                         //only sort and set array to state once
                         if (arr.length==response.c[0]){
-                            arr.sort((a,b) => { return (a.key < b.key) })
+                            arr.sort((a,b) => { 
+                                if (a.key < b.key)
+                                    return -1;
+                                return 1;
+                             })
                             this.setState({accounts:arr});
                         }
                     }
