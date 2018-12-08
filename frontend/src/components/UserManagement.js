@@ -18,26 +18,37 @@ class UserManagement extends Component {
                 {key:0, own:"addy1", balv1:2, balv2:2.1},
             ]
         }
-    this.GetData();
+    var MyContract = this.GetContract();
+    this.SetOwner(MyContract);
+    this.SetBalance(MyContract);
+    this.GetData(MyContract);
+
     }
 
-    GetData() {
-        //make an instance of the contract
-        var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-        //owner field
-        MyContract.owner.call( (e,response) => {this.setState({owner:response})} );
-        //Contract balance
-        window.web3.eth.getBalance(ContractAddress, (e,response) => {
-            this.setState({contractBal:response.toString(10)} )//CHECK BIG NUMBER DOCS FOR WHY!
-        })
+    GetContract() {
+        return window.web3.eth.contract(ContractABI).at(ContractAddress);
+    }
 
+    SetOwner(Contract){
+        Contract.owner.call( (e,response) => {this.setState({owner:response})} );
+    }
+
+    SetBalance(Contract){
+        window.web3.eth.getBalance(
+            ContractAddress, (e,response) => {
+                this.setState({contractBal:response.toString(10)})
+            } 
+        )   
+    }
+
+    GetData(Contract) {
         //numAccounts
-        MyContract.numAccts.call( (e,response) => {
+        Contract.numAccts.call( (e,response) => {
             this.setState({numAccts:response.c.toString(10)})
             //AccountsArray
             let arr = [];
             for (let i=0;i<response.c[0];i++){
-                MyContract.Accounts(
+                Contract.Accounts(
                     i,
                     (e,res) => {
                         arr.push({
@@ -50,7 +61,6 @@ class UserManagement extends Component {
                 )
             }
         });
-        //UsersArray?? need to provide specific addy? diff for each Acct?
     }
 
     render() {
@@ -79,11 +89,6 @@ class UserManagement extends Component {
                         <br></br></div>
                     )
                 )}
-
-
-
-
-        
             </div>
         );
     };
