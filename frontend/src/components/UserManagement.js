@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
+import TitleTile from './SubUserManagement/TitleTile'
 
 
 import ContractABI, {ContractAddress} from '../ContractABI';
@@ -23,28 +24,22 @@ class UserManagement extends Component {
         }
     var MyContract = this.GetContract();
     this.SetOwner(MyContract);
-    this.SetBalance(MyContract);
+    this.SetBalance();
     this.GetData(MyContract);
-
     }
-
     GetContract() {
         return window.web3.eth.contract(ContractABI).at(ContractAddress);
     }
-
     SetOwner(Contract){
         Contract.owner.call( (e,response) => {this.setState({owner:response})} );
     }
-
-    SetBalance(Contract){
+    SetBalance(){
         window.web3.eth.getBalance(
             ContractAddress, (e,response) => {
                 this.setState({contractBal:response.toString(10)})
             } 
         )   
     }
-
-
     GetData(Contract) {
         //numAccounts
         Contract.numAccts.call( (e,response) => {
@@ -62,7 +57,7 @@ class UserManagement extends Component {
                             expanded:false
                         });
                         //only sort and set array to state once
-                        if (arr.length==response.c[0]){
+                        if (arr.length===response.c[0]){
                             arr.sort((a,b) => { 
                                 if (a.key < b.key)
                                     return -1;
@@ -75,17 +70,22 @@ class UserManagement extends Component {
             }
         });
     }
-
+    ToggleUsers (acctNum) {
+            let isExpanded = this.state.accounts[acctNum].expanded;
+            let newArr = update(this.state.accounts, {[acctNum]: {expanded: {$set: !isExpanded}}  });
+            this.setState({accounts:newArr})
+    }
     render() {
         return (
             <div className="main-tile">
-                <h1>UserManagement page</h1>
-                <p>
-                    The contract address is: <strong>{ContractAddress}</strong> and it has
-                    <strong> {this.state.numAccts}</strong> accounts and 
-                    <strong> {this.state.contractBal/1000000000000000000}</strong> eth
-                </p>
-                <hr></hr>
+                <TitleTile title="User Management Page">
+                    <p>
+                        The contract address is: <strong>{ContractAddress}</strong> and it has
+                        <strong> {this.state.numAccts}</strong> accounts and 
+                        <strong> {this.state.contractBal/1000000000000000000}</strong> eth
+                    </p>
+                </TitleTile>
+               
                 
 
                 <div className="container">
@@ -104,8 +104,13 @@ class UserManagement extends Component {
                         </div>
                     </div>{/* end title row */}
                     {this.state.accounts.map( (acct) => (
-                        <>
-                            <div className="row" key={acct.key}>
+
+
+                        <div key={acct.key}>
+
+
+
+                            <div className="row" >
                                 <div className="col-1 col-solid">
                                 {acct.key}
                                 </div>
@@ -115,35 +120,31 @@ class UserManagement extends Component {
                                 <div className="col-1 col-dotted">
                                 {acct.bal}
                                 </div>
-                                <div className="col-6" onClick={
-                                    () => {
-                                        let isExpanded = this.state.accounts[acct.key].expanded;
-                                        const newArr = update(this.state.accounts, {[acct.key]: {expanded: {$set: !isExpanded}}  });
-                                        this.setState({accounts:newArr})
-                                    }
-                                }>
+                                <div className="col-6" onClick={() => this.ToggleUsers(acct.key)}>
                                 Show more/less
                                 </div>
                             </div>
-                            <>
-                                {acct.expanded ?
-                                    <div className="row">
-                                        <div className="col-1 col-solid">
-                                        ----
-                                        </div>
-                                        <div className="col-4 col-solid">
-                                        ----
-                                        </div>
-                                        <div className="col-1 col-dotted">
-                                        ----
-                                        </div>
-                                        <div className="col-6">
-                                        User addy here - make into loop
-                                        </div>
+
+
+                            {acct.expanded ?
+                                <div className="row">
+                                    <div className="col-1 col-solid">
+                                    ----
                                     </div>
-                                :<></>}
-                            </>
-                        </>
+                                    <div className="col-4 col-solid">
+                                    ----
+                                    </div>
+                                    <div className="col-1 col-dotted">
+                                    ----
+                                    </div>
+                                    <div className="col-6">
+                                    User addy here - make into loop
+                                    </div>
+                                </div>
+                            :<></>}
+
+
+                        </div>
 
                     ))}{/* end mapping */}
                 </div>
