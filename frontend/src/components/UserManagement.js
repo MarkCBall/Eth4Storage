@@ -41,6 +41,7 @@ class UserManagement extends Component {
         )   
     }
 
+
     GetData(Contract) {
         //numAccounts
         Contract.numAccts.call( (e,response) => {
@@ -56,6 +57,15 @@ class UserManagement extends Component {
                             own:res[0],
                             bal:res[1].toString(10)
                         });
+
+                        //DEAL WITH THIS CODE IN A CLEAN WAY
+                            //sort in another function
+                            //only set state once at the end of for loop - callback challenge
+                        arr.sort((a,b) => {
+                            if (a.key < b.key) 
+                                return -1; 
+                            return 1;
+                        })
                         this.setState({accounts:arr});
                     }
                 )
@@ -66,7 +76,7 @@ class UserManagement extends Component {
     render() {
         return (
             <div className="main-tile">
-                <h1>This is the UserManagement page</h1>
+                <h1>UserManagement page</h1>
                 <p>
                     The contract address is: <strong>{ContractAddress}</strong> and it has
                     <strong> {this.state.numAccts}</strong> accounts and 
