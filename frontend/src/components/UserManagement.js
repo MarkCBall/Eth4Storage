@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
 import TitleTile from './SubUserManagement/TitleTile'
+import RenderRow from './SubUserManagement/RenderRow'
+import RenderTitleRow from './SubUserManagement/RenderTitleRow'
 
 
 import ContractABI, {ContractAddress} from '../ContractABI';
 
 
 //CSS Files
-import './UserManagement.css'
+import './SubUserManagement/UserManagement.css'
 
 class UserManagement extends Component {
     constructor(props){
@@ -85,62 +87,34 @@ class UserManagement extends Component {
                         <strong> {this.state.contractBal/1000000000000000000}</strong> eth
                     </p>
                 </TitleTile>
-               
-                
 
                 <div className="container">
-                    <div className="row row-top">
-                        <div className="col-1 col-solid">
-                        Account#
-                        </div>
-                        <div className="col-4 col-solid">
-                        Managing Address
-                        </div>
-                        <div className="col-1 col-dotted">
-                        Balance
-                        </div>
-                        <div className="col-6">
-                        Users
-                        </div>
-                    </div>{/* end title row */}
+                    <RenderTitleRow>
+                        <RenderRow 
+                            row1="Account#"
+                            row2="Managing Address"
+                            row3="Balance"
+                            row4="Users"
+                        />
+                    </RenderTitleRow>
+
                     {this.state.accounts.map( (acct) => (
-
-
                         <div key={acct.key}>
-
-
-
-                            <div className="row" >
-                                <div className="col-1 col-solid">
-                                {acct.key}
-                                </div>
-                                <div className="col-4 col-solid">
-                                {acct.own}
-                                </div>
-                                <div className="col-1 col-dotted">
-                                {acct.bal}
-                                </div>
-                                <div className="col-6" onClick={() => this.ToggleUsers(acct.key)}>
-                                Show more/less
-                                </div>
-                            </div>
-
+                            <RenderRow 
+                            row1={acct.key}
+                            row2={acct.own}
+                            row3={acct.bal}
+                            row4="Show more/less"
+                            />
 
                             {acct.expanded ?
-                                <div className="row">
-                                    <div className="col-1 col-solid">
-                                    ----
-                                    </div>
-                                    <div className="col-4 col-solid">
-                                    ----
-                                    </div>
-                                    <div className="col-1 col-dotted">
-                                    ----
-                                    </div>
-                                    <div className="col-6">
-                                    User addy here - make into loop
-                                    </div>
-                                </div>
+                                // add loop here
+                                    <RenderRow 
+                                    row1="----"
+                                    row2="----"
+                                    row3="----"
+                                    row4="User addy here - make into loop"
+                                    />
                             :<></>}
 
 
