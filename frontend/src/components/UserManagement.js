@@ -65,7 +65,7 @@ class UserManagement extends Component {
 
     render() {
         return (
-            <div className="main-tile tabbed">
+            <div className="main-tile">
                 <h1>This is the UserManagement page</h1>
                 <p>
                     The contract address is: <strong>{ContractAddress}</strong> and it has
@@ -74,21 +74,39 @@ class UserManagement extends Component {
                 </p>
                 <hr></hr>
                 
-                
-                {this.state.accounts.map(
-                    (acct) => (
-                        <div className="Accounts" key={acct.key}>
-                            <strong>AccountID: </strong>{acct.key}<br></br> 
-                            <strong>Owned by: </strong>{acct.own}<br></br> 
-                            <strong>with balance of: </strong>{acct.bal} <br></br>
-                            <div className="tabbed">
-                                <strong>Address Permissions:</strong><br></br>
-                                {/* how to let the user add stuff here?? */}
-                                Permissioned User Address:<input type="text"></input>
+
+                <div className="container">
+                    <div className="row row-top">
+                        <div className="col-1 col-solid">
+                        Account#
+                        </div>
+                        <div className="col-4 col-solid">
+                        Managing Address
+                        </div>
+                        <div className="col-1 col-dotted">
+                        Balance
+                        </div>
+                        <div className="col-6">
+                        Users
+                        </div>
+                    </div>{/* end title row */}
+                    {this.state.accounts.map( (acct) => (
+                        <div className="row" key={acct.key}>
+                            <div className="col-1 col-solid">
+                            {acct.key}
                             </div>
-                        <br></br></div>
-                    )
-                )}
+                            <div className="col-4 col-solid">
+                            {acct.own}
+                            </div>
+                            <div className="col-1 col-dotted">
+                            {acct.bal}
+                            </div>
+                            <div className="col-6">
+                            NA
+                            </div>
+                        </div>
+                    ))}{/* end mapping */}
+                </div>
             </div>
         );
     };

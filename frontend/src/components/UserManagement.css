@@ -1,5 +1,8 @@
-.Accounts {
+/* .Accounts {
     text-align: left
+} */
+.row-top{
+    border-bottom: 1px solid blue;
 }
 
 .tabbed{
@@ -8,4 +11,16 @@
 
 .main-tile{
     font-size: 0.75em
+}
+
+.col-solid {
+    /* padding-right:20px; */
+    border-right: 1px solid blue;
+    /* background-color: blue; */
+}
+
+.col-dotted {
+    /* padding-right:20px; */
+    border-right: 1px solid blue;
+    /* background-color: blue; */
 }
