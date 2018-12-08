@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import update from 'immutability-helper';
 
 
 import ContractABI, {ContractAddress} from '../ContractABI';
@@ -15,8 +16,10 @@ class UserManagement extends Component {
             numAccts: -1,
             contractBal:-1,
             accounts:[
-                {key:0, own:"addy1", balv1:2, balv2:2.1},
+                {key:0, own:"addy1", balv1:2, balv2:2.1, expanded:false},
             ]
+            //,
+            //subv:n []
         }
     var MyContract = this.GetContract();
     this.SetOwner(MyContract);
@@ -55,7 +58,8 @@ class UserManagement extends Component {
                         arr.push({
                             key:i,
                             own:res[0],
-                            bal:res[1].toString(10)
+                            bal:res[1].toString(10),
+                            expanded:false
                         });
                         //only sort and set array to state once
                         if (arr.length==response.c[0]){
@@ -100,20 +104,47 @@ class UserManagement extends Component {
                         </div>
                     </div>{/* end title row */}
                     {this.state.accounts.map( (acct) => (
-                        <div className="row" key={acct.key}>
-                            <div className="col-1 col-solid">
-                            {acct.key}
+                        <>
+                            <div className="row" key={acct.key}>
+                                <div className="col-1 col-solid">
+                                {acct.key}
+                                </div>
+                                <div className="col-4 col-solid">
+                                {acct.own}
+                                </div>
+                                <div className="col-1 col-dotted">
+                                {acct.bal}
+                                </div>
+                                <div className="col-6" onClick={
+                                    () => {
+                                        let isExpanded = this.state.accounts[acct.key].expanded;
+                                        const newArr = update(this.state.accounts, {[acct.key]: {expanded: {$set: !isExpanded}}  });
+                                        this.setState({accounts:newArr})
+                                    }
+                                }>
+                                Show more/less
+                                </div>
                             </div>
-                            <div className="col-4 col-solid">
-                            {acct.own}
-                            </div>
-                            <div className="col-1 col-dotted">
-                            {acct.bal}
-                            </div>
-                            <div className="col-6">
-                            Click to show more
-                            </div>
-                        </div>
+                            <>
+                                {acct.expanded ?
+                                    <div className="row">
+                                        <div className="col-1 col-solid">
+                                        ----
+                                        </div>
+                                        <div className="col-4 col-solid">
+                                        ----
+                                        </div>
+                                        <div className="col-1 col-dotted">
+                                        ----
+                                        </div>
+                                        <div className="col-6">
+                                        User addy here - make into loop
+                                        </div>
+                                    </div>
+                                :<></>}
+                            </>
+                        </>
+
                     ))}{/* end mapping */}
                 </div>
             </div>
