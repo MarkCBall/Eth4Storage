@@ -57,16 +57,11 @@ class UserManagement extends Component {
                             own:res[0],
                             bal:res[1].toString(10)
                         });
-
-                        //DEAL WITH THIS CODE IN A CLEAN WAY
-                            //sort in another function
-                            //only set state once at the end of for loop - callback challenge
-                        arr.sort((a,b) => {
-                            if (a.key < b.key) 
-                                return -1; 
-                            return 1;
-                        })
-                        this.setState({accounts:arr});
+                        //only sort and set array to state once
+                        if (arr.length==response.c[0]){
+                            arr.sort((a,b) => { return (a.key < b.key) })
+                            this.setState({accounts:arr});
+                        }
                     }
                 )
             }
@@ -112,7 +107,7 @@ class UserManagement extends Component {
                             {acct.bal}
                             </div>
                             <div className="col-6">
-                            NA
+                            Click to show more
                             </div>
                         </div>
                     ))}{/* end mapping */}
