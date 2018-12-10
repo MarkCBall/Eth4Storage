@@ -25,7 +25,7 @@ class RenderRow extends Component {
                 <div className="col-1 col-dotted">
                     {this.props.row3}
                 </div>
-                <div className="col-6" onClick={() => this.props.ToggleUsers(this.props.rowNum)}>
+                <div className="col-6" onClick={() => this.props.row4onclick(this.props.rowNum)}>
                     {this.props.row4}
                 </div>
             </div>

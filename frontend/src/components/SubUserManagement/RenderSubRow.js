@@ -16,6 +16,7 @@ class RenderSubRow extends Component {
                 {this.props.UserAcct.SubUserAddys.map( (usr) => (
                     <div key={usr.key} className="row">
                         <div className="col-1 col-solid">
+                        
                                
                         </div>
                         <div className="col-4 col-solid">
@@ -25,7 +26,7 @@ class RenderSubRow extends Component {
                             
                         </div>
                         <div className="col-6">
-                            {JSON.stringify(usr.val)}
+                            {usr.val}
                             View Only/Can Write
                             <button>Delete</button>
                             <button>(En)/(Dis)able Write</button>

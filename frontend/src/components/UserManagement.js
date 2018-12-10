@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import TitleTile from './SubUserManagement/TitleTile'
 import RenderRow from './SubUserManagement/RenderRow'
 import RenderSubRow from './SubUserManagement/RenderSubRow'
-import RenderTitleRow from './SubUserManagement/RenderTitleRow'
+import RowBotBorder from './SubUserManagement/RowBotBorder'
 import update from 'immutability-helper';
 
 
@@ -84,6 +84,16 @@ class UserManagement extends Component {
         this.setState({accounts:newArr})
     }
 
+    ShowMoreLessText(acct){
+        return acct.expanded ? "Show less" : "Show more"
+    }
+
+    changeOwner(acctN){
+        //TO MAKE METAMASK CALL HERE!!
+        console.log("change owner function called on account# "+acctN)
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////   
     render() {
         return (
             <div className="main-tile">
@@ -97,14 +107,16 @@ class UserManagement extends Component {
 
                 <div className="container">
                 {/* THIS IS FLAWED AS IT STILL ASKS FOR A TOGGLE USER... */}
-                    <RenderTitleRow>
+                    <RowBotBorder>
                         <RenderRow 
                             row1="Account#"
                             row2="Managing Address"
                             row3="Balance"
                             row4="Users"
+                            row4onclick={()=>{}}
                         />
-                    </RenderTitleRow>
+                        {/* Passing a blank toggleusers is not ideal */}
+                    </RowBotBorder>
 
                     {this.state.accounts.map( (acct) => (
                         <div key={acct.key}>
@@ -113,11 +125,9 @@ class UserManagement extends Component {
                             row1={acct.key}
                             row2={acct.own}
                             row3={acct.bal}
-                            row4="Show more/less"
-                            ToggleUsers={this.ToggleUsers.bind(this)}
+                            row4={this.ShowMoreLessText(acct)}
+                            row4onclick={this.ToggleUsers.bind(this)}
                             />
-
-                            
 
                             {acct.expanded ?
                                 // add loop here
@@ -129,9 +139,10 @@ class UserManagement extends Component {
                                     />
 
                                     {/* THIS IS FLAWED AS IT STILL ASKS FOR A TOGGLE USER... */}
-                                    {/* CHANGE RENDERTITLEROW NAME */}
-                                    <RenderTitleRow>
+                                    <RowBotBorder>
                                         <RenderRow
+                                        row2={<button onClick={()=>this.changeOwner(acct.key)}>Change owner</button>}
+                                        row4onclick={()=>{}}
                                         rowNum={acct.key+"tail"}                             
                                         row4={<>
                                             <button>Add</button> 
@@ -145,7 +156,7 @@ class UserManagement extends Component {
                                             </>}
 
                                         />
-                                    </RenderTitleRow>
+                                    </RowBotBorder>
                                 </>
 
                             :<></>}
