@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 
 
 //MAKE THIS INTO
-import './RenderTitleRow.css'
+import './RowBotBorder.css'
 
 
 //CSS Files
 //import './Header.css';
 
-class RenderTitleRow extends Component {
+class RowBotBorder extends Component {
 
 
 
@@ -23,4 +23,4 @@ class RenderTitleRow extends Component {
     };
 };
 
-export default RenderTitleRow;
+export default RowBotBorder;

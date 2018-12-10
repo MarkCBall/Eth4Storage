@@ -1,12 +1,19 @@
+//import BigNumber from 'bignumber.js'
+
 import React, { Component } from 'react';
 
 import TitleTile from './SubUserManagement/TitleTile'
 import RenderRow from './SubUserManagement/RenderRow'
-import RenderTitleRow from './SubUserManagement/RenderTitleRow'
+import RenderSubRow from './SubUserManagement/RenderSubRow'
+import RowBotBorder from './SubUserManagement/RowBotBorder'
 import update from 'immutability-helper';
 
 
 import ContractABI, {ContractAddress} from '../ContractABI';
+import DevelopmentData from './SubUserManagement/DevelopmentData';
+
+
+
 
 
 //CSS Files
@@ -17,11 +24,13 @@ class UserManagement extends Component {
         super(props)
         this.state ={
             owner:"Not Updated",
+            contract: "contract not reefined",
             numAccts: -1,
             contractBal:-1,
             accounts:[
                 {key:0, own:"addy1", balv1:2, balv2:2.1, expanded:false},
-            ]
+            ], 
+            testData:DevelopmentData
             //,
             //subv:n []
         }
@@ -80,6 +89,49 @@ class UserManagement extends Component {
         this.setState({accounts:newArr})
     }
 
+    ShowMoreLessText(acct){
+        return acct.expanded ? "Show less" : "Show more"
+    }
+
+    changeOwner(acctN){
+        //TO MAKE METAMASK CALL HERE!!this.MyContract
+        //use a variable for getcontract instead of calling the function again
+        
+        console.log("change owner function called on account# " + acctN)
+        console.log("change owner function called on contract " + this.GetContract())
+
+        //function giveOwnership(uint _Acct, address _newowner) public {
+        //this.GetContract().giveOwnership({0, })
+
+        //0x0F7Cd2D9F4CEc1f7E01f880315Fd56101095fF87 account 1
+        //0x396e328532AC99C238730Ff4B7D185D7A9920C1C account 2
+
+    }
+
+    addAccount = ()=> {
+        console.log("hi alicia");
+
+        // suppose you want to call a function named myFunction of myContract
+        //var getData = this.GetContract().createAccount.getData((e,r)=>{});
+        //console.log(getData)
+
+        //console.log(window.web3.eth.accounts[0])
+        //var amount = new BigNumber ('1000000000000000000')
+        //console.log(amount)
+        console.log(window.web3.eth.accounts[0])
+        this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:1001000000000000000}, function(e,r) {
+            //console.log(e);
+            //console.log(r);
+            //let div_id = candidates[candidateName];
+            //$("#" + div_id).html(contractInstance.totalVotesFor.call(candidateName).toString());
+          });
+        //finally paas this data parameter to send Transaction
+        //web3.eth.sendTransaction({to:Contractaddress, from:Accountaddress, data: getData});
+
+        //this.GetContract().createAccount().sendTransaction(   ()=>{}  )
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////   
     render() {
         return (
             <div className="main-tile">
@@ -92,42 +144,67 @@ class UserManagement extends Component {
                 </TitleTile>
 
                 <div className="container">
-                    <RenderTitleRow>
+                {/* THIS IS FLAWED AS IT STILL ASKS FOR A TOGGLE USER... */}
+                    <RowBotBorder>
                         <RenderRow 
                             row1="Account #"
                             row2="Managing Address"
                             row3="Balance (Ether)"
                             row4="Users"
+                            row4onclick={()=>{}}
                         />
-                    </RenderTitleRow>
+                        {/* Passing a blank toggleusers is not ideal */}
+                    </RowBotBorder>
 
                     {this.state.accounts.map( (acct) => (
                         <div key={acct.key}>
                             <RenderRow
-                            rowNum={acct.key} 
+                            rowNum={acct.key}                             
                             row1={acct.key}
                             row2={acct.own}
-                            row3={acct.bal/1000000000000000000}
-                            row4="Show more/less"
-                            ToggleUsers={this.ToggleUsers.bind(this)}
-                            />
 
-                            
+                            row3={acct.bal}
+                            row4={this.ShowMoreLessText(acct)}
+                            row4onclick={this.ToggleUsers.bind(this)}
+                         />
 
                             {acct.expanded ?
                                 // add loop here
-                                    <RenderRow 
-                                    row1="----"
-                                    row2="----"
-                                    row3="----"
-                                    row4="User addy here - make into loop"
+                                <>
+                                    
+                                    <RenderSubRow
+                                    UserAcct={this.state.testData[acct.key]}
+                                    rowNum={acct.key}
                                     />
+
+                                    {/* THIS IS FLAWED AS IT STILL ASKS FOR A TOGGLE USER... */}
+                                    <RowBotBorder>
+                                        <RenderRow
+                                        row2={<button onClick={()=>this.changeOwner(acct.key)}>Change owner</button>}
+                                        row4onclick={()=>{}}
+                                        rowNum={acct.key+"tail"}                             
+                                        row4={<>
+                                            <button>Add</button> 
+                                            <input type="text" placeholder="User address"></input>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <button>Create</button>
+                                            <select>
+                                                <option value="View">View Only</option>
+                                                <option value="Write">Write or view</option>
+                                            </select>
+                                            </>}
+
+                                        />
+                                    </RowBotBorder>
+                                </>
+
                             :<></>}
 
 
                         </div>
 
-                    ))}{/* end mapping */}
+                    ))}
+                    <button onClick={this.addAccount}>add new account</button>
                 </div>
             </div>
         );
