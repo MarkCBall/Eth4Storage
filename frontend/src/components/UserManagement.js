@@ -138,7 +138,7 @@ class UserManagement extends Component {
                 <TitleTile title="User Management Page">
                     <p>
                         The contract address is: <strong>{ContractAddress}</strong> and it has
-                        <strong> {this.state.numAccts}</strong> accounts and 
+                        <strong> {this.state.numAccts}</strong> account(s) and 
                         <strong> {this.state.contractBal/1000000000000000000}</strong> eth
                     </p>
                 </TitleTile>
@@ -147,9 +147,9 @@ class UserManagement extends Component {
                 {/* THIS IS FLAWED AS IT STILL ASKS FOR A TOGGLE USER... */}
                     <RowBotBorder>
                         <RenderRow 
-                            row1="Account#"
+                            row1="Account #"
                             row2="Managing Address"
-                            row3="Balance"
+                            row3="Balance (Ether)"
                             row4="Users"
                             row4onclick={()=>{}}
                         />
@@ -162,10 +162,11 @@ class UserManagement extends Component {
                             rowNum={acct.key}                             
                             row1={acct.key}
                             row2={acct.own}
+
                             row3={acct.bal}
                             row4={this.ShowMoreLessText(acct)}
                             row4onclick={this.ToggleUsers.bind(this)}
-                            />
+                         />
 
                             {acct.expanded ?
                                 // add loop here

@@ -27,21 +27,24 @@ class Header extends Component {
                                 Session id is {this.props.sessionID}<br></br>
                                 <br></br>Click here to change login</p> 
                             : 
-                                <p><br></br><button onClick={this.props.handleLogin}>CLick here to log in</button><br></br></p>
+                                <p><br></br><button onClick={this.props.handleLogin}>Click here to log in</button><br></br></p>
                             }
 
                         </div>
                         <div className="col-sm">
+                        <br></br>
                         <Link to="Upload">Upload Page</Link>
                         </div>
                         <div className="col-sm">
+                        <br></br>
                         <Link to="Download">Download Page</Link>
                         </div>
                         <div className="col-sm">
-                        <Link to="UserManagement">UserManagement Page</Link>
+                        <br></br>
+                        <Link to="UserManagement">User Management Page</Link>
                         </div>
                         <div className="col-sm">
-                        <button onClick={this.props.handleLogout}>Logout</button>
+                        <br></br><button onClick={this.props.handleLogout}>Logout</button><br></br>
                         </div>
                     </div>
                 </div>
