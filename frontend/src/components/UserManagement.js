@@ -96,6 +96,7 @@ class UserManagement extends Component {
                 </TitleTile>
 
                 <div className="container">
+                {/* THIS IS FLAWED AS IT STILL ASKS FOR A TOGGLE USER... */}
                     <RenderTitleRow>
                         <RenderRow 
                             row1="Account#"
@@ -120,15 +121,30 @@ class UserManagement extends Component {
 
                             {acct.expanded ?
                                 // add loop here
+                                <>
                                     
                                     <RenderSubRow
                                     UserAcct={this.state.testData[acct.key]}
                                     rowNum={acct.key}
-                                    row1="----"
-                                    row2="----"
-                                    row3="----"
-                                    row4="User addy here - make into loop"
                                     />
+
+                                    {/* THIS IS FLAWED AS IT STILL ASKS FOR A TOGGLE USER... */}
+                                    <RenderRow
+                                    rowNum={acct.key+"tail"}                             
+                                    row4={<>
+                                        <button>Add</button> 
+                                        <input type="text" placeholder="User address"></input>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button>Create</button>
+                                        <select>
+                                            <option value="View">View Only</option>
+                                            <option value="Write">Write or view</option>
+                                        </select>
+                                        </>}
+
+                                    />
+                                </>
+
                             :<></>}
 
 
