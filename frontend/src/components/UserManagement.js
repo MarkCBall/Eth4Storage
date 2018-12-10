@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 
+import TitleTile from './SubUserManagement/TitleTile'
+import RenderRow from './SubUserManagement/RenderRow'
+import RenderTitleRow from './SubUserManagement/RenderTitleRow'
+import update from 'immutability-helper';
+
 
 import ContractABI, {ContractAddress} from '../ContractABI';
 
 
 //CSS Files
-import './UserManagement.css'
+import './SubUserManagement/UserManagement.css'
 
 class UserManagement extends Component {
     constructor(props){
@@ -15,84 +20,115 @@ class UserManagement extends Component {
             numAccts: -1,
             contractBal:-1,
             accounts:[
-                {key:0, own:"addy1", balv1:2, balv2:2.1},
-                {key:1, own:"addy2", balv1:2, balv2:2.1}
+                {key:0, own:"addy1", balv1:2, balv2:2.1, expanded:false},
             ]
+            //,
+            //subv:n []
         }
-    this.GetData();
+    var MyContract = this.GetContract();
+    this.SetOwner(MyContract);
+    this.SetBalance();
+    this.GetData(MyContract);
     }
-
-    GetData() {
-        //make an instance of the contract
-        var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-        //owner field
-        MyContract.owner.call( (e,response) => {this.setState({owner:response})} );
-        //Contract balance
-        window.web3.eth.getBalance(ContractAddress, (e,response) => {
-            this.setState({contractBal:response.toString(10)} )//CHECK BIG NUMBER DOCS FOR WHY!
-        })
-
+    GetContract() {
+        return window.web3.eth.contract(ContractABI).at(ContractAddress);
+    }
+    SetOwner(Contract){
+        Contract.owner.call( (e,response) => {this.setState({owner:response})} );
+    }
+    SetBalance(){
+        window.web3.eth.getBalance(
+            ContractAddress, (e,response) => {
+                this.setState({contractBal:response.toString(10)})
+            } 
+        )   
+    }
+    GetData(Contract) {
         //numAccounts
-        MyContract.numAccts.call( (e,response) => {
-            this.setState({numAccts:response.c[0]})//FIX THIS WEIRDNESS!
-            //AccountsArray - done inside callback
-            let arr = []
+        Contract.numAccts.call( (e,response) => {
+            this.setState({numAccts:response.c.toString(10)})
+            //AccountsArray
+            let arr = [];
             for (let i=0;i<response.c[0];i++){
-                MyContract.Accounts(
+                Contract.Accounts(
                     i,
                     (e,res) => {
-                        let ownr = res[0];
-                        //im not sure which one is the correct balance and can't check now as all bals are exactly 1
-                        let b1 = res[1].c[0];
-                        let b2 = res[1].s;
-                        arr.push({key:i,own:ownr,balv1:b1,balv2:b2});
-                        this.setState({accounts:arr})
+                        arr.push({
+                            key:i,
+                            own:res[0],
+                            bal:res[1].toString(10),
+                            expanded:false
+                        });
+                        //only sort and set array to state once
+                        if (arr.length===response.c[0]){
+                            arr.sort((a,b) => { 
+                                if (a.key < b.key)
+                                    return -1;
+                                return 1;
+                             })
+                            this.setState({accounts:arr});
+                        }
                     }
                 )
             }
         });
-        
-        //UsersArray?? need to provide specific addy? diff for each Acct?
+    }
 
-        
-
+    ToggleUsers (acctNum) {
+        let isExpanded = this.state.accounts[acctNum].expanded;
+        let newArr = update(this.state.accounts, {[acctNum]: {expanded: {$set: !isExpanded}}  });
+        this.setState({accounts:newArr})
     }
 
     render() {
         return (
-            <div className="main-tile tabbed">
+            <div className="main-tile">
+                <TitleTile title="User Management Page">
+                    <p>
+                        The contract address is: <strong>{ContractAddress}</strong> and it has
+                        <strong> {this.state.numAccts}</strong> accounts and 
+                        <strong> {this.state.contractBal/1000000000000000000}</strong> eth
+                    </p>
+                </TitleTile>
 
-                <br></br><br></br><br></br><br></br><br></br>
-                <h1>This is the UserManagement page</h1>
-                <p>Session ID:{this.props.sessionID}</p>
+                <div className="container">
+                    <RenderTitleRow>
+                        <RenderRow 
+                            row1="Account#"
+                            row2="Managing Address"
+                            row3="Balance"
+                            row4="Users"
+                        />
+                    </RenderTitleRow>
 
-                <p>The owner of the contract is: <strong>{this.state.owner}</strong></p>
-                <p>
-                    The smart contract holds <strong>{this.state.numAccts}</strong> accounts and 
-                    <strong>{this.state.contractBal/1000000000000000000}</strong> eth
-                </p>
-                <hr></hr><br></br>
-                
-                
-                {this.state.accounts.map(
-                    (acct) => (
-                        <div className="Accounts" key={acct.key}>
-                            <strong>AccountID: </strong>{acct.key}<br></br> 
-                            <strong>Owned by: </strong>{acct.own}<br></br> 
-                            <strong>with balance of: </strong>{acct.balv1} or {acct.balv2}<br></br>
-                            <div className="tabbed">
-                                <strong>Address Permissions:</strong><br></br>
-                                {/* how to let the user add stuff here?? */}
-                                Permissioned User Address:<input type="text"></input>
-                            </div>
-                        <br></br></div>
-                    )
-                )}
+                    {this.state.accounts.map( (acct) => (
+                        <div key={acct.key}>
+                            <RenderRow
+                            rowNum={acct.key} 
+                            row1={acct.key}
+                            row2={acct.own}
+                            row3={acct.bal}
+                            row4="Show more/less"
+                            ToggleUsers={this.ToggleUsers.bind(this)}
+                            />
+
+                            
+
+                            {acct.expanded ?
+                                // add loop here
+                                    <RenderRow 
+                                    row1="----"
+                                    row2="----"
+                                    row3="----"
+                                    row4="User addy here - make into loop"
+                                    />
+                            :<></>}
 
 
+                        </div>
 
-
-        
+                    ))}{/* end mapping */}
+                </div>
             </div>
         );
     };
