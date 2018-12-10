@@ -110,8 +110,12 @@ class UserManagement extends Component {
 
     addAccount = ()=> {
         //get value parameter from the contract directly
-        this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:150000000000000000}, function(e,r) {
-          });
+        this.GetContract().currentAccPrice.call((e,r)=>{
+            //console.log(r)
+            this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:r}, function(e,r) {});
+        })
+        
+
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////   
