@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 
 import TitleTile from './SubUserManagement/TitleTile'
 import RenderRow from './SubUserManagement/RenderRow'
+import RenderSubRow from './SubUserManagement/RenderSubRow'
 import RenderTitleRow from './SubUserManagement/RenderTitleRow'
 import update from 'immutability-helper';
 
 
 import ContractABI, {ContractAddress} from '../ContractABI';
+import DevelopmentData from './SubUserManagement/DevelopmentData';
+
 
 
 //CSS Files
@@ -21,7 +24,8 @@ class UserManagement extends Component {
             contractBal:-1,
             accounts:[
                 {key:0, own:"addy1", balv1:2, balv2:2.1, expanded:false},
-            ]
+            ], 
+            testData:DevelopmentData
             //,
             //subv:n []
         }
@@ -104,7 +108,7 @@ class UserManagement extends Component {
                     {this.state.accounts.map( (acct) => (
                         <div key={acct.key}>
                             <RenderRow
-                            rowNum={acct.key} 
+                            rowNum={acct.key}                             
                             row1={acct.key}
                             row2={acct.own}
                             row3={acct.bal}
@@ -116,7 +120,10 @@ class UserManagement extends Component {
 
                             {acct.expanded ?
                                 // add loop here
-                                    <RenderRow 
+                                    
+                                    <RenderSubRow
+                                    UserAcct={this.state.testData[acct.key]}
+                                    rowNum={acct.key}
                                     row1="----"
                                     row2="----"
                                     row3="----"
@@ -127,7 +134,7 @@ class UserManagement extends Component {
 
                         </div>
 
-                    ))}{/* end mapping */}
+                    ))}
                 </div>
             </div>
         );
