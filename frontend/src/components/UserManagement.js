@@ -28,7 +28,7 @@ class UserManagement extends Component {
             numAccts: -1,
             contractBal:-1,
             accounts:[
-                {key:0, own:"addy1", balv1:2, balv2:2.1, expanded:false},
+                {key:0, own:"addy1", bal:0., expanded:false},
             ], 
             testData:DevelopmentData
             //,
@@ -109,26 +109,9 @@ class UserManagement extends Component {
     }
 
     addAccount = ()=> {
-        console.log("hi alicia");
-
-        // suppose you want to call a function named myFunction of myContract
-        //var getData = this.GetContract().createAccount.getData((e,r)=>{});
-        //console.log(getData)
-
-        //console.log(window.web3.eth.accounts[0])
-        //var amount = new BigNumber ('1000000000000000000')
-        //console.log(amount)
-        console.log(window.web3.eth.accounts[0])
-        this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:1001000000000000000}, function(e,r) {
-            //console.log(e);
-            //console.log(r);
-            //let div_id = candidates[candidateName];
-            //$("#" + div_id).html(contractInstance.totalVotesFor.call(candidateName).toString());
+        //get value parameter from the contract directly
+        this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:150000000000000000}, function(e,r) {
           });
-        //finally paas this data parameter to send Transaction
-        //web3.eth.sendTransaction({to:Contractaddress, from:Accountaddress, data: getData});
-
-        //this.GetContract().createAccount().sendTransaction(   ()=>{}  )
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////   
@@ -163,7 +146,7 @@ class UserManagement extends Component {
                             row1={acct.key}
                             row2={acct.own}
 
-                            row3={acct.bal}
+                            row3={acct.bal/1000000000000000000}
                             row4={this.ShowMoreLessText(acct)}
                             row4onclick={this.ToggleUsers.bind(this)}
                          />
