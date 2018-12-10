@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 
 
+
 //CSS Files
 //import './Header.css';
 
 class RenderRow extends Component {
+
 
 
 
@@ -22,11 +24,14 @@ class RenderRow extends Component {
                 <div className="col-1 col-dotted">
                 {this.props.row3}
                 </div>
-                <div className="col-6">
+                <div className="col-6" onClick={() => this.props.ToggleUsers(this.props.rowNum)}>
                 {this.props.row4}
                 </div>
             </div>
         
+
+
+
         );
     };
 };

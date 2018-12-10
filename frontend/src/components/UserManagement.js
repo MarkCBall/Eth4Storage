@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import update from 'immutability-helper';
+
 import TitleTile from './SubUserManagement/TitleTile'
 import RenderRow from './SubUserManagement/RenderRow'
 import RenderTitleRow from './SubUserManagement/RenderTitleRow'
+import update from 'immutability-helper';
 
 
 import ContractABI, {ContractAddress} from '../ContractABI';
@@ -72,11 +73,13 @@ class UserManagement extends Component {
             }
         });
     }
+
     ToggleUsers (acctNum) {
-            let isExpanded = this.state.accounts[acctNum].expanded;
-            let newArr = update(this.state.accounts, {[acctNum]: {expanded: {$set: !isExpanded}}  });
-            this.setState({accounts:newArr})
+        let isExpanded = this.state.accounts[acctNum].expanded;
+        let newArr = update(this.state.accounts, {[acctNum]: {expanded: {$set: !isExpanded}}  });
+        this.setState({accounts:newArr})
     }
+
     render() {
         return (
             <div className="main-tile">
@@ -100,12 +103,16 @@ class UserManagement extends Component {
 
                     {this.state.accounts.map( (acct) => (
                         <div key={acct.key}>
-                            <RenderRow 
+                            <RenderRow
+                            rowNum={acct.key} 
                             row1={acct.key}
                             row2={acct.own}
                             row3={acct.bal}
                             row4="Show more/less"
+                            ToggleUsers={this.ToggleUsers.bind(this)}
                             />
+
+                            
 
                             {acct.expanded ?
                                 // add loop here
