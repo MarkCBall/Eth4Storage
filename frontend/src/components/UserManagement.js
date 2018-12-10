@@ -1,3 +1,5 @@
+//import BigNumber from 'bignumber.js'
+
 import React, { Component } from 'react';
 
 import TitleTile from './SubUserManagement/TitleTile'
@@ -12,6 +14,8 @@ import DevelopmentData from './SubUserManagement/DevelopmentData';
 
 
 
+
+
 //CSS Files
 import './SubUserManagement/UserManagement.css'
 
@@ -20,6 +24,7 @@ class UserManagement extends Component {
         super(props)
         this.state ={
             owner:"Not Updated",
+            contract: "contract not reefined",
             numAccts: -1,
             contractBal:-1,
             accounts:[
@@ -89,8 +94,41 @@ class UserManagement extends Component {
     }
 
     changeOwner(acctN){
-        //TO MAKE METAMASK CALL HERE!!
-        console.log("change owner function called on account# "+acctN)
+        //TO MAKE METAMASK CALL HERE!!this.MyContract
+        //use a variable for getcontract instead of calling the function again
+        
+        console.log("change owner function called on account# " + acctN)
+        console.log("change owner function called on contract " + this.GetContract())
+
+        //function giveOwnership(uint _Acct, address _newowner) public {
+        //this.GetContract().giveOwnership({0, })
+
+        //0x0F7Cd2D9F4CEc1f7E01f880315Fd56101095fF87 account 1
+        //0x396e328532AC99C238730Ff4B7D185D7A9920C1C account 2
+
+    }
+
+    addAccount = ()=> {
+        console.log("hi alicia");
+
+        // suppose you want to call a function named myFunction of myContract
+        //var getData = this.GetContract().createAccount.getData((e,r)=>{});
+        //console.log(getData)
+
+        //console.log(window.web3.eth.accounts[0])
+        //var amount = new BigNumber ('1000000000000000000')
+        //console.log(amount)
+        console.log(window.web3.eth.accounts[0])
+        this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:1001000000000000000}, function(e,r) {
+            //console.log(e);
+            //console.log(r);
+            //let div_id = candidates[candidateName];
+            //$("#" + div_id).html(contractInstance.totalVotesFor.call(candidateName).toString());
+          });
+        //finally paas this data parameter to send Transaction
+        //web3.eth.sendTransaction({to:Contractaddress, from:Accountaddress, data: getData});
+
+        //this.GetContract().createAccount().sendTransaction(   ()=>{}  )
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////   
@@ -165,6 +203,7 @@ class UserManagement extends Component {
                         </div>
 
                     ))}
+                    <button onClick={this.addAccount}>add new account</button>
                 </div>
             </div>
         );
