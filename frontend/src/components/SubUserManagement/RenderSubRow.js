@@ -16,13 +16,13 @@ class RenderSubRow extends Component {
                 {this.props.UserAcct.SubUserAddys.map( (usr) => (
                     <div key={usr.key} className="row">
                         <div className="col-1 col-solid">
-                            -   
+                               
                         </div>
                         <div className="col-4 col-solid">
-                            ----
+                            
                         </div>
                         <div className="col-1 col-dotted">
-                            ----
+                            
                         </div>
                         <div className="col-6">
                             {JSON.stringify(usr.val)}

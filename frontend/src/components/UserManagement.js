@@ -129,20 +129,23 @@ class UserManagement extends Component {
                                     />
 
                                     {/* THIS IS FLAWED AS IT STILL ASKS FOR A TOGGLE USER... */}
-                                    <RenderRow
-                                    rowNum={acct.key+"tail"}                             
-                                    row4={<>
-                                        <button>Add</button> 
-                                        <input type="text" placeholder="User address"></input>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <button>Create</button>
-                                        <select>
-                                            <option value="View">View Only</option>
-                                            <option value="Write">Write or view</option>
-                                        </select>
-                                        </>}
+                                    {/* CHANGE RENDERTITLEROW NAME */}
+                                    <RenderTitleRow>
+                                        <RenderRow
+                                        rowNum={acct.key+"tail"}                             
+                                        row4={<>
+                                            <button>Add</button> 
+                                            <input type="text" placeholder="User address"></input>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <button>Create</button>
+                                            <select>
+                                                <option value="View">View Only</option>
+                                                <option value="Write">Write or view</option>
+                                            </select>
+                                            </>}
 
-                                    />
+                                        />
+                                    </RenderTitleRow>
                                 </>
 
                             :<></>}
