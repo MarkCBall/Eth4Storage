@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class HeaderRow extends Component {
     render() {
         return (
-            <div className="row row-top">
+            <div className="row line-below">
                 <div className="col-1 col-solid">
                     {this.props.row1}
                 </div>

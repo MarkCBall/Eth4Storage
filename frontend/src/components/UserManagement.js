@@ -6,8 +6,8 @@ import TitleTile from './SubUserManagement/TitleTile'
 import RenderRow from './SubUserManagement/RenderRow'
 import RenderSubRow from './SubUserManagement/RenderSubRow'
 import HeaderRow from './SubUserManagement/HeaderRow'
+import FooterSubRow from './SubUserManagement/FooterSubRow'
 
-import RowBotBorder from './SubUserManagement/RowBotBorder'
 import update from 'immutability-helper';
 
 
@@ -95,20 +95,7 @@ class UserManagement extends Component {
         return acct.expanded ? "Show less" : "Show more"
     }
 
-    changeOwner(acctN){
-        //TO MAKE METAMASK CALL HERE!!this.MyContract
-        //use a variable for getcontract instead of calling the function again
-        
-        console.log("change owner function called on account# " + acctN)
-        console.log("change owner function called on contract " + this.GetContract())
-
-        //function giveOwnership(uint _Acct, address _newowner) public {
-        //this.GetContract().giveOwnership({0, })
-
-        //0x0F7Cd2D9F4CEc1f7E01f880315Fd56101095fF87 account 1
-        //0x396e328532AC99C238730Ff4B7D185D7A9920C1C account 2
-
-    }
+ 
 
     addAccount = ()=> {
         //get value parameter from the contract directly
@@ -143,6 +130,8 @@ class UserManagement extends Component {
 
                     {this.state.accounts.map( (acct) => (
                         <div key={acct.key}>
+
+
                             <RenderRow
                             rowNum={acct.key}                             
                             row1={acct.key}
@@ -162,32 +151,19 @@ class UserManagement extends Component {
                                     rowNum={acct.key}
                                     />
 
-                                    {/* THIS IS FLAWED AS IT STILL ASKS FOR A TOGGLE USER... */}
-                                    <RowBotBorder>
-                                        <RenderRow
-                                        row2={<button onClick={()=>this.changeOwner(acct.key)}>Change owner</button>}
-                                        row4onclick={()=>{}}
-                                        rowNum={acct.key+"tail"}                             
-                                        row4={<>
-                                            <button>Add</button> 
-                                            <input type="text" placeholder="User address"></input>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <button>Create</button>
-                                            <select>
-                                                <option value="View">View Only</option>
-                                                <option value="Write">Write or view</option>
-                                            </select>
-                                            </>}
 
-                                        />
-                                    </RowBotBorder>
+
+
+
+
+
+                                    <FooterSubRow account={acct} />
+
+
+
                                 </>
-
                             :<></>}
-
-
                         </div>
-
                     ))}
                     <button onClick={this.addAccount}>add new account</button>
                 </div>
