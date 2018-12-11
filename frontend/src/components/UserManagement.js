@@ -91,9 +91,7 @@ class UserManagement extends Component {
         this.setState({accounts:newArr})
     }
 
-    ShowMoreLessText(acct){
-        return acct.expanded ? "Show less" : "Show more"
-    }
+  
 
  
 
@@ -130,37 +128,17 @@ class UserManagement extends Component {
 
                     {this.state.accounts.map( (acct) => (
                         <div key={acct.key}>
-
-
-                            <RenderRow
-                            rowNum={acct.key}                             
-                            row1={acct.key}
-                            row2={acct.own}
-
-                            row3={acct.bal/1000000000000000000}
-                            row4={this.ShowMoreLessText(acct)}
-                            row4onclick={this.ToggleUsers.bind(this)}
-                         />
-
+                            <RenderRow account={acct}                             
+                            expanded={this.ToggleUsers.bind(this)} />
                             {acct.expanded ?
                                 // add loop here
                                 <>
-                                    
                                     <RenderSubRow
                                     UserAcct={this.state.testData[acct.key]}
                                     rowNum={acct.key}
                                     />
 
-
-
-
-
-
-
                                     <FooterSubRow account={acct} />
-
-
-
                                 </>
                             :<></>}
                         </div>
