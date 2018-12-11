@@ -130,7 +130,7 @@ class UserManagement extends Component {
                     </p>
                 </TitleTile>
 
-                <div className="container">
+                <div className="container-full">
                 {/* THIS IS FLAWED AS IT STILL ASKS FOR A TOGGLE USER... */}
                     <RowBotBorder>
                         <RenderRow 
