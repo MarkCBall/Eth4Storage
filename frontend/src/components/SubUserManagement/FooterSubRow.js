@@ -5,14 +5,36 @@ import React, { Component } from 'react';
 //CSS Files
 import './RowBotBorder.css';
 
+
+//do this better - send contract through props?
+import ContractABI, {ContractAddress} from '../../ContractABI';
+
 class RenderRow extends Component {
 
+    //addUserToDB(){}
 
-    changeOwner(acctN){
+    changeOwner(acctN,addy){
+        var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+            MyContract.giveOwnership(acctN,addy,(e,r)=>{
+                //update the database
+                //update state
+        })
+    }
 
-        console.log("change owner function called on account# " + acctN)
-        console.log("change owner function called on contract " + this.GetContract())
+    approveViewer(acctN, addy){
+        var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+            MyContract.approveViewer(acctN,addy,(e,r)=>{
+                //update the database
+                //update state
+            })
+    }
 
+    approveWriter(acctN, addy){
+        var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+            MyContract.approveWriter(acctN,addy,(e,r)=>{
+                //update the database
+                //update state
+            })
     }
 
 
