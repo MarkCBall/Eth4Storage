@@ -8,7 +8,6 @@ import RenderSubRow from './SubUserManagement/RenderSubRow'
 import HeaderRow from './SubUserManagement/HeaderRow'
 import FooterSubRow from './SubUserManagement/FooterSubRow'
 
-import update from 'immutability-helper';
 
 
 import ContractABI, {ContractAddress} from '../ContractABI';
@@ -31,7 +30,25 @@ class UserManagement extends Component {
             contractBal:-1,
             isExpanded:[],
             accounts:[
-                {key:0, own:"addy1", bal:0., expanded:false},
+                {
+                    key:0,
+                    own:'0x3f040ef68e211d265a705f2066a33756c938615f',
+                    SubUserAddys:[
+                        {key:0,val:'test'},
+                        {key:1,val:'ahh'}
+                    ]
+                },
+                {
+                    key:1,
+                    own:'0x396e328532ac99c238730ff4b7d185d7a9920c1c',
+                    SubUserAddys:[
+                        {key:0,val:'garbage'},
+                        {key:1,val:"0x396e328532AC99C238730Ff4B7D185D7A9920C1C"},
+                        {key:2,val:'is'},
+                        {key:3,val:'stored'},
+                        {key:4,val:'here'}
+                    ]
+                }
             ], 
             testData:DevelopmentData
         }
@@ -65,6 +82,7 @@ class UserManagement extends Component {
                     i,
                     (e,res) => {
                         arr.push({
+                            //MODIFY THIS TO INCLUDE CURRENT DATA AS WELL
                             key:i,
                             own:res[0],
                             bal:res[1].toString(10),
@@ -84,18 +102,14 @@ class UserManagement extends Component {
             }
         });
     }
-
     ToggleUsers (acctNum) {
         let tmparr = this.state.isExpanded;
         this.state.isExpanded[acctNum]=!this.state.isExpanded[acctNum]
         this.setState({isExpanded:tmparr})
-        console.log(this.state.isExpanded)
+        console.log(this.state.testData)
+        console.log(this.state.accounts)
 
-        //let isExpanded = this.state.accounts[acctNum].expanded;
-        //let newArr = update(this.state.accounts, {[acctNum]: {expanded: {$set: !isExpanded}}  });
-        //this.setState({accounts:newArr})
     }
-
     addAccount = ()=> {
         this.GetContract().currentAccPrice.call((e,r)=>{
             this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:r}, function(e,r) {});
@@ -113,27 +127,15 @@ class UserManagement extends Component {
                         <strong> {this.state.contractBal/1000000000000000000}</strong> eth
                     </p>
                 </TitleTile>
-
                 <div className="container-full">
-                    <HeaderRow 
-                        row1="Account #"
-                        row2="Managing Address"
-                        row3="Balance (Ether)"
-                        row4="Users"
-                    />
-
+                    <HeaderRow row1="Account #" row2="Managing Address" row3="Balance (Ether)" row4="Users"/>
                     {this.state.accounts.map( (acct) => (
                         <div key={acct.key}>
-                            <RenderRow account={acct}                             
-                                expanded={this.ToggleUsers.bind(this)} 
-                            />
+                            <RenderRow account={acct} expanded={this.ToggleUsers.bind(this)} />
                             {this.state.isExpanded[acct.key] ?
                                 <>
-                                    <RenderSubRow
-                                    UserAcct={this.state.testData[acct.key]}
-                                    rowNum={acct.key}
-                                    />
-                                    <FooterSubRow account={acct} />
+                                <RenderSubRow UserAcct={this.state.testData[acct.key]} rowNum={acct.key}/>
+                                <FooterSubRow account={acct} />
                                 </>
                             :<></>}
                         </div>
