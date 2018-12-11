@@ -37,7 +37,8 @@ class UserManagement extends Component {
                         {key:0,val:'test'},
                         {key:1,val:'ahh'}
                     ]
-                },
+                }
+                ,
                 {
                     key:1,
                     own:'0x396e328532ac99c238730ff4b7d185d7a9920c1c',
@@ -49,8 +50,8 @@ class UserManagement extends Component {
                         {key:4,val:'here'}
                     ]
                 }
-            ], 
-            testData:DevelopmentData
+            ]//, 
+            //testData:DevelopmentData
         }
 
     var MyContract = this.GetContract();
@@ -81,34 +82,32 @@ class UserManagement extends Component {
                 Contract.Accounts(
                     i,
                     (e,res) => {
-                        arr.push({
-                            //MODIFY THIS TO INCLUDE CURRENT DATA AS WELL
-                            key:i,
-                            own:res[0],
-                            bal:res[1].toString(10),
-                            expanded:false
-                        });
+                        arr[i] = (this.state.accounts[i] || {key:i});
+                        arr[i].key=i;
+                        arr[i].own=res[0];
+                        arr[i].bal=res[1].toString(10);
+                        console.log(i)
                         //only sort and set array to state once
                         if (arr.length===response.c[0]){
                             arr.sort((a,b) => { 
                                 if (a.key < b.key)
                                     return -1;
                                 return 1;
-                             })
+                                })
                             this.setState({accounts:arr});
+                            console.log(arr)
+                            //console.log(response.c.toString(10))
                         }
                     }
-                )
+                ); 
             }
-        });
+        })
     }
+ 
     ToggleUsers (acctNum) {
         let tmparr = this.state.isExpanded;
-        this.state.isExpanded[acctNum]=!this.state.isExpanded[acctNum]
+        tmparr[acctNum]=!this.state.isExpanded[acctNum]
         this.setState({isExpanded:tmparr})
-        console.log(this.state.testData)
-        console.log(this.state.accounts)
-
     }
     addAccount = ()=> {
         this.GetContract().currentAccPrice.call((e,r)=>{
@@ -134,7 +133,7 @@ class UserManagement extends Component {
                             <RenderRow account={acct} expanded={this.ToggleUsers.bind(this)} />
                             {this.state.isExpanded[acct.key] ?
                                 <>
-                                <RenderSubRow UserAcct={this.state.testData[acct.key]} rowNum={acct.key}/>
+                                <RenderSubRow UserAcct={this.state.accounts[acct.key]} rowNum={acct.key}/>
                                 <FooterSubRow account={acct} />
                                 </>
                             :<></>}
