@@ -5,6 +5,8 @@ import React, { Component } from 'react';
 import TitleTile from './SubUserManagement/TitleTile'
 import RenderRow from './SubUserManagement/RenderRow'
 import RenderSubRow from './SubUserManagement/RenderSubRow'
+import HeaderRow from './SubUserManagement/HeaderRow'
+
 import RowBotBorder from './SubUserManagement/RowBotBorder'
 import update from 'immutability-helper';
 
@@ -131,17 +133,13 @@ class UserManagement extends Component {
                 </TitleTile>
 
                 <div className="container-full">
-                {/* THIS IS FLAWED AS IT STILL ASKS FOR A TOGGLE USER... */}
-                    <RowBotBorder>
-                        <RenderRow 
-                            row1="Account #"
-                            row2="Managing Address"
-                            row3="Balance (Ether)"
-                            row4="Users"
-                            row4onclick={()=>{}}
-                        />
-                        {/* Passing a blank toggleusers is not ideal */}
-                    </RowBotBorder>
+                    <HeaderRow 
+                        row1="Account #"
+                        row2="Managing Address"
+                        row3="Balance (Ether)"
+                        row4="Users"
+                    />
+
 
                     {this.state.accounts.map( (acct) => (
                         <div key={acct.key}>
