@@ -8,14 +8,8 @@ import RenderSubRow from './SubUserManagement/RenderSubRow'
 import HeaderRow from './SubUserManagement/HeaderRow'
 import FooterSubRow from './SubUserManagement/FooterSubRow'
 
-
-
 import ContractABI, {ContractAddress} from '../ContractABI';
 //import DevelopmentData from './SubUserManagement/DevelopmentData';
-
-
-
-
 
 //CSS Files
 import './SubUserManagement/UserManagement.css'
@@ -34,8 +28,7 @@ class UserManagement extends Component {
                     key:0,
                     own:'0x3f040ef68e211d265a705f2066a33756c938615f',
                     SubUserAddys:[
-                        {key:0,val:'tezp9st'},
-                        {key:1,val:'ahh'}
+
                     ]
                 }
                 ,
@@ -43,11 +36,9 @@ class UserManagement extends Component {
                     key:1,
                     own:'0x396e328532ac99c238730ff4b7d185d7a9920c1c',
                     SubUserAddys:[
-                        {key:0,val:'garbage'},
-                        {key:1,val:"0x396e328532AC99C238730Ff4B7D185D7A9920C1C"},
-                        {key:2,val:'is'},
-                        {key:3,val:'stored'},
-                        {key:4,val:'here'}
+                        {key:0,val:"0x396e328532AC99C238730Ff4B7D185D7A9920C1C"},
+                        {key:1,val:"0x0F7Cd2D9F4CEc1f7E01f880315Fd56101095fF87"}
+
                     ]
                 }
             ]//, 
@@ -89,6 +80,7 @@ class UserManagement extends Component {
                         arr[i].bal=res[1].toString(10);
                         allFilled++;
                         //only sort and set array to state once
+                        //needed as i is not necessarily sequential
                         if (allFilled===response.c[0]){
                             arr.sort((a,b) => { 
                                 if (a.key < b.key)

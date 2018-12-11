@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import {BigNumber} from 'bignumber.js'
+
+//import update from 'react-addons-update';
+//import {BigNumber} from 'bignumber.js'
 
 
 //do this better - send contract through props?
@@ -10,68 +12,65 @@ class RenderSubRow extends Component {
     constructor(props){
         super(props)
         this.state ={
-            isValid:[this.props.UserAcct.SubUserAddys.length],
-            canWrite:[this.props.UserAcct.SubUserAddys.length]
+            canWrite:[]
         }
-        this.addUser()
 
+        //set state to show if users can write
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-        let arrValid = [];
-        let arrWrite = [];
-        let userArray = this.props.UserAcct.SubUserAddys;
-        //THIS IS UGLY - DO IT BETTER
-        for (let i=0;i<userArray.length;i++){
-            //if its an ethereum address
-            if (/[0-9A-Fa-f]{6}/g.test(userArray[i].val)){
-                //console.log(userArray[i].val)
-                //add arrValid bool values
-                MyContract.Users(userArray[i].val,(e,r)=>{
-                    arrValid[i]=(r[0].toString()==userArray[i].key.toString());
-                    this.setState({isValid:arrValid.slice()})
-                    console.log(r)
-                    
-                    //will future callack overwrite a current one???
-                    arrValid[i]=(
-                            (r[0].toString()==userArray[i].key.toString()) 
-                            && r[1]);
-                    this.setState({canWrite:arrWrite.slice()})
-
-
-                })
-                //add arrWrite bool values
-
-            }
-            
-            
-
-        }
+        this.props.UserAcct.SubUserAddys.forEach((user)=>{
+            MyContract.Users(user.val,(e,r)=>{
+                this.setCanWrite(user.key,r[1])
+            })
+        })
     }
 
-    addUser(){
-        console.log("User added")
+    setCanWrite(i,boolVal){
+        let arr = JSON.parse(JSON.stringify(this.state.canWrite));
+        arr[i]=boolVal;
+        this.setState({canWrite:arr});
     }
 
-    
-    disp(){
-        console.log(this.state)
-    }
 
-    
-    //console.log(arr)
-    //console.log(this.state.isExpanded)
+  
     
 
-    canWrite(str,acctN){
+    deleteUser(acctN, addy){
+        console.log("deleteUser called")
+        console.log(acctN)
+        console.log(addy)
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
 
-        //return has write access
+
+       
+            //MyContract.deleteUser(1,"0x396e328532AC99C238730Ff4B7D185D7A9920C1C",(e,r)=>{
+            MyContract.deleteUser(acctN,addy,(e,r)=>{
+
+                //update the database
+                //update state
+            })
+                
+       
+
+
+    }
+
+    //disablewrite
+    //enablewrite
+
+
+    
+
+
+
+    userCanWrite(){
+
     }
     
        render() {
         return (
             <>
-            <p onClick={this.disp.bind(this)}>MEMEMEME</p>
-                {this.props.UserAcct.SubUserAddys ?
+            {/* <p onClick={this.disp.bind(this)}>MEMEMEME</p> */}
+                {this.props.UserAcct.SubUserAddys.length>0 ?
                     <>
                         {this.props.UserAcct.SubUserAddys.map( (usr) => (
                             <div key={usr.key} className="row">
@@ -79,14 +78,15 @@ class RenderSubRow extends Component {
                                 <div className="col-4 col-solid"></div>
                                 <div className="col-1 col-dotted"></div>
                                 <div className="col-6">
-                             
-                                    {this.state.isValid[usr.key] ? 
-                                    <>
-                                        {usr.val}
-                                        <button>Delete</button>
-                                        {this.state.canWrite[usr.key] ? <button>disable write</button> : <button>enable write</button>}
+                                    {usr.val}
+                                    {this.state.canWrite[usr.key] ? 
+                                        <button>disable write</button> 
+                                    : 
+                                        <button>enable write</button>
+                                    }
+                                    <button onClick={()=> {this.deleteUser(this.props.UserAcct.key,usr.val)}}>Delete</button>
                                     
-                                    </> : <></>}
+
                                     
                                 </div>
                             </div>
@@ -100,3 +100,4 @@ class RenderSubRow extends Component {
 };
 
 export default RenderSubRow;
+
