@@ -10,10 +10,19 @@ import './RowBotBorder.css';
 import ContractABI, {ContractAddress} from '../../ContractABI';
 
 class RenderRow extends Component {
+    constructor(props){
+        super(props)
+        this.state ={
+            makeWriter:[]
+        }
+    }
+
+
 
     //addUserToDB(){}
 
     changeOwner(acctN,addy){
+        console.log("changeowner called with "+ acctN + " acct and " + addy)
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
             MyContract.giveOwnership(acctN,addy,(e,r)=>{
                 //update the database
@@ -22,6 +31,7 @@ class RenderRow extends Component {
     }
 
     approveViewer(acctN, addy){
+        console.log("approveviewer called with "+ acctN + " acct and " + addy)
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
             MyContract.approveViewer(acctN,addy,(e,r)=>{
                 //update the database
@@ -30,6 +40,7 @@ class RenderRow extends Component {
     }
 
     approveWriter(acctN, addy){
+        console.log("approvewriter called with "+ acctN + " acct and " + addy)
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
             MyContract.approveWriter(acctN,addy,(e,r)=>{
                 //update the database
@@ -37,6 +48,10 @@ class RenderRow extends Component {
             })
     }
 
+    handleCreate = () => {
+        console.log(this.state.checkbox)
+        console.log(this.state.inputValue.target)
+    }
 
     render() {
         return (
@@ -53,13 +68,15 @@ class RenderRow extends Component {
                 <div className="col-6">
                     <>
                         <button>Add</button> 
-                        <input type="text" placeholder="User address"></input>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button>Create</button>
-                        <select>
-                            <option value="View">View Only</option>
-                            <option value="Write">Write or view</option>
-                        </select>
+                        <input 
+                            type="text" 
+                            placeholder="User address"
+                            onChange={(value) => this.setState({ inputValue: value })}
+                        />
+                        <button onClick={() => this.handleCreate()}>
+                            Create
+                        </button>
+                        <input onChange={() => this.setState({ checkbox: !this.state.checkbox })} type="checkbox" name="x" value="y"/>New user can write
                     </>
                 </div>
             </div>
