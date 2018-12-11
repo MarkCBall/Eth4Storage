@@ -11,7 +11,7 @@ import FooterSubRow from './SubUserManagement/FooterSubRow'
 
 
 import ContractABI, {ContractAddress} from '../ContractABI';
-import DevelopmentData from './SubUserManagement/DevelopmentData';
+//import DevelopmentData from './SubUserManagement/DevelopmentData';
 
 
 
@@ -34,7 +34,7 @@ class UserManagement extends Component {
                     key:0,
                     own:'0x3f040ef68e211d265a705f2066a33756c938615f',
                     SubUserAddys:[
-                        {key:0,val:'test'},
+                        {key:0,val:'tezp9st'},
                         {key:1,val:'ahh'}
                     ]
                 }
@@ -78,6 +78,7 @@ class UserManagement extends Component {
             this.setState({numAccts:response.c.toString(10)})
             //AccountsArray
             let arr = [];
+            let allFilled = 0 ;
             for (let i=0;i<response.c[0];i++){
                 Contract.Accounts(
                     i,
@@ -86,16 +87,16 @@ class UserManagement extends Component {
                         arr[i].key=i;
                         arr[i].own=res[0];
                         arr[i].bal=res[1].toString(10);
-                        console.log(i)
+                        allFilled++;
                         //only sort and set array to state once
-                        if (arr.length===response.c[0]){
+                        if (allFilled===response.c[0]){
                             arr.sort((a,b) => { 
                                 if (a.key < b.key)
                                     return -1;
                                 return 1;
                                 })
                             this.setState({accounts:arr});
-                            console.log(arr)
+                            //console.log(arr)
                             //console.log(response.c.toString(10))
                         }
                     }
