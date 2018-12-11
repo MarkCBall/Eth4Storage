@@ -29,13 +29,13 @@ class UserManagement extends Component {
             contract: "contract not reefined",
             numAccts: -1,
             contractBal:-1,
+            isExpanded:[],
             accounts:[
                 {key:0, own:"addy1", bal:0., expanded:false},
             ], 
             testData:DevelopmentData
-            //,
-            //subv:n []
         }
+
     var MyContract = this.GetContract();
     this.SetOwner(MyContract);
     this.SetBalance();
@@ -86,23 +86,20 @@ class UserManagement extends Component {
     }
 
     ToggleUsers (acctNum) {
-        let isExpanded = this.state.accounts[acctNum].expanded;
-        let newArr = update(this.state.accounts, {[acctNum]: {expanded: {$set: !isExpanded}}  });
-        this.setState({accounts:newArr})
+        let tmparr = this.state.isExpanded;
+        this.state.isExpanded[acctNum]=!this.state.isExpanded[acctNum]
+        this.setState({isExpanded:tmparr})
+        console.log(this.state.isExpanded)
+
+        //let isExpanded = this.state.accounts[acctNum].expanded;
+        //let newArr = update(this.state.accounts, {[acctNum]: {expanded: {$set: !isExpanded}}  });
+        //this.setState({accounts:newArr})
     }
 
-  
-
- 
-
     addAccount = ()=> {
-        //get value parameter from the contract directly
         this.GetContract().currentAccPrice.call((e,r)=>{
-            //console.log(r)
             this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:r}, function(e,r) {});
         })
-        
-
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////   
@@ -125,19 +122,17 @@ class UserManagement extends Component {
                         row4="Users"
                     />
 
-
                     {this.state.accounts.map( (acct) => (
                         <div key={acct.key}>
                             <RenderRow account={acct}                             
-                            expanded={this.ToggleUsers.bind(this)} />
-                            {acct.expanded ?
-                                // add loop here
+                                expanded={this.ToggleUsers.bind(this)} 
+                            />
+                            {this.state.isExpanded[acct.key] ?
                                 <>
                                     <RenderSubRow
                                     UserAcct={this.state.testData[acct.key]}
                                     rowNum={acct.key}
                                     />
-
                                     <FooterSubRow account={acct} />
                                 </>
                             :<></>}
