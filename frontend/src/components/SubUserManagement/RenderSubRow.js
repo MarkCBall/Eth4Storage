@@ -31,31 +31,29 @@ class RenderSubRow extends Component {
     }
 
 
-  
-    
-
     deleteUser(acctN, addy){
-        console.log("deleteUser called")
-        console.log(acctN)
-        console.log(addy)
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-
-
-       
-            //MyContract.deleteUser(1,"0x396e328532AC99C238730Ff4B7D185D7A9920C1C",(e,r)=>{
             MyContract.deleteUser(acctN,addy,(e,r)=>{
-
                 //update the database
                 //update state
             })
-                
-       
-
-
     }
 
-    //disablewrite
-    //enablewrite
+    disableWrite(acctN, addy){
+        var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+        MyContract.disallowWrite(acctN,addy,(e,r)=>{
+            //update the database
+            //update state
+        })
+    }
+    enableWrite(acctN, addy){
+        //note the same solidity function is used as to create a whole new writer
+        var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+        MyContract.approveWriter(acctN,addy,(e,r)=>{
+            //update the database
+            //update state
+        })
+    }
 
 
     
@@ -80,9 +78,9 @@ class RenderSubRow extends Component {
                                 <div className="col-6">
                                     {usr.val}
                                     {this.state.canWrite[usr.key] ? 
-                                        <button>disable write</button> 
+                                        <button onClick={()=> {this.disableWrite(this.props.UserAcct.key,usr.val)}}>Disable write</button> 
                                     : 
-                                        <button>enable write</button>
+                                        <button onClick={()=> {this.enableWrite(this.props.UserAcct.key,usr.val)}}>Enable write</button>
                                     }
                                     <button onClick={()=> {this.deleteUser(this.props.UserAcct.key,usr.val)}}>Delete</button>
                                     
