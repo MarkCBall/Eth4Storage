@@ -69,9 +69,9 @@ class RenderRow extends Component {
         else
             this.approveViewer(accountN,inputAddress)
 
-        console.log(this.state.checkbox)
-        //console.log(e.target.previousSibling.value)
-        console.log(this.state.inputValue)
+        // console.log(this.state.checkbox)
+        // //console.log(e.target.previousSibling.value)
+        // console.log(this.state.inputValue)
     }
 
     validStateAddress(){
@@ -94,7 +94,9 @@ class RenderRow extends Component {
                 </div>
                 <div className="col-6">
                     <>
-                        <button>Add</button> 
+                        <button>
+                            Add existing to interface
+                        </button> 
                         <input 
                             type="text" 
                             placeholder="User address"
