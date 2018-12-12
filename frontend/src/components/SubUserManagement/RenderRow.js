@@ -8,7 +8,9 @@ import React, { Component } from 'react';
 class RenderRow extends Component {
 
 
-
+    ShowMoreLessText(acct){
+        return acct.expanded ? "Show less" : "Show more"
+    }
 
     render() {
         return (
@@ -17,16 +19,16 @@ class RenderRow extends Component {
                 
             <div className="row">
                 <div className="col-1 col-solid">
-                    {this.props.row1}
+                    {this.props.account.key}
                 </div>
                 <div className="col-4 col-solid">
-                    {this.props.row2}
+                    {this.props.account.own}
                 </div>
                 <div className="col-1 col-dotted">
-                    {this.props.row3}
+                    {(this.props.account.bal/1000000000000000000).toString()}
                 </div>
-                <div className="col-6" onClick={() => this.props.row4onclick(this.props.rowNum)}>
-                    {this.props.row4}
+                <div className="col-6" onClick={() => this.props.expanded(this.props.account.key)}>
+                    {this.ShowMoreLessText(this.props.account)}
                 </div>
             </div>
         
