@@ -120,13 +120,24 @@ class UserManagement extends Component {
                     </p>
                 </TitleTile>
                 <div className="container-full">
-                    <HeaderRow row1="Account #" row2="Managing Address" row3="Balance (Ether)" row4="Users"/>
+                    <HeaderRow 
+                        row1="Account #" 
+                        row2="Managing Address" 
+                        row3="Balance (Ether)" 
+                        row4="Users"
+                    />
                     {this.state.accounts.map( (acct) => (
                         <div key={acct.key}>
-                            <RenderRow account={acct} expanded={this.ToggleUsers.bind(this)} />
+                            <RenderRow 
+                                account={acct} 
+                                expanded={this.ToggleUsers.bind(this)} 
+                            />
                             {this.state.isExpanded[acct.key] ?
                                 <>
-                                <RenderSubRow UserAcct={this.state.accounts[acct.key]} rowNum={acct.key}/>
+                                <RenderSubRow 
+                                    UserAcct={this.state.accounts[acct.key]} 
+                                    rowNum={acct.key}
+                                />
                                 <FooterSubRow account={acct} />
                                 </>
                             :<></>}

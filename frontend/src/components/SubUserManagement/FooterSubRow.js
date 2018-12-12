@@ -13,15 +13,24 @@ class RenderRow extends Component {
     constructor(props){
         super(props)
         this.state ={
-            makeWriter:[]
+            makeWriter:[],
+            checkbox:false,
+            inputValue:""
         }
     }
 
 
 
     //addUserToDB(){}
+        //update the database
+        //update state
 
     changeOwner(acctN,addy){
+        if (!this.validStateAddress()){
+            console.log("error handling somehow - not an address in changeOwner")
+            return
+        }
+            
         console.log("changeowner called with "+ acctN + " acct and " + addy)
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
             MyContract.giveOwnership(acctN,addy,(e,r)=>{
@@ -48,9 +57,25 @@ class RenderRow extends Component {
             })
     }
 
-    handleCreate = () => {
+    handleCreate = (e) => {
+        if (!this.validStateAddress()){
+            console.log("error handling somehow - not an address in handleCreate")
+            return
+        }
+        let inputAddress = this.state.inputValue;
+        let accountN = this.props.account.key
+        if (this.state.checkbox)
+            this.approveWriter(accountN,inputAddress)
+        else
+            this.approveViewer(accountN,inputAddress)
+
         console.log(this.state.checkbox)
-        console.log(this.state.inputValue.target)
+        //console.log(e.target.previousSibling.value)
+        console.log(this.state.inputValue)
+    }
+
+    validStateAddress(){
+        return window.web3.isAddress(this.state.inputValue);
     }
 
     render() {
@@ -60,7 +85,9 @@ class RenderRow extends Component {
                     
                 </div>
                 <div className="col-4 col-solid">
-                    <button onClick={()=>this.changeOwner(this.props.account.key)}>Change owner</button>
+                    <button onClick={()=>this.changeOwner(this.props.account.key,this.state.inputValue)}>
+                        Change owner
+                    </button>
                 </div>
                 <div className="col-1 col-dotted">
                     
@@ -71,12 +98,16 @@ class RenderRow extends Component {
                         <input 
                             type="text" 
                             placeholder="User address"
-                            onChange={(value) => this.setState({ inputValue: value })}
+                            value={this.state.inputValue}
+                            onChange={(e) => this.setState({ inputValue: e.target.value })}
                         />
-                        <button onClick={() => this.handleCreate()}>
+                        <button onClick={(e) => this.handleCreate(e)}>
                             Create
                         </button>
-                        <input onChange={() => this.setState({ checkbox: !this.state.checkbox })} type="checkbox" name="x" value="y"/>New user can write
+                        <input 
+                            onChange={() => this.setState({ checkbox: !this.state.checkbox })} 
+                            type="checkbox" 
+                        />New user can write
                     </>
                 </div>
             </div>
