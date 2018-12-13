@@ -53,11 +53,22 @@ class UserManagement extends Component {
             //testData:DevelopmentData
         }
 
-    var MyContract = this.GetContract();
-    this.SetOwner(MyContract);
-    this.SetBalance();
-    this.GetData(MyContract);
-    }
+        var MyContract = this.GetContract();
+        this.SetOwner(MyContract);
+        this.SetBalance();
+        this.GetData(MyContract);
+
+        //get new account state from express server
+        fetch('http://localhost:3000/users')
+        .then(function(response) {
+            return response.json();
+        })
+        .then(data => {
+            this.setState({accounts:JSON.parse(data)})
+            // console.log("state is set to")
+            // console.log(data);
+        })
+     }
     GetContract() {
         return window.web3.eth.contract(ContractABI).at(ContractAddress);
     }

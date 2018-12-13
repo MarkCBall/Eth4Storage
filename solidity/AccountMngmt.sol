@@ -1,5 +1,11 @@
 //deployed to 0x4a36137D3423737Cde187B7aF074291302707fDd ropsten - deployed from dylan's windows desktop
 
+//    struct User {address UserAddy; bool CanWrite;}
+//     struct Account {address AdminAddr; uint Bal; User[] Users;}
+//     Account[] Accounts
+
+
+
 pragma solidity ^0.4.25;
     
 contract AccountMngmt {
