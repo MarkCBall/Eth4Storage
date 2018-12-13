@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Clock from './Clock';
 
 
 //CSS Files
@@ -14,7 +15,7 @@ class Header extends Component {
     render() {
         return (
             <div className="header-box">
-
+            <Clock></Clock>
 
                 <div className="container">
                     <div className="row">
