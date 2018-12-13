@@ -96,7 +96,7 @@ class UserManagement extends Component {
             let arr = [];
             let allFilled = 0 ;
             for (let i=0;i<parseInt(response.c.toString(10));i++){
-                console.log("num accounts is " +parseInt(response.c.toString(10)))
+                //console.log("num accounts is " +parseInt(response.c.toString(10)))
 
                 Contract.Accounts(
                     i,
