@@ -3,10 +3,10 @@
 import React, { Component } from 'react';
 
 import TitleTile from './SubUserManagement/TitleTile'
-//import RenderRow from './SubUserManagement/RenderRow'
-//import RenderSubRow from './SubUserManagement/RenderSubRow'
-//import HeaderRow from './SubUserManagement/HeaderRow'
-//import FooterSubRow from './SubUserManagement/FooterSubRow'
+import RenderRow from './SubUserManagement/RenderRow'
+import RenderSubRow from './SubUserManagement/RenderSubRow'
+import HeaderRow from './SubUserManagement/HeaderRow'
+import FooterSubRow from './SubUserManagement/FooterSubRow'
 
 import ContractABI, {ContractAddress} from '../ContractABI';
 //import DevelopmentData from './SubUserManagement/DevelopmentData';
@@ -24,7 +24,7 @@ class UserManagement extends Component {
             isExpanded:[],
             //remember to remove user as user to old accounts when when added to new one
             //ie no address can be user to two accounts at the same time
-            // accounts:[
+             accounts:[],
             //     {
             //         key:0,
             //         own:'0x3f040ef68e211d265a705f2066a33756c938615f',
@@ -90,48 +90,49 @@ class UserManagement extends Component {
             this.setState({numAccts:response.c.toString(10)})
 
 
+        
+    
+    //         //AccountsArray
+            let arr = [];
+            let allFilled = 0 ;
+            for (let i=0;i<parseInt(response.c.toString(10));i++){
+
+                Contract.Accounts(
+                    i,
+                    (e,res) => {
+                        arr[i] = (this.state.accounts[i] || {key:i});
+                        arr[i].key=i;
+                        arr[i].own=res[0];
+                        arr[i].bal=res[1].toString(10);
+                        allFilled++;
+                        //only sort and set array to state once
+                        //needed as i is not necessarily sequential
+                        if (allFilled===response.c[0]){
+                            arr.sort((a,b) => { 
+                                if (a.key < b.key)
+                                    return -1;
+                                return 1;
+                                })
+                            this.setState({accounts:arr});
+                            //console.log(arr)
+                            //console.log(response.c.toString(10))
+                        }
+                    }
+                ); 
+            }
+        })
+     }
+ 
+    ToggleUsers (acctNum) {
+        let tmparr = this.state.isExpanded;
+        tmparr[acctNum]=!this.state.isExpanded[acctNum]
+        this.setState({isExpanded:tmparr})
+    }
+    addAccount = ()=> {
+        this.GetContract().currentAccPrice.call((e,r)=>{
+            this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:r}, function(e,r) {});
         })
     }
-    //         //AccountsArray
-    //         let arr = [];
-    //         let allFilled = 0 ;
-    //         for (let i=0;i<response.c[0];i++){
-    //             Contract.Accounts(
-    //                 i,
-    //                 (e,res) => {
-    //                     arr[i] = (this.state.accounts[i] || {key:i});
-    //                     arr[i].key=i;
-    //                     arr[i].own=res[0];
-    //                     arr[i].bal=res[1].toString(10);
-    //                     allFilled++;
-    //                     //only sort and set array to state once
-    //                     //needed as i is not necessarily sequential
-    //                     if (allFilled===response.c[0]){
-    //                         arr.sort((a,b) => { 
-    //                             if (a.key < b.key)
-    //                                 return -1;
-    //                             return 1;
-    //                             })
-    //                         this.setState({accounts:arr});
-    //                         //console.log(arr)
-    //                         //console.log(response.c.toString(10))
-    //                     }
-    //                 }
-    //             ); 
-    //         }
-    //     })
-    // }
- 
-    // ToggleUsers (acctNum) {
-    //     let tmparr = this.state.isExpanded;
-    //     tmparr[acctNum]=!this.state.isExpanded[acctNum]
-    //     this.setState({isExpanded:tmparr})
-    // }
-    // addAccount = ()=> {
-    //     this.GetContract().currentAccPrice.call((e,r)=>{
-    //         this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:r}, function(e,r) {});
-    //     })
-    // }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////   
     render() {
@@ -143,13 +144,44 @@ class UserManagement extends Component {
                         <strong> {this.state.numAccts}</strong> account(s)
                     </p>
                 </TitleTile>
+                <div className="container-full">
+                <HeaderRow 
+                    row1="Account #" 
+                    row2="Managing Address" 
+                    row3="Balance (Ether)" 
+                    row4="Users"
+                />
+                {this.state.accounts.map( (acct) => (
+                    <div key={acct.key}>
+                        <RenderRow 
+                            account={acct} 
+                            expanded={this.ToggleUsers.bind(this)} 
+                        />
+                    {this.state.isExpanded[acct.key] ?
+                        <>
+
+
+
+
+                        
+                        <RenderSubRow 
+                            UserAcct={this.state.accounts[acct.key]} 
+                            rowNum={acct.key}
+                        />
 
 
 
 
 
-
+                        <FooterSubRow account={acct} />
+                        </>
+                    :<></>}
+                    </div>
+                ))}
+                </div>
+                <button onClick={this.addAccount}>add new account</button>
             </div>
+            
         );
     };
 };
@@ -159,29 +191,9 @@ export default UserManagement;
 
 
 
-// <div className="container-full">
-// <HeaderRow 
-//     row1="Account #" 
-//     row2="Managing Address" 
-//     row3="Balance (Ether)" 
-//     row4="Users"
-// />
-// {this.state.accounts.map( (acct) => (
-//     <div key={acct.key}>
-//         <RenderRow 
-//             account={acct} 
-//             expanded={this.ToggleUsers.bind(this)} 
-//         />
-//         {this.state.isExpanded[acct.key] ?
-//             <>
-//             <RenderSubRow 
-//                 UserAcct={this.state.accounts[acct.key]} 
-//                 rowNum={acct.key}
-//             />
-//             <FooterSubRow account={acct} />
-//             </>
-//         :<></>}
-//     </div>
-// ))}
-// <button onClick={this.addAccount}>add new account</button>
-// </div>
+
+
+
+
+
+
