@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 //Relative Imports
 //import './components/Header'
 import Header from './components/Header'
+import Login from './components/Login';
 import Upload from './components/Upload'
 import Download from './components/Download'
 import UserManagement from './components/UserManagement'
@@ -21,47 +22,50 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state ={
-      sessionID:0
+      signedInAs:"0x"
     }
   }
 
     handleLogin = () => {
-      this.setState({   sessionID : Math.floor(Math.random()*100000)  } )
+      this.setState({   signedInAs : Math.floor(Math.random()*100000)  } )
     }
 
     handleLogout() {
-      this.setState({   sessionID : 0  } )
+      this.setState({   signedInAs : 0  } )
     }
 
 
-  //state.sessionID = 0;
+  //state.signedInAs = 0;
 
   render() {
     return (
       <div className="App">
 
-      <Header handleLogin={this.handleLogin}
+      <Login
+        handleLogin={this.handleLogin}
         handleLogout={this.handleLogout.bind(this)} 
-        sessionID={this.state.sessionID}
+        signedInAs={this.state.signedInAs}
       />
 
-      {/* <Route path="latest" components={{sidebar: Sidebar, content: ContentLayout}} something="foo" /> */}
+      <Header/>
+
+
 
       <Switch>
         <Route path="/Upload" 
-        render={(props) => <Upload {...props} sessionID={this.state.sessionID} />}  
+        render={(props) => <Upload {...props} signedInAs={this.state.signedInAs} />}  
         />
 
         <Route path="/Download" 
-        render={() => <Download sessionID={this.state.sessionID} />}  
+        render={() => <Download signedInAs={this.state.signedInAs} />}  
         />
 
         <Route path="/UserManagement" 
-        render={() => <UserManagement sessionID={this.state.sessionID} />}  
+        render={() => <UserManagement signedInAs={this.state.signedInAs} />}  
         />
 
         <Route path="/" 
-        render={() => <Home sessionID={this.state.sessionID} />}  
+        render={() => <Home signedInAs={this.state.signedInAs} />}  
         />
         
       </Switch>
