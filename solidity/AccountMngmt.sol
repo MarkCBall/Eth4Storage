@@ -1,28 +1,14 @@
-//deployed to 0x4a36137D3423737Cde187B7aF074291302707fDd ropsten - deployed from dylan's windows desktop
-
-//    struct User {address UserAddy; bool CanWrite;}
-//     struct Account {address AdminAddr; uint Bal; User[] Users;}
-//     Account[] Accounts
-
-
+//deployed to 0x1e29f1A0FAC4c382b848508ed1537aB966f825dA ropsten - deployed from mark's second computer
 
 pragma solidity ^0.4.25;
     
 contract AccountMngmt {
     
+    struct User {address UserAddy; bool CanWrite;}
+    struct Account {address AdminAddr; uint Bal; User[] Users;}
+    Account[] public  Accounts;
     address public owner;
-    uint public numAccts=0;
     uint public currentAccPrice;
-    
-    //map of accounts - owning address + eth balance
-    struct Admin {address AdminAddr; uint Bal;}
-    mapping (uint => Admin) public Accounts;
-    
-    //map of users - associated account + write access --> all users have view permission
-    struct UserStruct {uint AcctId; bool CanWrite;}
-    mapping (address => UserStruct) public Users;
-    
-    //UPDATE THIS TO CHARGE FEES??
     
     constructor() public {
         owner = msg.sender;
@@ -35,33 +21,50 @@ contract AccountMngmt {
     function giveOwnership(uint _Acct, address _newowner) public {
         //ensure the message sender is the admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to transfer ownership");
+        
         //change the account’s admin
         Accounts[_Acct].AdminAddr = _newowner;
     }
     function approveViewer(uint _Acct, address _User) public {
         //ensure the message sender is the admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
+        require(Accounts[_Acct].Bal>(currentAccPrice/100), "Not enough funds!");
+        Accounts[_Acct].Bal-=(currentAccPrice/100);
         //add the user linked to the account
-        Users[_User].AcctId = _Acct;
+        Accounts[_Acct].Users.length++;
+        uint numUsersInAcct = Accounts[_Acct].Users.length-1;
+        Accounts[_Acct].Users[numUsersInAcct].UserAddy = _User;
     }
     function approveWriter(uint _Acct, address _User) public {
         //ensure the message sender is the admin of the account
-        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve writers");
+        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
+        require(Accounts[_Acct].Bal>(currentAccPrice/100), "Not enough funds!");
+        Accounts[_Acct].Bal-=(currentAccPrice/100);
         //add the user linked to the account and give write permission
-        Users[_User].AcctId = _Acct;
-        Users[_User].CanWrite = true;
+        Accounts[_Acct].Users.length++;
+        uint numUsersInAcct = Accounts[_Acct].Users.length-1;
+        Accounts[_Acct].Users[numUsersInAcct].UserAddy = _User;
+        Accounts[_Acct].Users[numUsersInAcct].CanWrite = true;
     }
-    function deleteUser(uint _Acct, address _User) public {
+    function deleteUser(uint _Acct, uint _UserNum) public {
         //ensure the message sender is the admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to delete users");
         //delete the user
-        delete Users[_User];
+        delete Accounts[_Acct].Users[_UserNum];
     }
-    function disallowWrite(uint _Acct, address _User) public {
+    function disallowWrite(uint _Acct, uint _UserNum) public {
         //ensure the message sender is the admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to disallow writers");
         //remove the user’s write access
-        Users[_User].CanWrite = false;
+        Accounts[_Acct].Users[_UserNum].CanWrite = false;
+    }
+    function allowWrite(uint _Acct, uint _UserNum) public {
+        //ensure the message sender is the admin of the account
+        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to sallow writers");
+        require(Accounts[_Acct].Bal>(currentAccPrice/200), "Not enough funds!");
+        Accounts[_Acct].Bal-=(currentAccPrice/200);
+        //remove the user’s write access
+        Accounts[_Acct].Users[_UserNum].CanWrite = true;
     }
     function ownerWithdraw(uint _Amount) public{
         require(msg.sender == owner, "You must be the contract owner to withdraw");
@@ -70,22 +73,26 @@ contract AccountMngmt {
         //require(msg.sender.send(_Amount));
     }
     //create an account only with a specific function call to minimize mistakes
-    function createAccount() public payable returns(uint){
+    function createAccount() public payable{
         //minimum price to hold an account is 0.1 eth
         require(msg.value >= currentAccPrice * 1 wei, "You must send enough funds to create an account");
         //set up account
-        Accounts[numAccts].AdminAddr = msg.sender;
-        Accounts[numAccts].Bal = currentAccPrice * 1 wei;
-        //if extra eth was sent, return it
-        if (msg.value > currentAccPrice * 1 wei){
-            msg.sender.transfer(msg.value - currentAccPrice * 1 wei);
-        }
-        //counter for current account number
-        numAccts++;
-        return (numAccts-1);
-        //combine into return(numAccts++) as ++ done after return?
+        Accounts.length++;
+        uint acctN = Accounts.length-1;
+        Accounts[acctN].AdminAddr = msg.sender;
+        Accounts[acctN].Bal = msg.value;
+        //Accounts.length++;
     }
     function() external payable {
         revert("You must call a function to interact with this contract");
+    }
+    function usersOfAccount(uint _Acct,uint _User) public view returns(address, bool){
+        return (Accounts[_Acct].Users[_User].UserAddy,Accounts[_Acct].Users[_User].CanWrite );
+    }
+    function accountCount() public constant returns(uint) {
+        return Accounts.length;
+    }
+    function userCountsInAccount(uint _Acct) public constant returns(uint) {
+        return Accounts[_Acct].Users.length;
     }
 }
