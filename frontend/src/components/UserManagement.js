@@ -96,6 +96,7 @@ class UserManagement extends Component {
             let arr = [];
             let allFilled = 0 ;
             for (let i=0;i<parseInt(response.c.toString(10));i++){
+                console.log("num accounts is " +parseInt(response.c.toString(10)))
 
                 Contract.Accounts(
                     i,
@@ -107,7 +108,7 @@ class UserManagement extends Component {
                         allFilled++;
                         //only sort and set array to state once
                         //needed as i is not necessarily sequential
-                        if (allFilled===response.c[0]){
+                        if (allFilled===parseInt(response.c.toString(10))){
                             arr.sort((a,b) => { 
                                 if (a.key < b.key)
                                     return -1;
@@ -163,7 +164,7 @@ class UserManagement extends Component {
 
 
 
-                        
+
                         <RenderSubRow 
                             UserAcct={this.state.accounts[acct.key]} 
                             rowNum={acct.key}
