@@ -34,7 +34,7 @@ class RenderSubRow extends Component {
 
     deleteUser(acctN, userN){
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-            MyContract.deleteUser(0,0,(e,r)=>{
+            MyContract.deleteUser(acctN,userN,(e,r)=>{
             })
     }
 
