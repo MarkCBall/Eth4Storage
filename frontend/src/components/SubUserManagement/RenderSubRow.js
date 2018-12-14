@@ -17,41 +17,24 @@ class RenderSubRow extends Component {
         var acctNum = this.props.rowNum;
         MyContract.userCountsInAccount.call(acctNum, (e,response) => {
             let numUsers = response.c.toString(10);
-            //console.log("num users is "+numUsers)
             this.setState({userCountInAccount:numUsers})
-            //console.log(response.c.toString(10))
-
-
-            let arr = [];
-            let allFilled = 0 ;
             for (let i=0;i<numUsers;i++){
-            let numUsers = parseInt(response.c.toString(10));
                 MyContract.usersOfAccount(acctNum,i,(e,r)=>{
-                    arr[i] = {}
-                    arr[i].key=i
-                    arr[i].addy = r[0]
-                    arr[i].canWrite = r[1]
-                    allFilled++;
-
-                    if (allFilled===numUsers){
-                        arr.sort((a,b) => { 
-                            if (a.key < b.key)
-                                return -1;
-                            return 1;
-                            })
-                        this.setState({users:arr});
-                        //console.log(arr)
-                    }
-
-
-                    // console.log("acct#"+acctNum+" user#"+i)
-                    // console.log(r[0])
-                    // console.log(r[1])
+                    this.addUser(i,e,r)
                 })
             }
 
         })
     }
+
+    addUser(i,e,r){
+        this.setState(prevState => ({ 
+            users:[
+                ...prevState.users,
+                {key:i, addy:r[0], canWrite : r[1]}
+            ]
+        }))
+    }   
 
     deleteUser(acctN, userN){
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
