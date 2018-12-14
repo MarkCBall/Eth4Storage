@@ -7,8 +7,6 @@ class RenderSubRow extends Component {
     constructor(props){
         super(props)
         this.state ={
-            userCountInAccount:0,
-            // canWrite:[],
             users:[]
         }
 
@@ -17,13 +15,11 @@ class RenderSubRow extends Component {
         var acctNum = this.props.rowNum;
         MyContract.userCountsInAccount.call(acctNum, (e,response) => {
             let numUsers = response.c.toString(10);
-            this.setState({userCountInAccount:numUsers})
             for (let i=0;i<numUsers;i++){
                 MyContract.usersOfAccount(acctNum,i,(e,r)=>{
                     this.addUser(i,e,r)
                 })
             }
-
         })
     }
 
