@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
+import ethUtil from 'ethereumjs-util'
+import { Switch, Route } from 'react-router-dom'
 
 //Relative Imports
-//import './components/Header'
 import Header from './components/Header'
+import Login from './components/Login';
 import Upload from './components/Upload'
 import Download from './components/Download'
 import UserManagement from './components/UserManagement'
 import Home from './components/Home'
 
-// test
-//import { BrowserRouter } from 'react-router-dom'
-import { Switch, Route } from 'react-router-dom'
+
+
 
 
 
@@ -21,47 +22,61 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state ={
-      sessionID:0
+      date: "never",
+      dateSignature: "signature hash goes here",
+      verifiedAddress:"0x..."
     }
   }
 
-    handleLogin = () => {
-      this.setState({   sessionID : Math.floor(Math.random()*100000)  } )
-    }
 
-    handleLogout() {
-      this.setState({   sessionID : 0  } )
-    }
+  setAddressFromSignature(originalString,signedString){
+    //code below from https://www.toptal.com/ethereum/one-click-login-flows-a-metamask-tutorial
+    const msgBuffer = ethUtil.toBuffer(originalString);
+    const msgHash = ethUtil.hashPersonalMessage(msgBuffer);
+    const signatureBuffer = ethUtil.toBuffer(signedString);
+    const signatureParams = ethUtil.fromRpcSig(signatureBuffer);
+    const publicKey = ethUtil.ecrecover(
+        msgHash,
+        signatureParams.v,
+        signatureParams.r,
+        signatureParams.s
+    );
+    const addressBuffer = ethUtil.publicToAddress(publicKey);
+    const address = ethUtil.bufferToHex(addressBuffer);
 
+    this.setState({ dateSignature: signedString });
+    this.setState({ date: originalString });
+    this.setState({verifiedAddress:address })
+}
 
-  //state.sessionID = 0;
 
   render() {
     return (
       <div className="App">
 
-      <Header handleLogin={this.handleLogin}
-        handleLogout={this.handleLogout.bind(this)} 
-        sessionID={this.state.sessionID}
+      <Login
+        date={this.state.date}
+        verifiedAddress={this.state.verifiedAddress}
+        setAddressFromSignature={this.setAddressFromSignature.bind(this)}
       />
 
-      {/* <Route path="latest" components={{sidebar: Sidebar, content: ContentLayout}} something="foo" /> */}
+      <Header/>
 
       <Switch>
         <Route path="/Upload" 
-        render={(props) => <Upload {...props} sessionID={this.state.sessionID} />}  
+        render={(props) => <Upload {...props} verifiedAddress={this.state.verifiedAddress} />}  
         />
 
         <Route path="/Download" 
-        render={() => <Download sessionID={this.state.sessionID} />}  
+        render={() => <Download verifiedAddress={this.state.verifiedAddress} />}  
         />
 
         <Route path="/UserManagement" 
-        render={() => <UserManagement sessionID={this.state.sessionID} />}  
+        render={() => <UserManagement verifiedAddress={this.state.verifiedAddress} />}  
         />
 
         <Route path="/" 
-        render={() => <Home sessionID={this.state.sessionID} />}  
+        render={() => <Home verifiedAddress={this.state.verifiedAddress} />}  
         />
         
       </Switch>

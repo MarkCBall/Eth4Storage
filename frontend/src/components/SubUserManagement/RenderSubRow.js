@@ -17,7 +17,7 @@ class RenderSubRow extends Component {
         var acctNum = this.props.rowNum;
         MyContract.userCountsInAccount.call(acctNum, (e,response) => {
             let numUsers = response.c.toString(10);
-            console.log("num users is "+numUsers)
+            //console.log("num users is "+numUsers)
             this.setState({userCountInAccount:numUsers})
             //console.log(response.c.toString(10))
 
@@ -40,7 +40,7 @@ class RenderSubRow extends Component {
                             return 1;
                             })
                         this.setState({users:arr});
-                        console.log(arr)
+                        //console.log(arr)
                     }
 
 
