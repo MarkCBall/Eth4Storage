@@ -1,6 +1,7 @@
 //import BigNumber from 'bignumber.js'
-
+import {connect} from 'react-redux';
 import React, { Component } from 'react';
+import { addTodo } from "../redux/actions/todo";
 
 import TitleTile from './SubUserManagement/TitleTile'
 import RenderRow from './SubUserManagement/RenderRow'
@@ -12,6 +13,7 @@ import ContractABI, {ContractAddress} from '../ContractABI';
 
 //CSS Files
 import './SubUserManagement/UserManagement.css'
+//import { connect } from 'http2';
 
 
 class UserManagement extends Component {
@@ -126,14 +128,39 @@ class UserManagement extends Component {
                 </div>
                 <button onClick={this.addAccount}>add new account</button><br></br>
                 <button onClick={()=>this.logAccountsForAddress(this.props.verifiedAddress)}>alert accounts possible</button>
+                <br></br><br></br>
+                <button onClick={()=> console.log(this.props.store.dispatch())}>consolelog store</button>
+                <br></br>
+                <button onClick={()=>console.log(this.props.state)}>consolelog todos</button>
+                <br></br>
+                <button onClick={()=>this.props.addTodo("take out cheeseburger")}>addTodo action?</button>
+                
+	
+
+
             </div>
             
         );
     };
 };
 
-export default UserManagement;
+//export default UserManagement;
+const mapStateToProps = function(state){
+    return{
+        state
+        //xxx:state.test.foo,
+        //yyy:state.todo.todos
+    }
+}
 
+
+
+// const mapDispatchToProps = dispatch => ({
+//     toggleTodo: id => dispatch(toggleTodo(id))
+//   })
+
+
+export default connect(mapStateToProps,{addTodo})(UserManagement)
 
 
 

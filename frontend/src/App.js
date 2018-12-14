@@ -1,3 +1,6 @@
+import {Provider} from 'react-redux'
+import store from './redux/index'
+
 import React, { Component } from 'react';
 import ethUtil from 'ethereumjs-util'
 import { Switch, Route } from 'react-router-dom'
@@ -52,37 +55,39 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <Provider store={store}>
+          <div className="App">
 
-      <Login
-        date={this.state.date}
-        verifiedAddress={this.state.verifiedAddress}
-        setAddressFromSignature={this.setAddressFromSignature.bind(this)}
-      />
-
-      <Header/>
-
-      <Switch>
-        <Route path="/Upload" 
-        render={(props) => <Upload {...props} verifiedAddress={this.state.verifiedAddress} />}  
+        <Login
+          date={this.state.date}
+          verifiedAddress={this.state.verifiedAddress}
+          setAddressFromSignature={this.setAddressFromSignature.bind(this)}
         />
 
-        <Route path="/Download" 
-        render={() => <Download verifiedAddress={this.state.verifiedAddress} />}  
-        />
+        <Header/>
 
-        <Route path="/UserManagement" 
-        render={() => <UserManagement verifiedAddress={this.state.verifiedAddress} />}  
-        />
+        <Switch>
+          <Route path="/Upload" 
+          render={(props) => <Upload {...props} verifiedAddress={this.state.verifiedAddress} />}  
+          />
 
-        <Route path="/" 
-        render={() => <Home verifiedAddress={this.state.verifiedAddress} />}  
-        />
-        
-      </Switch>
+          <Route path="/Download" 
+          render={() => <Download verifiedAddress={this.state.verifiedAddress} />}  
+          />
+
+          <Route path="/UserManagement" 
+          render={() => <UserManagement verifiedAddress={this.state.verifiedAddress} />}  
+          />
+
+          <Route path="/" 
+          render={() => <Home verifiedAddress={this.state.verifiedAddress} />}  
+          />
+          
+        </Switch>
 
 
-      </div>
+        </div>
+      </Provider>
     );
   }
 }
