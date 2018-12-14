@@ -94,26 +94,34 @@ class UserManagement extends Component {
                 <div className="container-full">
                 <HeaderRow 
                     row1="Account #" 
-                    row2="Managing Address" 
+                    row2="Account Owner's Address" 
                     row3="Balance (Ether)" 
                     row4="Users"
                 />
                 {this.state.accounts.map( (acct) => (
-                    <div key={acct.key}>
-                        <RenderRow 
-                            account={acct} 
-                            expanded={this.ToggleUsers.bind(this)} 
-                        />
-                    {this.state.isExpanded[acct.key] ?
-                        <>
-                        <RenderSubRow 
-                            UserAcct={this.state.accounts[acct.key]} 
-                            rowNum={acct.key}
-                        />
-                        <FooterSubRow account={acct} />
-                        </>
-                    :<></>}
-                    </div>
+                     <div key={acct.key}>
+                        {true? /*acct.own===this.props.verifiedAddress? REPLACE THIS TO HIDE NON OWNED ACCOUNTS */
+                            <>
+                                <RenderRow 
+                                    account={acct} 
+                                    expanded={this.ToggleUsers.bind(this)} 
+                                />
+                                {this.state.isExpanded[acct.key] ?
+                                <>
+                                <RenderSubRow 
+                                    UserAcct={this.state.accounts[acct.key]} 
+                                    rowNum={acct.key}
+                                />
+                                <FooterSubRow account={acct} />
+                                </>
+                                :<></>}
+                            </>
+                        :<></>}
+                    </div> 
+                        
+
+
+
                 ))}
                 </div>
                 <button onClick={this.addAccount}>add new account</button><br></br>
