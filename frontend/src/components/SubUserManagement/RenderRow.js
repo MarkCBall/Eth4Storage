@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 
 //CSS Files
-//import './Header.css';
+import './RowTopBorder.css';
 
 class RenderRow extends Component {
 
@@ -17,7 +17,7 @@ class RenderRow extends Component {
         
           
                 
-            <div className="row">
+            <div className="row line-above">
                 <div className="col-1 col-solid">
                     {this.props.account.key}
                 </div>

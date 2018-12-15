@@ -71,10 +71,14 @@ class UserManagement extends Component {
                                 {this.state.isExpanded[acct.key] ?
                                 <>
                                 <RenderSubRow 
-                                    UserAcct={this.props.state.todo.accounts[acct.key]} 
+                                    verifiedAddress={this.props.verifiedAddress}
+                                    acctAddy={acct.own}
                                     acctNum={acct.key}
                                 />
-                                <FooterSubRow account={acct} />
+                                {this.props.verifiedAddress === acct.own? 
+                                    <FooterSubRow account={acct} />
+                                :<></>}
+                                
                                 </>
                                 :<></>}
                             </>

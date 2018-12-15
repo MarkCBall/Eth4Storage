@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 
 
 
-//CSS Files
-import './RowBotBorder.css';
+
 
 
 //do this better - send contract through props?
@@ -80,7 +79,7 @@ class RenderRow extends Component {
 
     render() {
         return (
-            <div className="row line-below">
+            <div className="row">
                 <div className="col-1 col-solid">
                     
                 </div>
