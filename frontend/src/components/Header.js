@@ -1,16 +1,61 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import { Link } from 'react-router-dom'
 
+//relative imports redux items
+import { addAccount } from "../redux/actions/todo";
+import { addUserToAccount } from "../redux/actions/todo";
 
+//relative imports smart contract data
+import ContractABI, {ContractAddress} from '../ContractABI';
 
 //CSS Files
 import './Header.css';
 
 
-import { Link } from 'react-router-dom'
 
 class Header extends Component {
-
-
+    constructor(props){
+        super(props)
+        this.contractToState();
+    }
+    contractToState() {
+        //get an instance of the smart contract
+        let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+        //find the number of accounts
+        Contract.accountCount.call( (e,response) => {
+            let numAccts = parseInt(response.c.toString(10));
+            //loop through the accounts
+            for (let acctNum=0;acctNum<numAccts;acctNum++){
+                //get the account data (owner's address and balance)
+                Contract.Accounts(acctNum,(e,res) => {
+                    //add each account to global state
+                    this.setAccountState(acctNum,e,res)
+                    //get the number of users for the account
+                    Contract.userCountsInAccount.call(acctNum, (e,response) => {
+                        let numUsers = response.c.toString(10);
+                        //loop through each user
+                        for (let i=0;i<numUsers;i++){
+                            //get the user's data (address, and write permission)
+                            Contract.usersOfAccount(acctNum,i,(e,r)=>{
+                                //add each user to global state
+                                this.addUser(acctNum,i,e,r)
+                            })
+                        }
+                    })
+                }) 
+            }
+        })
+    }
+    //changes global state to add user to account
+    addUser(acctNum,i,e,r){
+        this.props.addUserToAccount(acctNum,  {key:i, addy:r[0], canWrite : r[1]}    );
+    }
+    //changes global state to add account
+    setAccountState = (i,e,r) => {
+        this.props.addAccount({key:i,own:r[0],bal:r[1].toString(10)})
+    }
+////////////////END GLOBAL STATE THATS ABOVE//////////////////
 
     render() {
         return (
@@ -40,28 +85,6 @@ class Header extends Component {
     };
 };
 
-export default Header;
+export default connect(null,{addAccount,addUserToAccount})(Header)
 
 
-
-//                             <div className="col-sm">
-//                             {/* if sessionID is 0, then you are not logged in */}
-//                             {   
-//                                 this.props.sessionID 
-//                             ?
-//                                 <p> logged in <br></br>
-//                                 Session id is {this.props.sessionID}<br></br>
-//                                 <br></br>Click here to change login</p> 
-//                             : 
-//                                 <p><br></br><button onClick={this.props.handleLogin}>Click here to log in</button><br></br></p>
-//                             }
-
-//                         </div>
-
-
-
-
-
-// <div className="col-sm">
-// <br></br><button onClick={this.props.handleLogout}>Logout</button><br></br>
-// </div>

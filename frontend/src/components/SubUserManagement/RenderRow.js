@@ -9,7 +9,7 @@ class RenderRow extends Component {
 
 
     ShowMoreLessText(acct){
-        return acct.expanded ? "Show less" : "Show more"
+        return this.props.isExpanded[this.props.account.key] ? "Show less" : "Show more"
     }
 
     render() {
@@ -28,7 +28,7 @@ class RenderRow extends Component {
                     {(this.props.account.bal/1000000000000000000).toString()}
                 </div>
                 <div className="col-6" onClick={() => this.props.expanded(this.props.account.key)}>
-                    {this.ShowMoreLessText(this.props.account)}
+                    {this.ShowMoreLessText()}
                 </div>
             </div>
         
