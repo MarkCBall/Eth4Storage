@@ -9,7 +9,7 @@ import HeaderRow from './SubUserManagement/HeaderRow'
 import FooterSubRow from './SubUserManagement/FooterSubRow'
 
 //relative imports smart contract data
-import {ContractAddress} from '../ContractABI';
+import ContractABI, {ContractAddress} from '../ContractABI';
 
 //CSS Files
 import './SubUserManagement/UserManagement.css'
@@ -24,7 +24,9 @@ class UserManagement extends Component {
     }
 
 
-
+    GetContract(){
+        return window.web3.eth.contract(ContractABI).at(ContractAddress);
+    }
 
 
     
@@ -36,7 +38,7 @@ class UserManagement extends Component {
     }
     //interacts with the smart contract to add a account
     addAccount = ()=> {
-        this.GetContract().currentAccPrice.call((e,r)=>{
+        this.GetContract().accPrice.call((e,r)=>{
             this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:r}, function(e,r) {});
         })
     }
