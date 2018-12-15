@@ -118,7 +118,6 @@ class UserManagement extends Component {
                 ))}
                 </div>
                 <button onClick={this.addAccount}>add new account</button><br></br>
-                <button onClick={()=>this.logAccountsForAddress(this.props.verifiedAddress)}>alert accounts possible</button>
                 
                 
                 <br></br><br></br>

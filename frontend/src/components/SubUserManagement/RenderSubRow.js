@@ -87,13 +87,7 @@ class RenderSubRow extends Component {
 const mapStateToProps = function(state){
     return{
         state
-        //xxx:state.test.foo,
-        //yyy:state.todo.todos
     }
 }
 
-
 export default connect(mapStateToProps,{addUserToAccount})(RenderSubRow)
-
-
-//  {this.props.state.todo.accounts[this.props.rowNum].users.map( (usr) => (
