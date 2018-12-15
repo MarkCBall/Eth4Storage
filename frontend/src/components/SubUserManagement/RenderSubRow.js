@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import { addUserToAccount } from "../../redux/actions/todo";
 
 //do this better - send contract through props?
 import ContractABI, {ContractAddress} from '../../ContractABI';
@@ -24,12 +26,7 @@ class RenderSubRow extends Component {
     }
 
     addUser(i,e,r){
-        this.setState(prevState => ({ 
-            users:[
-                ...prevState.users,
-                {key:i, addy:r[0], canWrite : r[1]}
-            ]
-        }))
+        this.props.addUserToAccount(this.props.rowNum,  {key:i, addy:r[0], canWrite : r[1]}    );
     }   
 
     deleteUser(acctN, userN){
@@ -49,10 +46,21 @@ class RenderSubRow extends Component {
         })
     }
 
+
+    getUserArray(){
+        let acctN=this.props.rowNum;
+        let accounts = this.props.state.todo.accounts;
+        let arrIndex = accounts.findIndex(o => o.key === acctN);
+        if(accounts[arrIndex].users)
+            return accounts[arrIndex].users
+        return []
+        
+    }
+
        render() {
         return (
             <>
-                {this.state.users.map( (usr) => (
+                {this.getUserArray().map( (usr) => (
 
                     <div key={usr.key} className="row">
                         <div className="col-1 col-solid"></div>
@@ -75,5 +83,17 @@ class RenderSubRow extends Component {
     };
 };
 
-export default RenderSubRow;
+//export default RenderSubRow;
+const mapStateToProps = function(state){
+    return{
+        state
+        //xxx:state.test.foo,
+        //yyy:state.todo.todos
+    }
+}
 
+
+export default connect(mapStateToProps,{addUserToAccount})(RenderSubRow)
+
+
+//  {this.props.state.todo.accounts[this.props.rowNum].users.map( (usr) => (

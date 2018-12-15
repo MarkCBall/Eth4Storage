@@ -1,7 +1,7 @@
-//import BigNumber from 'bignumber.js'
-import {connect} from 'react-redux';
 import React, { Component } from 'react';
-import { addTodo } from "../redux/actions/todo";
+import {connect} from 'react-redux';
+
+import { addAccount } from "../redux/actions/todo";
 
 import TitleTile from './SubUserManagement/TitleTile'
 import RenderRow from './SubUserManagement/RenderRow'
@@ -15,7 +15,6 @@ import ContractABI, {ContractAddress} from '../ContractABI';
 import './SubUserManagement/UserManagement.css'
 //import { connect } from 'http2';
 
-
 class UserManagement extends Component {
     constructor(props){
         super(props)
@@ -23,8 +22,7 @@ class UserManagement extends Component {
             contract: "contract not queried yet",
             numAccts: -1,
             contractBal:-1,
-            isExpanded:[],
-            accounts:[]
+            isExpanded:[]
 
         }
         var MyContract = this.GetContract();
@@ -41,7 +39,8 @@ class UserManagement extends Component {
             this.setState({numAccts:usersInAccount})
             for (let i=0;i<usersInAccount;i++){
                 Contract.Accounts(i,(e,res) => {
-                        this.setAccountState(i,e,res)
+                    
+                    this.setAccountState(i,e,res)
                     }
                 ) 
             }
@@ -50,12 +49,7 @@ class UserManagement extends Component {
     }
 
     setAccountState = (i,e,r) => {
-        this.setState(prevState => ({ 
-            accounts:[
-                ...prevState.accounts,
-                {key:i,own:r[0],bal:r[1].toString(10)}
-            ]
-        }))
+        this.props.addAccount({key:i,own:r[0],bal:r[1].toString(10)})
     }
 
  
@@ -73,15 +67,15 @@ class UserManagement extends Component {
 
     //NOTE this only goes through accounts and not users inside each account
     //figure out redux and continue
-    logAccountsForAddress(address){
-        let accts = this.state.accounts;
-        for (let i=0;i<accts.length;i++){
-            if (accts[i].own === address)
-                console.log("you own account#" + i)
-            else
-                console.log("you don't own account# " + i)
-        }
-    }
+    // logAccountsForAddress(address){
+    //     let accts = this.props.state.todo.todos;
+    //     for (let i=0;i<accts.length;i++){
+    //         if (accts[i].own === address)
+    //             console.log("you own account#" + i)
+    //         else
+    //             console.log("you don't own account# " + i)
+    //     }
+    // }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////   
     render() {
@@ -100,7 +94,7 @@ class UserManagement extends Component {
                     row3="Balance (Ether)" 
                     row4="Users"
                 />
-                {this.state.accounts.map( (acct) => (
+                {this.props.state.todo.accounts.map( (acct) => (
                      <div key={acct.key}>
                         {true? /*acct.own===this.props.verifiedAddress? REPLACE THIS TO HIDE NON OWNED ACCOUNTS */
                             <>
@@ -111,7 +105,7 @@ class UserManagement extends Component {
                                 {this.state.isExpanded[acct.key] ?
                                 <>
                                 <RenderSubRow 
-                                    UserAcct={this.state.accounts[acct.key]} 
+                                    UserAcct={this.props.state.todo.accounts[acct.key]} 
                                     rowNum={acct.key}
                                 />
                                 <FooterSubRow account={acct} />
@@ -121,23 +115,18 @@ class UserManagement extends Component {
                         :<></>}
                     </div> 
                         
-
-
-
                 ))}
                 </div>
                 <button onClick={this.addAccount}>add new account</button><br></br>
                 <button onClick={()=>this.logAccountsForAddress(this.props.verifiedAddress)}>alert accounts possible</button>
-                <br></br><br></br>
-                <button onClick={()=> console.log(this.props.store.dispatch())}>consolelog store</button>
-                <br></br>
-                <button onClick={()=>console.log(this.props.state)}>consolelog todos</button>
-                <br></br>
-                <button onClick={()=>this.props.addTodo("take out cheeseburger")}>addTodo action?</button>
                 
-	
+                
+                <br></br><br></br>
 
-
+                <button onClick={()=>{
+                    console.log(this.props.state.todo.accounts)
+                    }}>
+                consolelog redux state</button>
             </div>
             
         );
@@ -154,13 +143,7 @@ const mapStateToProps = function(state){
 }
 
 
-
-// const mapDispatchToProps = dispatch => ({
-//     toggleTodo: id => dispatch(toggleTodo(id))
-//   })
-
-
-export default connect(mapStateToProps,{addTodo})(UserManagement)
+export default connect(mapStateToProps,{addAccount})(UserManagement)
 
 
 
