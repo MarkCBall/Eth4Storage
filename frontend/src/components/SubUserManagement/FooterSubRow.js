@@ -1,61 +1,37 @@
 import React, { Component } from 'react';
-
-
-
-
-
-
-//do this better - send contract through props?
 import ContractABI, {ContractAddress} from '../../ContractABI';
 
 class RenderRow extends Component {
     constructor(props){
         super(props)
         this.state ={
-            makeWriter:[],
             checkbox:false,
             inputValue:""
         }
     }
-
-
-
-    //addUserToDB(){}
-        //update the database
-        //update state
-
+    //calls the smart contract to change the owner if the address is valid
     changeOwner(acctN,addy){
         if (!this.validStateAddress()){
             console.log("error handling somehow - not an address in changeOwner")
             return
         }
-            
-        console.log("changeowner called with "+ acctN + " acct and " + addy)
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
             MyContract.giveOwnership(acctN,addy,(e,r)=>{
-                //update the database
-                //update state
         })
     }
-
+    //calls the smart contract to create a new user with view only priviledges
     approveViewer(acctN, addy){
-        console.log("approveviewer called with "+ acctN + " acct and " + addy)
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
             MyContract.approveViewer(acctN,addy,(e,r)=>{
-                //update the database
-                //update state
             })
     }
-
+    //calls the smart contract to create a new user with view and write priviledges
     approveWriter(acctN, addy){
-        console.log("approvewriter called with "+ acctN + " acct and " + addy)
         var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
             MyContract.approveWriter(acctN,addy,(e,r)=>{
-                //update the database
-                //update state
             })
     }
-
+    //checks if the address is valid and calls appropriate create user account based on checkbox
     handleCreate = (e) => {
         if (!this.validStateAddress()){
             console.log("error handling somehow - not an address in handleCreate")
@@ -67,12 +43,9 @@ class RenderRow extends Component {
             this.approveWriter(accountN,inputAddress)
         else
             this.approveViewer(accountN,inputAddress)
-
-        // console.log(this.state.checkbox)
-        // //console.log(e.target.previousSibling.value)
-        // console.log(this.state.inputValue)
     }
 
+    //returns true if the address is valid
     validStateAddress(){
         return window.web3.isAddress(this.state.inputValue);
     }

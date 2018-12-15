@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 
 
-//CSS Files
-//import './Header.css';
-
 class TitleTile extends Component {
-
-
 
     render() {
         return (

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
-
-//do this better - send contract through props?
 import ContractABI, {ContractAddress} from '../../ContractABI';
 
 class RenderSubRow extends Component {
