@@ -51,14 +51,10 @@ class UserManagement extends Component {
     setAccountState = (i,e,r) => {
         this.props.addAccount({key:i,own:r[0],bal:r[1].toString(10)})
     }
-
- 
     ToggleUsers (acctNum) {
         let tmparr = this.state.isExpanded;
         tmparr[acctNum]=!this.state.isExpanded[acctNum]
         this.setState({isExpanded:tmparr})
-        console.log("togle user called")
-        console.log(this.state.isExpanded)
     }
     addAccount = ()=> {
         this.GetContract().currentAccPrice.call((e,r)=>{
@@ -95,7 +91,7 @@ class UserManagement extends Component {
                                 <>
                                 <RenderSubRow 
                                     UserAcct={this.props.state.todo.accounts[acct.key]} 
-                                    rowNum={acct.key}
+                                    acctNum={acct.key}
                                 />
                                 <FooterSubRow account={acct} />
                                 </>
@@ -115,9 +111,6 @@ class UserManagement extends Component {
                     console.log(this.props.state.todo.accounts)}}>
                 consolelog redux state</button>
 
-                                <button onClick={()=>{
-                    console.log( this.state.isExpanded  )}}>
-                consolelog isExpanded</button>
 
             </div>
             
