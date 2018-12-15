@@ -57,26 +57,14 @@ class UserManagement extends Component {
         let tmparr = this.state.isExpanded;
         tmparr[acctNum]=!this.state.isExpanded[acctNum]
         this.setState({isExpanded:tmparr})
+        console.log("togle user called")
+        console.log(this.state.isExpanded)
     }
     addAccount = ()=> {
         this.GetContract().currentAccPrice.call((e,r)=>{
             this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:r}, function(e,r) {});
         })
     }
-    
-
-    //NOTE this only goes through accounts and not users inside each account
-    //figure out redux and continue
-    // logAccountsForAddress(address){
-    //     let accts = this.props.state.todo.todos;
-    //     for (let i=0;i<accts.length;i++){
-    //         if (accts[i].own === address)
-    //             console.log("you own account#" + i)
-    //         else
-    //             console.log("you don't own account# " + i)
-    //     }
-    // }
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////   
     render() {
         return (
@@ -100,6 +88,7 @@ class UserManagement extends Component {
                             <>
                                 <RenderRow 
                                     account={acct} 
+                                    isExpanded={this.state.isExpanded}
                                     expanded={this.ToggleUsers.bind(this)} 
                                 />
                                 {this.state.isExpanded[acct.key] ?
@@ -123,9 +112,13 @@ class UserManagement extends Component {
                 <br></br><br></br>
 
                 <button onClick={()=>{
-                    console.log(this.props.state.todo.accounts)
-                    }}>
+                    console.log(this.props.state.todo.accounts)}}>
                 consolelog redux state</button>
+
+                                <button onClick={()=>{
+                    console.log( this.state.isExpanded  )}}>
+                consolelog isExpanded</button>
+
             </div>
             
         );

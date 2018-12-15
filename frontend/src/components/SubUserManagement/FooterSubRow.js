@@ -94,9 +94,6 @@ class RenderRow extends Component {
                 </div>
                 <div className="col-6">
                     <>
-                        <button>
-                            Add existing to interface
-                        </button> 
                         <input 
                             type="text" 
                             placeholder="User address"
