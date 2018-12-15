@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
 import { addAccount } from "../redux/actions/todo";
+import { addUserToAccount } from "../redux/actions/todo";
 
 import TitleTile from './SubUserManagement/TitleTile'
 import RenderRow from './SubUserManagement/RenderRow'
@@ -35,27 +36,48 @@ class UserManagement extends Component {
 
     contractToState(Contract) {
         Contract.accountCount.call( (e,response) => {
-            let usersInAccount = parseInt(response.c.toString(10));
-            this.setState({numAccts:usersInAccount})
-            for (let i=0;i<usersInAccount;i++){
-                Contract.Accounts(i,(e,res) => {
-                    
-                    this.setAccountState(i,e,res)
-                    }
-                ) 
+            let numAccts = parseInt(response.c.toString(10));
+            this.setState({numAccts:numAccts})
+            for (let acctNum=0;acctNum<numAccts;acctNum++){
+                Contract.Accounts(acctNum,(e,res) => {
+                    this.setAccountState(acctNum,e,res)
+
+
+                    //var Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+                    //var acctNum = this.props.acctNum;
+                    //find the # of users and loop through them
+                    Contract.userCountsInAccount.call(acctNum, (e,response) => {
+                        let numUsers = response.c.toString(10);
+                        for (let i=0;i<numUsers;i++){
+                            //add each user to global state
+                            Contract.usersOfAccount(acctNum,i,(e,r)=>{
+                                this.addUser(acctNum,i,e,r)
+                            })
+                        }
+                    })
+
+                }) 
             }
             //when should state be sorted??
         })
     }
 
+     //changes global state to add user to account
+     addUser(acctNum,i,e,r){
+        this.props.addUserToAccount(acctNum,  {key:i, addy:r[0], canWrite : r[1]}    );
+    }
+    //changes global state to add account
     setAccountState = (i,e,r) => {
         this.props.addAccount({key:i,own:r[0],bal:r[1].toString(10)})
     }
+
+    //changes the status of is users are displayed under the account
     ToggleUsers (acctNum) {
         let tmparr = this.state.isExpanded;
         tmparr[acctNum]=!this.state.isExpanded[acctNum]
         this.setState({isExpanded:tmparr})
     }
+    //interacts with the smart contract to add a account
     addAccount = ()=> {
         this.GetContract().currentAccPrice.call((e,r)=>{
             this.GetContract().createAccount( {from: window.web3.eth.accounts[0], value:r}, function(e,r) {});
@@ -128,7 +150,7 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps,{addAccount})(UserManagement)
+export default connect(mapStateToProps,{addAccount,addUserToAccount})(UserManagement)
 
 
 
