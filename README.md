@@ -28,7 +28,7 @@ Contains the frontend that links into the solidity smart contract.
 
 
 <br>
-From the terminal do the following commands to start the app on localhost:3000:
+From the terminal do the following commands to start the app on localhost:3000:<br>
 NPM Install<br>
 NPM Start<br>
 
