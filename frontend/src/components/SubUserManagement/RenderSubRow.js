@@ -49,12 +49,20 @@ class RenderSubRow extends Component {
                         <div className="col-1 col-dotted"></div>
                         <div className="col-6">
                             {usr.addy}
-                            {usr.canWrite ? 
-                                <button onClick={()=> {this.disableWrite(this.props.acctNum,usr.key)}}>Disable write</button> 
-                            : 
-                                <button onClick={()=> {this.enableWrite(this.props.acctNum,usr.key)}}>Enable write</button>
+                            {this.props.acctAddy===this.props.verifiedAddress?
+                            <>
+                                {usr.canWrite ? 
+                                    <button onClick={()=> {this.disableWrite(this.props.acctNum,usr.key)}}>Disable write</button> 
+                                : 
+                                    <button onClick={()=> {this.enableWrite(this.props.acctNum,usr.key)}}>Enable write</button>
+                                }
+                                <button onClick={()=> {this.deleteUser(this.props.acctNum,usr.key)}}>Delete</button>
+                            </>
+                            :<></>
+                        
                             }
-                            <button onClick={()=> {this.deleteUser(this.props.acctNum,usr.key)}}>Delete</button>
+                            
+                            
                         </div>
                     </div>
                 ))}
