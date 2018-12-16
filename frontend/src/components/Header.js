@@ -35,31 +35,36 @@ class Header extends Component {
             })
         )
 
-    async contractToState() {
-        //how could this be done SEMI SYNCRONOUSLY?
-            //ie only num accounts and num users need to be awaited
-            //and numusers only needs to be awaited INSIDE the account's scope
+    async addAccountData(Contract, acctNum){
+        let resAcct = await this.promisify( cb => Contract.Accounts(acctNum,cb) )
+        this.props.addAccount({ key: acctNum, own: resAcct[0], bal: resAcct[1].toString(10) })
+    }
 
-        //initialize
+    async addUserData(Contract, acctNum,userNum){
+        let resUser = await this.promisify( cb => Contract.usersOfAccount(acctNum,userNum,cb) )
+        this.props.addUserToAccount(acctNum, { key: userNum, addy: resUser[0], canWrite: resUser[1] });
+    }
+
+    //adding account and user data done in other functions so they run
+    //on a different async cycle
+    async contractToState() {
+        //initialize contract
         let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
         //find the number of accounts
         let resNumAccts = await this.promisify( cb => Contract.accountCount.call(cb) )
         let numAccts = parseInt(resNumAccts.toString(10));
         //loop through the accounts
         for (let acctNum = 0; acctNum < numAccts; acctNum++) {
-            let resAcct = await this.promisify( cb => Contract.Accounts(acctNum,cb) )
-            //call dispatch to add account to store
-            this.props.addAccount({ key: acctNum, own: resAcct[0], bal: resAcct[1].toString(10) })   
+            this.addAccountData(Contract,acctNum)
             //get the number of users for the account
             let resNumUsers = await this.promisify( cb => Contract.userCountsInAccount.call(acctNum,cb) )
             let numUsers = resNumUsers.toString(10);
             //loop through each user
             for (let userNum = 0; userNum < numUsers; userNum++) {
-                let resUser = await this.promisify( cb => Contract.usersOfAccount(acctNum,userNum,cb) )
-                //call dispatch to add account to store
-                this.props.addUserToAccount(acctNum, { key: userNum, addy: resUser[0], canWrite: resUser[1] });
+                
+                this.addUserData(Contract, acctNum,userNum)
             }
-        }     
+        }    
     }
 
     render() {
