@@ -2,7 +2,8 @@ import { ADD_ACCOUNT } from '../constants/todo';
 import { ADD_USER_TO_ACCOUNT } from '../constants/todo';
 
 const initialState = {
-    accounts: []
+    accounts: [],
+    addyPermission:{}
 };
 
 export default function (state = initialState, action) {
@@ -26,7 +27,31 @@ export default function (state = initialState, action) {
             //set user to payload
             acctsArr[acctN].users[userN] = action.payload.user
             console.log("acct#"+acctN+" has added user#",acctsArr[acctN].users[userN].key)
-            return { ...state, accounts: acctsArr }
+
+
+            let addy = action.payload.user.addy
+
+            return { 
+                ...state, 
+                accounts: 
+                    acctsArr,
+                    addyPermission:{
+                        ...state.addyPermission, 
+                        [addy]:{
+                            ...state.addyPermission[addy],
+                            [acctN] : 
+                                action.payload.user.canWrite 
+                                || 
+                                (
+                                    (addy in state.addyPermission) 
+                                    && 
+                                    state.addyPermission[addy][acctN]
+                                )
+                                || false
+                        }
+                    }
+                }
+            
 
         default:
             return state;
