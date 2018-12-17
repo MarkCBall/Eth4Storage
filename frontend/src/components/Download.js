@@ -3,58 +3,17 @@ import { connect } from 'react-redux';
 
 
 class Download extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         canWriteObj: {}
-    //     }
-    // }
-    // componentWillReceiveProps(){
-    //     this.logAccountsForAddress(this.props.verifiedAddress)
-    // }
 
-    // componentDidMount() {
-    //     this.logAccountsForAddress(this.props.verifiedAddress)
-    // }
+    getPermissions(){
+        return (
+            this.props.verifiedAddress in this.props.state.todo.addyPermission 
+            ? 
+            this.props.state.todo.addyPermission[this.props.verifiedAddress] 
+            :
+            {}
+        )
+    }
 
-    // addElemToPermissionsArr(elem) {
-    //     //when passed true, set the value to true
-    //     if (elem.canWrite){
-    //         this.setState(prevState => ({
-    //             canWriteObj: { ...prevState.canWriteObj, [elem.acctN]: true }
-    //         }))
-    //     }
-    //     else{//when passed false, create the object with it's current value or false if object doesn't exist
-    //         this.setState(prevState => ({
-    //             canWriteObj: { 
-    //                 ...prevState.canWriteObj, 
-    //                     [elem.acctN]: prevState.canWriteObj[elem.acctN] 
-    //                     || 
-    //                     false 
-    //             }
-    //         }))
-    //     }
-    // }
-
-    // logAccountsForAddress(address) {
-    //     let accts = this.props.state.todo.accounts; //[acctN].users[userN].addy
-    //     //loop through all accounts
-    //     for (let acctN = 0; acctN < accts.length; acctN++) {
-    //         //loop through the users of the specific account
-    //         let userArr = (typeof(accts[acctN]) === "undefined") ? {} : accts[acctN].users
-    //         for (let userN = 0; userN < userArr.length; userN++) {
-    //             //check if the logged in account has permission as a user
-    //             let userAddy = (typeof(userArr[userN]) === "undefined") ? {} : userArr[userN].addy
-    //             if (userAddy === address){
-    //                 this.addElemToPermissionsArr({ 
-    //                     acctN: accts[acctN].key,
-    //                     canWrite: userArr[userN].canWrite 
-    //                 })
-    //             }
-    //         }
-    //     }
-    // }
-    
     render() {
         return (
             <div className="main-tile">
@@ -78,13 +37,7 @@ class Download extends Component {
                         </div>
                     </div>
 
-                    {Object.keys(
-                        this.props.verifiedAddress in this.props.state.todo.addyPermission 
-                        ? 
-                        this.props.state.todo.addyPermission[this.props.verifiedAddress] 
-                        :
-                        {}
-                    ).map((x) => (
+                    {Object.keys(this.getPermissions()).map((x) => (
                     <div className="row" key={x}>
                         <div className="col-1">
                             {x}

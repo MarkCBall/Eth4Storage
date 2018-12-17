@@ -27,50 +27,6 @@ class Header extends Component {
     // //its done here in the header since the header only loads once... better ideas?
 
 
-
-
-
-
-
-    addElemToPermissionsArr(elem) {
-        //when passed true, set the value to true
-        if (elem.canWrite){
-            this.setState(prevState => ({
-                addyPermission: { ...prevState.addyPermission, [elem.acctN]: true }
-            }))
-        }
-        else{//when passed false, create the object with it's current value or false if object doesn't exist
-            this.setState(prevState => ({
-                addyPermission: { 
-                    ...prevState.addyPermission, 
-                        [elem.acctN]: prevState.addyPermission[elem.acctN] 
-                        || 
-                        false 
-                }
-            }))
-        }
-    }
-
-    logAccountsForAddress() {
-        let address="0x0f7cd2d9f4cec1f7e01f880315fd56101095ff87"
-        let accts = this.props.state.todo.accounts; //[acctN].users[userN].addy
-        //loop through all accounts
-        for (let acctN = 0; acctN < accts.length; acctN++) {
-            //loop through the users of the specific account
-            let userArr = (typeof(accts[acctN]) === "undefined") ? {} : accts[acctN].users
-            for (let userN = 0; userN < userArr.length; userN++) {
-                //check if the logged in account has permission as a user
-                let userAddy = (typeof(userArr[userN]) === "undefined") ? {} : userArr[userN].addy
-                if (userAddy === address){
-                    this.addElemToPermissionsArr({ 
-                        acctN: accts[acctN].key,
-                        canWrite: userArr[userN].canWrite 
-                    })
-                }
-            }
-        }
-    }
-/////////////////
     promisify = (inner) =>
         new Promise((resolve, reject) =>
             inner((err, res) => {
@@ -118,7 +74,6 @@ class Header extends Component {
         //     this.addAccountData(Contract, acctNum)
         //     this.iterateUsers(Contract,acctNum)
         // }
-        this.logAccountsForAddress()
 
     }
 
