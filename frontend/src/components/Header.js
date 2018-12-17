@@ -20,7 +20,7 @@ class Header extends Component {
         this.contractToState();
     }
 
-  // //WHERE WOULD THE GLOBAL STATE IDEALLY BE SET?????????
+    // //WHERE WOULD THE GLOBAL STATE IDEALLY BE SET?????????
     // //its done here in the header since the header only loads once... better ideas?
 
 
@@ -35,36 +35,37 @@ class Header extends Component {
             })
         )
 
-    async addAccountData(Contract, acctNum){
-        let resAcct = await this.promisify( cb => Contract.Accounts(acctNum,cb) )
+    async addAccountData(Contract, acctNum) {
+        let resAcct = await this.promisify(cb => Contract.Accounts(acctNum, cb))
         this.props.addAccount({ key: acctNum, own: resAcct[0], bal: resAcct[1].toString(10) })
     }
 
-    async addUserData(Contract, acctNum,userNum){
-        let resUser = await this.promisify( cb => Contract.usersOfAccount(acctNum,userNum,cb) )
+    async addUserData(Contract, acctNum, userNum) {
+        let resUser = await this.promisify(cb => Contract.usersOfAccount(acctNum, userNum, cb))
         this.props.addUserToAccount(acctNum, { key: userNum, addy: resUser[0], canWrite: resUser[1] });
     }
 
-    //adding account and user data done in other functions so they run
-    //on a different async cycle
+    async iterateUsers(Contract, acctNum) {
+        //get the number of users for the account
+        let resNumUsers = await this.promisify(cb => Contract.userCountsInAccount.call(acctNum, cb))
+        let numUsers = resNumUsers.toString(10);
+        //loop through each user
+        for (let userNum = 0; userNum < numUsers; userNum++) {
+            this.addUserData(Contract, acctNum, userNum)
+        }
+    }
+
     async contractToState() {
         //initialize contract
         let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
         //find the number of accounts
-        let resNumAccts = await this.promisify( cb => Contract.accountCount.call(cb) )
+        let resNumAccts = await this.promisify(cb => Contract.accountCount.call(cb))
         let numAccts = parseInt(resNumAccts.toString(10));
         //loop through the accounts
         for (let acctNum = 0; acctNum < numAccts; acctNum++) {
-            this.addAccountData(Contract,acctNum)
-            //get the number of users for the account
-            let resNumUsers = await this.promisify( cb => Contract.userCountsInAccount.call(acctNum,cb) )
-            let numUsers = resNumUsers.toString(10);
-            //loop through each user
-            for (let userNum = 0; userNum < numUsers; userNum++) {
-                
-                this.addUserData(Contract, acctNum,userNum)
-            }
-        }    
+            this.addAccountData(Contract, acctNum)
+            this.iterateUsers(Contract, acctNum)
+        }
     }
 
     render() {
