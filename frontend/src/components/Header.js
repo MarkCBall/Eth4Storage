@@ -97,11 +97,6 @@ class Header extends Component {
                     </div>
                 </div>
 
-                <button onClick={()=>  {
-                console.log(this.state.addyPermission)
-                this.logAccountsForAddress()
-                }}>Show permission state</button>
-
             </div>
         );
     };

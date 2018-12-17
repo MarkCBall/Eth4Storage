@@ -46,7 +46,7 @@ class Download extends Component {
                             yes
                         </div>
                         <div className="col-1">
-                            {this.props.state.todo.addyPermission[x] ? "yes" : "no"}
+                            {this.getPermissions()[x] ? "yes" : "no"}
                         </div>
                     </div>
                     ))}
@@ -54,11 +54,8 @@ class Download extends Component {
                 </div>
 
 
-                <button onClick={() => console.log(
-                    this.state.canWriteObj
-                )}>Console.log permissions for debugging</button>
 
-                                <button onClick={() => console.log(
+                <button onClick={() => console.log(
                     this.props.state.todo
                 )}>Console.log state for debugging</button>
 
