@@ -6,45 +6,29 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
+  
     switch (action.type) {
-        case ADD_ACCOUNT:
-            console.log(action.payload.key, "acct created")
-            return { ...state, accounts: [...state.accounts, action.payload] }
-        case ADD_USER_TO_ACCOUNT:
 
-            //copy state
+        case ADD_ACCOUNT:
+            console.log("adding acct#",action.payload.key)
+            let acctsAr = state.accounts.slice()
+            let actN = action.payload.key
+            acctsAr[actN] = {users:[], ...acctsAr[actN], ...action.payload }
+            return { ...state, accounts:acctsAr }
+        
+        case ADD_USER_TO_ACCOUNT:
+            //copy state and make variables for legibility
             let acctsArr = state.accounts.slice()
             let acctN = action.payload.acctN
+            let userN = action.payload.user.key
             //init account if undefined
             acctsArr[acctN] = acctsArr[acctN] ? acctsArr[acctN] : {}
-            //init usersArray if blank
-            if (!("users" in acctsArr[acctN]))
-                acctsArr[acctN].users = [];
-            //put payload into usersArray at user's key
-            acctsArr[acctN].users[action.payload.user.key]=action.payload.user
-
-            console.log("acct#"+acctN+" has added user#",action.payload.user.key)
-
+            //set user to payload
+            acctsArr[acctN].users[userN] = action.payload.user
+            console.log("acct#"+acctN+" has added user#",acctsArr[acctN].users[userN].key)
             return { ...state, accounts: acctsArr }
 
-        //break;
         default:
             return state;
     }
 }
-
-// DATA STRUCTURE
-// [
-//     {
-//         key: 0,
-//         own: "0x...",
-//         bal: "100",
-//         users: [
-//             {
-//                 key: 0,
-//                 addy: "0x",
-//                 canWrite: true
-//             }
-//         ]
-//     }
-// ]

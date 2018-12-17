@@ -25,9 +25,9 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state ={
-      date: "never",
+      date: "default values",
       dateSignature: "signature hash goes here",
-      verifiedAddress:"0x..."
+      verifiedAddress:"0x0f7cd2d9f4cec1f7e01f880315fd56101095ff87"
     }
   }
 

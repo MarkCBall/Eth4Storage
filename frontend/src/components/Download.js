@@ -8,64 +8,56 @@ class Download extends Component {
         this.state = {
             canWriteObj: {}
         }
-        //why can't this be here?
-        //this.logAccountsForAddress(this.props.verifiedAddress)
     }
-
-    componentDidMount() {
-        //console.log("mounting")
+    componentWillReceiveProps(){
         this.logAccountsForAddress(this.props.verifiedAddress)
     }
 
-    componentWillUpdate() {
-        //console.log("updating")
-        //this.logAccountsForAddress(this.props.verifiedAddress)
+    componentDidMount() {
+        this.logAccountsForAddress(this.props.verifiedAddress)
     }
 
     addElemToPermissionsArr(elem) {
-        //console.log("elem added is", elem)
-        this.setState(prevState => ({
-            canWriteObj: { ...prevState.canWriteObj, [elem.acctN]: elem.canWrite }
-        }))
-    }
-
-
-
-    //returns an array of users for a given account number
-    getUserArray(acctN) {
-        let accounts = this.props.state.todo.accounts;
-        let arrIndex = accounts.findIndex(o => o.key === acctN);
-        if (arrIndex >= 0 && accounts[arrIndex].users)
-            return (accounts[arrIndex].users)
-        return []
-
-    }
-    //returns an array of strings with the permissions the logged in metamask's account has
-    logAccountsForAddress(address) {
-
-        let accts = this.props.state.todo.accounts;
-        //loop through all accounts
-        for (let i = 0; i < accts.length; i++) {
-            //loop through the users of the specific account
-            let userArr = this.getUserArray(accts[i].key);
-            for (let j = 0; j < userArr.length; j++) {
-                //check if the logged in account has permission as a user
-                if (userArr[j].addy === address)
-                    if (userArr[j].canWrite) {
-                        this.addElemToPermissionsArr({ acctN: accts[i].key, canWrite: true })
-                    }
-                    else {
-                        this.addElemToPermissionsArr({ acctN: accts[i].key, canWrite: false })
-                    }
-            }
+        //when passed true, set the value to true
+        if (elem.canWrite){
+            this.setState(prevState => ({
+                canWriteObj: { ...prevState.canWriteObj, [elem.acctN]: true }
+            }))
+        }
+        else{//when passed false, create the object with it's current value or false if object doesn't exist
+            this.setState(prevState => ({
+                canWriteObj: { 
+                    ...prevState.canWriteObj, 
+                        [elem.acctN]: prevState.canWriteObj[elem.acctN] 
+                        || 
+                        false 
+                }
+            }))
         }
     }
 
+    logAccountsForAddress(address) {
+        let accts = this.props.state.todo.accounts; //[acctN].users[userN].addy
+        //loop through all accounts
+        for (let acctN = 0; acctN < accts.length; acctN++) {
+            //loop through the users of the specific account
+            let userArr = (typeof(accts[acctN]) === "undefined") ? {} : accts[acctN].users
+            for (let userN = 0; userN < userArr.length; userN++) {
+                //check if the logged in account has permission as a user
+                let userAddy = (typeof(userArr[userN]) === "undefined") ? {} : userArr[userN].addy
+                if (userAddy === address){
+                    this.addElemToPermissionsArr({ 
+                        acctN: accts[acctN].key,
+                        canWrite: userArr[userN].canWrite 
+                    })
+                }
+            }
+        }
+    }
+    
     render() {
         return (
             <div className="main-tile">
-
-
 
                 <h1>This is the download page</h1>
                 <p>Login to see what you have access to</p>
@@ -107,6 +99,10 @@ class Download extends Component {
                 <button onClick={() => console.log(
                     this.state.canWriteObj
                 )}>Console.log permissions for debugging</button>
+
+                                <button onClick={() => console.log(
+                    this.props.state.todo.accounts
+                )}>Console.log state for debugging</button>
 
             </div>
         );
