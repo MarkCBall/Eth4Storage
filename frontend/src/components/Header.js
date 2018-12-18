@@ -18,7 +18,7 @@ class Header extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            addyPermission: {}
+            //addyPermission: {}
         }
         this.contractToState();
     }
