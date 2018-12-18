@@ -12,15 +12,7 @@ class Upload extends Component {
     getPermissions = () => {
         if(this.props.verifiedAddress in this.props.state.todo.addyPermission){
             let permissionedAddresses = this.props.state.todo.addyPermission[this.props.verifiedAddress]
-            // console.log(Object.entries(permissionedAddresses))
-            // Object.entries(permissionedAddresses).map((acct) =>(
-            //     console.log(acct[0])
-            // ))
-            
-            
-            
-            //CUT OUT NON TRUES
-
+            //filter only entries with write permission == true
             return Object.entries(permissionedAddresses).filter( o=>o[1] )
         }
         return [["0",true]]
@@ -39,10 +31,7 @@ class Upload extends Component {
                 <h1>This is the upload page</h1>
                 <nav className="navbar navbar-expand-lg">
                     {this.getPermissions().map((acct) => (
-                       
                           <button key={acct[0]} onClick={()=>this.handleSelection(acct[0])} className="navbar-brand">Acnt#{acct[0]}</button> 
-                
-                      
                     ))}
                 </nav>
 

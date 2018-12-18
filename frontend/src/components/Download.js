@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 
 
 class Download extends Component {
-
+    constructor(props) {
+        super(props)
+        this.state = {
+            selectedAcct: 0
+        }
+    }
     getPermissions() {
         return (
             this.props.verifiedAddress in this.props.state.todo.addyPermission
@@ -14,23 +19,28 @@ class Download extends Component {
         )
     }
 
+    handleSelection(acctN){
+        this.setState({selectedAcct:acctN})
+    }
+
     render() {
         return (
             <div className="main-tile">
-
                 <h1>This is the download page</h1>
-
-
-
                 <nav className="navbar navbar-expand-lg">
-
-                    {Object.keys(this.getPermissions()).map((x) => (
-                        <button className="navbar-brand" key={x}>
-                            Acnt#{x}
+                    {Object.keys(this.getPermissions()).map((acct) => (
+                        <button key={acct} onClick={()=>this.handleSelection(acct)} className="navbar-brand" >
+                            Acnt#{acct}
                         </button>
                     ))}
                 </nav>
 
+                <div className="card">
+                <div className="card-body">
+                    <h4 className="card-title">Account# {this.state.selectedAcct} download page</h4>
+                    <p className="card-text">View existing files you can download </p>
+                </div>
+                </div>
 
 
             </div>
