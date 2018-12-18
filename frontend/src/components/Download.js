@@ -4,105 +4,44 @@ import { connect } from 'react-redux';
 
 class Download extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            canWriteObj: {}
+            selectedAcct: 0
         }
     }
-    componentWillReceiveProps(){
-        this.logAccountsForAddress(this.props.verifiedAddress)
+    getPermissions() {
+        return (
+            this.props.verifiedAddress in this.props.state.todo.addyPermission
+                ?
+                this.props.state.todo.addyPermission[this.props.verifiedAddress]
+                :
+                {}
+        )
     }
 
-    componentDidMount() {
-        this.logAccountsForAddress(this.props.verifiedAddress)
+    handleSelection(acctN){
+        this.setState({selectedAcct:acctN})
     }
 
-    addElemToPermissionsArr(elem) {
-        //when passed true, set the value to true
-        if (elem.canWrite){
-            this.setState(prevState => ({
-                canWriteObj: { ...prevState.canWriteObj, [elem.acctN]: true }
-            }))
-        }
-        else{//when passed false, create the object with it's current value or false if object doesn't exist
-            this.setState(prevState => ({
-                canWriteObj: { 
-                    ...prevState.canWriteObj, 
-                        [elem.acctN]: prevState.canWriteObj[elem.acctN] 
-                        || 
-                        false 
-                }
-            }))
-        }
-    }
-
-    logAccountsForAddress(address) {
-        let accts = this.props.state.todo.accounts; //[acctN].users[userN].addy
-        //loop through all accounts
-        for (let acctN = 0; acctN < accts.length; acctN++) {
-            //loop through the users of the specific account
-            let userArr = (typeof(accts[acctN]) === "undefined") ? {} : accts[acctN].users
-            for (let userN = 0; userN < userArr.length; userN++) {
-                //check if the logged in account has permission as a user
-                let userAddy = (typeof(userArr[userN]) === "undefined") ? {} : userArr[userN].addy
-                if (userAddy === address){
-                    this.addElemToPermissionsArr({ 
-                        acctN: accts[acctN].key,
-                        canWrite: userArr[userN].canWrite 
-                    })
-                }
-            }
-        }
-    }
-    
     render() {
         return (
             <div className="main-tile">
-
                 <h1>This is the download page</h1>
-                <p>Login to see what you have access to</p>
-
-                <p>In future you can click on an account number and be taken to relevant upload/download page of that account</p>
-                <p>NOTE!!! --- YOU MUST NAVIGATE TO THIS PAGE AFTER LOGGING IN TO RENDER ANYTHING</p>
-                <p>(THIS PAGE IS IN DEVELOPMENT)</p>
-
-                <div className='container'>
-                    <div className="row">
-                        <div className="col-1">
-                            Account #
-                        </div>
-                        <div className="col-1">
-                            Can Read
-                        </div>
-                        <div className="col-1">
-                            CanWrite
-                        </div>
-                    </div>
-
-                    {Object.keys(this.state.canWriteObj).map((x) => (
-                        <div className="row" key={x}>
-                            <div className="col-1">
-                                {x}
-                            </div>
-                            <div className="col-1">
-                                yes
-                            </div>
-                            <div className="col-1">
-                                {this.state.canWriteObj[x] ? "yes" : "no"}
-                            </div>
-                        </div>
+                <nav className="navbar navbar-expand-lg">
+                    {Object.keys(this.getPermissions()).map((acct) => (
+                        <button key={acct} onClick={()=>this.handleSelection(acct)} className="navbar-brand" >
+                            Acnt#{acct}
+                        </button>
                     ))}
+                </nav>
 
+                <div className="card">
+                <div className="card-body">
+                    <h4 className="card-title">Account# {this.state.selectedAcct} download page</h4>
+                    <p className="card-text">View existing files you can download </p>
+                </div>
                 </div>
 
-
-                <button onClick={() => console.log(
-                    this.state.canWriteObj
-                )}>Console.log permissions for debugging</button>
-
-                                <button onClick={() => console.log(
-                    this.props.state.todo.accounts
-                )}>Console.log state for debugging</button>
 
             </div>
         );
@@ -116,5 +55,33 @@ const mapStateToProps = function (state) {
 }
 export default connect(mapStateToProps)(Download)
 
-
-//<p>{this.props.state.todo.accounts[0].key}</p>
+// {/* <div className="main-tile">
+// <h1>This is the download page</h1>
+// <p>Login to see what you have access to</p>
+// <div className='container'>
+//     <div className="row">
+//         <div className="col-1">
+//             Account #
+//         </div>
+//         <div className="col-1">
+//             Can Read
+//         </div>
+//         <div className="col-1">
+//             CanWrite
+//         </div>
+//     </div>
+//     {Object.keys(this.getPermissions()).map((x) => (
+//     <div className="row" key={x}>
+//         <div className="col-1">
+//             {x}
+//         </div>
+//         <div className="col-1">
+//             yes
+//         </div>
+//         <div className="col-1">
+//             {this.getPermissions()[x] ? "yes" : "no"}
+//         </div>
+//     </div>
+//     ))}
+// </div>
+// </div> */}

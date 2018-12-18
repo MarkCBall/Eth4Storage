@@ -17,6 +17,9 @@ import './Header.css';
 class Header extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            //addyPermission: {}
+        }
         this.contractToState();
     }
 
@@ -36,65 +39,42 @@ class Header extends Component {
         )
 
     addAccountData(Contract, acctNum) {
-
-        // var date = new Date();
-        // var curDate = null;
-        // do { curDate = new Date(); }
-        // while(curDate-date < 500);
-
-
-        // let resAcct = await this.promisify(cb => Contract.Accounts(acctNum, cb))
-        // this.props.addAccount({ key: acctNum, own: resAcct[0], bal: resAcct[1].toString(10) })
-
         Contract.Accounts(acctNum, (e,resAcct)=>{
             this.props.addAccount({ key: acctNum, own: resAcct[0], bal: resAcct[1].toString(10) })
         })
     }
 
     addUserData(Contract, acctNum, userNum) {
-        // let resUser = await this.promisify(cb => Contract.usersOfAccount(acctNum, userNum, cb))
-        // this.props.addUserToAccount(acctNum, { key: userNum, addy: resUser[0], canWrite: resUser[1] });
-
         Contract.usersOfAccount(acctNum, userNum, (e,resUser)=>{
             this.props.addUserToAccount(acctNum, { key: userNum, addy: resUser[0], canWrite: resUser[1] });
         })
     }
 
     iterateUsers(Contract, acctNum) {
-        // //get the number of users for the account
-        // let resNumUsers = await this.promisify(cb => Contract.userCountsInAccount.call(acctNum, cb))
-        // let numUsers = resNumUsers.toString(10);
-        //  //loop through each user
-        //  for (let userNum = 0; userNum < numUsers; userNum++) {
-        //     this.addUserData(Contract, acctNum, userNum)
-        // }
-
         Contract.userCountsInAccount.call(acctNum, (e,resNumUsers)=>{
         let numUsers = resNumUsers.toString(10);
-            //loop through each user
             for (let userNum = 0; userNum < numUsers; userNum++) {
                 this.addUserData(Contract, acctNum, userNum);
             }
         })
+    }
+    iterateAccounts(Contract,numAccts){
+        for (let acctNum = 0; acctNum < numAccts; acctNum++) {
+            this.addAccountData(Contract, acctNum)
+            this.iterateUsers(Contract,acctNum)
+        }
     }
 
     async contractToState() {
         let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
         let resNumAccts = await this.promisify(cb => Contract.accountCount.call(cb))
         let numAccts = parseInt(resNumAccts.toString(10));
-        for (let acctNum = 0; acctNum < numAccts; acctNum++) {
-            this.addAccountData(Contract, acctNum)
-            this.iterateUsers(Contract, acctNum)
-        }
+        await this.iterateAccounts(Contract,numAccts)
+        // for (let acctNum = 0; acctNum < numAccts; acctNum++) {
+        //     this.addAccountData(Contract, acctNum)
+        //     this.iterateUsers(Contract,acctNum)
+        // }
 
-        // let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-        // Contract.accountCount.call((e,resNumAccts)=>{
-        //     let numAccts = parseInt(resNumAccts.toString(10));
-        //     for (let acctNum = 0; acctNum < numAccts; acctNum++) {
-        //         this.iterateUsers(Contract, acctNum)
-        //         this.addAccountData(Contract, acctNum)
-        //     }
-        // })
     }
 
     render() {
@@ -116,6 +96,7 @@ class Header extends Component {
                         </div>
                     </div>
                 </div>
+
             </div>
         );
     };

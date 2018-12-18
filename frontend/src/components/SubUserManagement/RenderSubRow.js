@@ -3,6 +3,10 @@ import {connect} from 'react-redux';
 
 import ContractABI, {ContractAddress} from '../../ContractABI';
 
+//CSS Files
+import './RenderSubRow.css';
+
+
 class RenderSubRow extends Component {
     constructor(props){
         super(props)
@@ -46,13 +50,18 @@ class RenderSubRow extends Component {
                         <div className="col-4 col-solid"></div>
                         <div className="col-1 col-dotted"></div>
                         <div className="col-6">
+                        {usr.canWrite ? 
+                                    <div className="dot green"></div>
+                                : 
+                                    <div className="dot red"></div>
+                                }
                             {usr.addy}
                             {this.props.acctAddy===this.props.verifiedAddress?
                             <>
                                 {usr.canWrite ? 
-                                    <button onClick={()=> {this.disableWrite(this.props.acctNum,usr.key)}}>Disable write</button> 
+                                    <button onClick={()=> {this.disableWrite(this.props.acctNum,usr.key)}}>Disable</button> 
                                 : 
-                                    <button onClick={()=> {this.enableWrite(this.props.acctNum,usr.key)}}>Enable write</button>
+                                    <button onClick={()=> {this.enableWrite(this.props.acctNum,usr.key)}}>Enable</button>
                                 }
                                 <button onClick={()=> {this.deleteUser(this.props.acctNum,usr.key)}}>Delete</button>
                             </>
