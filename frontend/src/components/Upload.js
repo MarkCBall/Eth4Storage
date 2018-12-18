@@ -49,7 +49,7 @@ class Upload extends Component {
                 <div className="card">
                 <div className="card-body">
                     <h4 className="card-title">Account# {this.state.selectedAcct} upload page</h4>
-                    <p className="card-text">Click here to upload text </p>
+                    <p className="card-text">Click here to upload a new text file </p>
                     <input type="textbox"></input>
                 </div>
                 </div>
