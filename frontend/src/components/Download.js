@@ -53,6 +53,30 @@ class Download extends Component {
         })
     }
 
+    putToServer(){
+        //let String = "hello!"
+        fetch('http://localhost:3000/users',{
+            method:'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, cors, *same-origin
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+            //headers: {data: JSON.stringify({date:this.props.date,dateSignature:this.props.dateSignature})  },
+            body: JSON.stringify({
+                input_text:"get this from a input box",
+                date:this.props.date,
+                dateSignature:this.props.dateSignature
+            })
+        })
+ 
+        // .then(function(response) {
+        //     return response.json();
+        // })
+        // .then(data => {
+        //     console.log(data ? JSON.parse(data) : {}  )
+        // })
+    }
+
 
 
 
@@ -76,7 +100,8 @@ class Download extends Component {
                     </div>
                 </div>
 
-                <button onClick={()=> this.queryServer()}>Query Server</button>
+                <button onClick={()=> this.queryServer()}>Get from Server</button><br></br>
+                <button onClick={()=> this.putToServer()}>Put to Server</button>
 
             </div>
         );

@@ -25,9 +25,10 @@ class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            date: "default address for display purposes",
-            dateSignature: "signature hash goes here",
-            verifiedAddress: "0x0f7cd2d9f4cec1f7e01f880315fd56101095ff87"
+            //change these defaults to an account that has more info
+            date: "2018-11-19 at 11:00 o 'clock",
+            dateSignature: "0xda48e9e6024d16bd4268c13afce15a17574ad50f8280f57f27afe84a80bec0a4084df72842055a3c3bd5489c3066060717d9242764cbd7b47fd30dd677034b401b",
+            verifiedAddress: "0x22dce447732ef5ad523db7e6abda46ba8a9d0781"
         }
     }
 
@@ -50,6 +51,10 @@ class App extends Component {
         this.setState({ dateSignature: signedString });
         this.setState({ date: originalString });
         this.setState({ verifiedAddress: address })
+        console.log("date",this.state.date)
+        console.log("dadateSignaturete",this.state.dateSignature)
+        console.log("verifiedAddress",this.state.verifiedAddress)
+        
     }
 
 
