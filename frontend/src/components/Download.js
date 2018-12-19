@@ -29,39 +29,22 @@ class Download extends Component {
         fetch('http://localhost:3000/users',{
             method:'GET', // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, cors, *same-origin
-            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-            //credentials: "same-origin", // include, *same-origin, omit
-            // "Content-Type": "application/json; charset=utf-8",
-            //     // "Content-Type": "application/x-www-form-urlencoded",
             headers: {data: JSON.stringify({date:this.props.date,dateSignature:this.props.dateSignature})  }
-
-     
-
-
-            // redirect: "follow", // manual, *follow, error
-            // referrer: "no-referrer", // no-referrer, *client
-
         }).then(function(response) {
             return response.json();
         })
         .then(data => {
             console.log(data ? JSON.parse(data) : {}  )
-            
-            //this.setState({accounts:JSON.parse(data)})
-            // console.log("state is set to")
-            // console.log(data);
         })
     }
 
     putToServer(){
-        //let String = "hello!"
         fetch('http://localhost:3000/users',{
             method:'POST', // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, cors, *same-origin
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
             },
-            //headers: {data: JSON.stringify({date:this.props.date,dateSignature:this.props.dateSignature})  },
             body: JSON.stringify({
                 input_text:"get this from a input box",
                 date:this.props.date,
