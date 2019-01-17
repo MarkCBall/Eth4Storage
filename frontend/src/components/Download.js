@@ -19,9 +19,50 @@ class Download extends Component {
         )
     }
 
-    handleSelection(acctN){
-        this.setState({selectedAcct:acctN})
+    handleSelection(acctN) {
+        this.setState({ selectedAcct: acctN })
     }
+
+
+    queryServer() {
+        //get req to server
+        fetch('http://localhost:3000/users',{
+            method:'GET', // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, cors, *same-origin
+            headers: {data: JSON.stringify({date:this.props.date,dateSignature:this.props.dateSignature})  }
+        }).then(function(response) {
+            return response.json();
+        })
+        .then(data => {
+            console.log(data ? JSON.parse(data) : {}  )
+        })
+    }
+
+    putToServer(){
+        fetch('http://localhost:3000/users',{
+            method:'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, cors, *same-origin
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+            body: JSON.stringify({
+                input_text:"get this from a input box",
+                date:this.props.date,
+                dateSignature:this.props.dateSignature
+            })
+        })
+ 
+        // .then(function(response) {
+        //     return response.json();
+        // })
+        // .then(data => {
+        //     console.log(data ? JSON.parse(data) : {}  )
+        // })
+    }
+
+
+
+
 
     render() {
         return (
@@ -29,19 +70,21 @@ class Download extends Component {
                 <h1>This is the download page</h1>
                 <nav className="navbar navbar-expand-lg">
                     {Object.keys(this.getPermissions()).map((acct) => (
-                        <button key={acct} onClick={()=>this.handleSelection(acct)} className="navbar-brand" >
+                        <button key={acct} onClick={() => this.handleSelection(acct)} className="navbar-brand" >
                             Acnt#{acct}
                         </button>
                     ))}
                 </nav>
 
                 <div className="card">
-                <div className="card-body">
-                    <h4 className="card-title">Account# {this.state.selectedAcct} download page</h4>
-                    <p className="card-text">View existing files you can download </p>
-                </div>
+                    <div className="card-body">
+                        <h4 className="card-title">Account# {this.state.selectedAcct} download page</h4>
+                        <p className="card-text">View existing files you can download </p>
+                    </div>
                 </div>
 
+                <button onClick={()=> this.queryServer()}>Get from Server</button><br></br>
+                <button onClick={()=> this.putToServer()}>Put to Server</button>
 
             </div>
         );
