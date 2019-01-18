@@ -79,25 +79,7 @@ class Header extends Component {
 
     render() {
         return (
-            <div className="header-box">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-sm">
-                            <br></br>
-                            <Link to="Upload">Upload Page</Link>
-                        </div>
-                        <div className="col-sm">
-                            <br></br>
-                            <Link to="Download">Download Page</Link>
-                        </div>
-                        <div className="col-sm">
-                            <br></br>
-                            <Link to="UserManagement">User Management Page</Link>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+          <div></div>
         );
     };
 };
@@ -109,5 +91,3 @@ const mapStateToProps = function (state) {
 }
 
 export default connect(mapStateToProps, { addAccount, addUserToAccount })(Header)
-
-

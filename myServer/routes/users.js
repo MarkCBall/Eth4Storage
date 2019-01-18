@@ -42,23 +42,26 @@ router.get('/',cors(), function(req, res, next) {
     let reqHData = (JSON.parse(req.headers.data));
     let originalString = reqHData.date;
     let signedString = reqHData.dateSignature
+    let accountId = reqHData.accountId
 
     let address = addressFromSigs(originalString,signedString)
 
 
     //console.log("processding response from "+address+addyMsgs[address])
 
-    res.json(JSON.stringify( {reqAddy: address, msgs:addyMsgs[address]}   )  );
+    res.json(JSON.stringify( {reqAddy: address, msgs:addyMsgs[accountId]}   )  );
 
 });
 
 router.post('/',cors(),function(req,res,next){
     let originalString = req.body.date;
     let signedString = req.body.dateSignature
-    let address = addressFromSigs(originalString,signedString)
+    let address = addressFromSigs(originalString,signedString);
+    let accountId = req.body.accountId;
+
     //console.log("processing response from "+address)
 
-    addMsg(address,req.body.input_text)
+    addMsg(accountId,req.body.input_text)
 
 
     res.end()

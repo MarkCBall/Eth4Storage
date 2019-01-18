@@ -24,9 +24,6 @@ class RenderRow extends Component {
                 <div className="col-4 col-solid">
                     {this.props.account.own}
                 </div>
-                <div className="col-1 col-dotted">
-                    {(this.props.account.bal/1000000000000000000).toString()}
-                </div>
                 <div className="col-6" onClick={() => this.props.expanded(this.props.account.key)}>
                     {this.ShowMoreLessText()}
                 </div>
