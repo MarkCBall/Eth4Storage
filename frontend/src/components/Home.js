@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import Footer from './Footer';
+import './Home.css';
+
+const IMAGE_URL = "../../images/main_image_clear.png";
 
 class Home extends Component {
 
@@ -6,11 +10,21 @@ class Home extends Component {
 
     render() {
         return (
-            <div className="main-tile">
-            <br></br><br></br><br></br><br></br><br></br>
-            <h1>This is the Home page</h1>
-            <p>{this.props.sessionID}</p>
-            </div>
+            <>
+                <div className="main-tile">
+                    <br></br><br></br><br></br>
+                    <h1>Welcome to</h1>
+                    <img alt="Banner image" src={IMAGE_URL} className="banner-image"/>
+
+                    <p>
+                    A blockchain solution to manage student transcripts
+                    </p>
+
+                </div>
+
+                <Footer/>
+            </>
+
         );
     };
 };

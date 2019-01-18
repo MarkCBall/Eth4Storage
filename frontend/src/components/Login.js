@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+//mport { Button } from 'react-bootstrap';
 
 
 class Login extends Component {
@@ -39,7 +40,7 @@ class Login extends Component {
         return (
             <div>
                 Logged in with <strong>{this.props.verifiedAddress}</strong> on <strong>{this.props.date}</strong>
-                <button onClick={this.initLogin.bind(this)}>Login</button>
+                &nbsp;&nbsp;<button type="button" class="btn btn-primary" onClick={this.initLogin.bind(this)}>Login</button>
             </div>
         );
     }

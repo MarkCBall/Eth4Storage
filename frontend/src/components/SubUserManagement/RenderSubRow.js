@@ -48,7 +48,7 @@ class RenderSubRow extends Component {
                     <div key={usr.key} className="row">
                         <div className="col-1 col-solid"></div>
                         <div className="col-4 col-solid"></div>
-                        <div className="col-1 col-dotted"></div>
+                        {/* <div className="col-1 col-dotted"></div> */}
                         <div className="col-6">
                         {usr.canWrite ? 
                                     <div className="dot green"></div>

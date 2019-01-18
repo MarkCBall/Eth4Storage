@@ -12,6 +12,7 @@ import Upload from './components/Upload'
 import Download from './components/Download'
 import UserManagement from './components/UserManagement'
 import Home from './components/Home'
+import NavHeader from './components/navHeader'
 
 
 
@@ -26,9 +27,9 @@ class App extends Component {
         super(props)
         this.state = {
             //change these defaults to an account that has more info
-            date: "2018-11-19 at 11:00 o 'clock",
+            date: "(Not logged in)",
             dateSignature: "0xda48e9e6024d16bd4268c13afce15a17574ad50f8280f57f27afe84a80bec0a4084df72842055a3c3bd5489c3066060717d9242764cbd7b47fd30dd677034b401b",
-            verifiedAddress: "0x22dce447732ef5ad523db7e6abda46ba8a9d0781"
+            verifiedAddress: "(Not logged in)"
         }
     }
 
@@ -54,7 +55,7 @@ class App extends Component {
         console.log("date",this.state.date)
         console.log("dadateSignaturete",this.state.dateSignature)
         console.log("verifiedAddress",this.state.verifiedAddress)
-        
+
     }
 
 
@@ -62,7 +63,8 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <div className="App">
-
+                <NavHeader />
+                <br />
                     <Login
                         date={this.state.date}
                         verifiedAddress={this.state.verifiedAddress}
@@ -73,12 +75,17 @@ class App extends Component {
 
                     <Switch>
                         <Route path="/Upload"
-                            render={(props) => <Upload {...props} verifiedAddress={this.state.verifiedAddress} />}
+                            render={(props) => <Upload
+                                {...props}
+                                verifiedAddress={this.state.verifiedAddress}
+                                date={this.state.date}
+                                dateSignature={this.state.dateSignature}
+                                />}
                         />
 
                         <Route path="/Download"
                             render={() => <Download
-                                verifiedAddress={this.state.verifiedAddress} 
+                                verifiedAddress={this.state.verifiedAddress}
                                 date={this.state.date}
                                 dateSignature={this.state.dateSignature}
                                 />}

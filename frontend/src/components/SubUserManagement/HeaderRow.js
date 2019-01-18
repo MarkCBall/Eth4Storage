@@ -8,16 +8,13 @@ class HeaderRow extends Component {
         return (
             <div className="row line-above">
                 <div className="col-1 col-solid">
-                    {this.props.row1}
+                    <b>{this.props.row1}</b>
                 </div>
                 <div className="col-4 col-solid">
-                    {this.props.row2}
-                </div>
-                <div className="col-1 col-dotted">
-                    {this.props.row3}
+                    <b>{this.props.row2}</b>
                 </div>
                 <div className="col-6">
-                    {this.props.row4}
+                    <b>{this.props.row4}</b>
                 </div>
             </div>
         );

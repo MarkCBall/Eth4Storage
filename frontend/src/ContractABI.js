@@ -4,7 +4,7 @@
 
 //this file contains the contract ABI and address
 
-export var ContractAddress = "0x14A0038Cb38C5e530c85995A335F16a1A4817B02";
+export var ContractAddress = "0xb54bed6bd6cc802c6b3d27bc52723776c439772a";
 
 var ContractABI = [
   {
