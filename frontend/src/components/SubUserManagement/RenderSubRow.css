@@ -1,12 +1,12 @@
 .dot {
-    height: 13px;
-    width: 13px;
-    border-radius: 100%;
-    display: inline-block;
-  }
-.red{
-    background-color: red;
+  height: 13px;
+  width: 13px;
+  border-radius: 100%;
+  display: inline-block;
 }
-.green{
-    background-color: green;
+.red {
+  background-color: red;
+}
+.green {
+  background-color: green;
 }

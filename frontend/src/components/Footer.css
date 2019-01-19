@@ -1,14 +1,14 @@
 .footer {
-  position:fixed;
-  bottom:0;
-  width:100%;
-  display:flex;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
   justify-content: space-between;
 }
 
 .footer-item {
   background-color: #5cb85c;
-  height:40px;
+  height: 40px;
   flex: 1;
   display: flex;
   align-items: center;

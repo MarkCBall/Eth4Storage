@@ -2,23 +2,22 @@
     text-align: left
 } */
 
-
-.tabbed{
-    margin-left: 100px
+.tabbed {
+  margin-left: 100px;
 }
 
-.main-tile{
-    font-size: 0.75em
+.main-tile {
+  font-size: 0.75em;
 }
 
 .col-solid {
-    /* padding-right:20px; */
-    border-right: 1px solid blue;
-    /* background-color: blue; */
+  /* padding-right:20px; */
+  border-right: 1px solid blue;
+  /* background-color: blue; */
 }
 
 .col-dotted {
-    /* padding-right:20px; */
-    border-right: 1px solid blue;
-    /* background-color: blue; */
+  /* padding-right:20px; */
+  border-right: 1px solid blue;
+  /* background-color: blue; */
 }
