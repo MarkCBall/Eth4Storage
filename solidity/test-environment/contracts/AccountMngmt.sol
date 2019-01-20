@@ -2,6 +2,7 @@
 
 pragma solidity >=0.4.22 <0.6.0;
 
+// This contract manages account permissions
 contract AccountMngmt {
 
     address public owner;
@@ -10,8 +11,18 @@ contract AccountMngmt {
     uint public initialBal;
 
     Account[] public Accounts;
-    struct Account {address AdminAddr; uint Bal; User[] Users;}
-    struct User {address UserAddy; bool CanWrite;}
+
+    struct Account {
+      address AdminAddr;
+      uint Bal;
+      User[] Users;
+    };
+
+    struct User {
+      address UserAddy;
+      bool CanWrite;  //TODO change to permission
+      bool CanExecute;
+    }
 
     constructor() public {
         owner = msg.sender;
@@ -47,12 +58,16 @@ contract AccountMngmt {
         Accounts.length++;
         uint acctN = Accounts.length-1;
         Accounts[acctN].AdminAddr = msg.sender;
-        Accounts[acctN].Bal = initialBal;
+        Accounts[acctN].Bal = initialBal; //TODO ? initialbal or msg.value?
     }
     function addFunds(uint _Acct) public payable {
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to add funds");
         Accounts[_Acct].Bal += msg.value;
     }
+
+    //TODO rm approveViewer/approveWriter -> addUser
+    //TODO add allow/disallow read/write/execetue
+
     function approveViewer(uint _Acct, address _User) public {
         //ensure message sender is admin of the account and has sufficient balance
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");

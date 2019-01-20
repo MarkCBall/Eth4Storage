@@ -1,7 +1,10 @@
+// OUTDATED CODE FOR NOW -> See ./test-environment/contracts/AccountMngmt.sol
+
+
 //deployed to 0x14A0038Cb38C5e530c85995A335F16a1A4817B02 ropsten - deployed from dylan's mac
 
 pragma solidity ^0.4.25;
-    
+
 contract AccountMngmt {
     
     address public owner;
@@ -12,7 +15,7 @@ contract AccountMngmt {
     Account[] public Accounts;
     struct Account {address AdminAddr; uint Bal; User[] Users;}
     struct User {address UserAddy; bool CanWrite;}
-    
+
     constructor() public {
         owner = msg.sender;
         // currency unit is wei
