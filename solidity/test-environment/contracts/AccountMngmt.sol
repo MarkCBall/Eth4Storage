@@ -20,6 +20,7 @@ contract AccountMngmt {
 
     struct User {
       address UserAddy;
+      bool CanRead;
       bool CanWrite;  //TODO change to permission
       bool CanExecute;
     }
@@ -27,8 +28,8 @@ contract AccountMngmt {
     constructor() public {
         owner = msg.sender;
         // currency unit is wei
-        accPrice = 500000000000000000;
-        userPrice = 100000000000000000;
+        accPrice   = 500000000000000000;
+        userPrice  = 100000000000000000;
         initialBal = 325000000000000000;
     }
 
@@ -58,20 +59,17 @@ contract AccountMngmt {
         Accounts.length++;
         uint acctN = Accounts.length-1;
         Accounts[acctN].AdminAddr = msg.sender;
-        Accounts[acctN].Bal = initialBal; //TODO ? initialbal or msg.value?
+        Accounts[acctN].Bal = initialBal;
     }
     function addFunds(uint _Acct) public payable {
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to add funds");
         Accounts[_Acct].Bal += msg.value;
     }
 
-    //TODO rm approveViewer/approveWriter -> addUser
-    //TODO add allow/disallow read/write/execetue
-
-    // TODO add permissions as parameter to initialize new user
+    // TODO add permissions as parameter to initialize new user & remove other approve funcs
     function addUser(uint _Acct, address _User) public {
       //ensure message sender is admin of the account and has sufficient balance
-      require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
+      require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to add users");
       require(Accounts[_Acct].Bal >= userPrice, "Not enough funds!");
       Accounts[_Acct].Bal -= userPrice;
 
@@ -81,7 +79,7 @@ contract AccountMngmt {
       Accounts[_Acct].Users[numUsersInAcct].UserAddy = _User;
     }
 
-    // TODO should remove this function?
+    // TODO should remove this function after // OPTIMIZE: ?
     function approveViewer(uint _Acct, address _User) public {
         //ensure message sender is admin of the account and has sufficient balance
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
@@ -94,7 +92,7 @@ contract AccountMngmt {
         Accounts[_Acct].Users[numUsersInAcct].UserAddy = _User;
     }
 
-    // TODO should remove this function?
+    // TODO should remove this function after // OPTIMIZE: ?
     function approveWriter(uint _Acct, address _User) public {
         //ensure message sender is admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
@@ -108,6 +106,22 @@ contract AccountMngmt {
         //give write permission
         Accounts[_Acct].Users[numUsersInAcct].CanWrite = true;
     }
+
+    // TODO should remove this function after // OPTIMIZE: ?
+    function approveExecute(uint _Acct, address _User) public {
+        //ensure message sender is admin of the account
+        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve user execute");
+        require(Accounts[_Acct].Bal >= userPrice, "Not enough funds!");
+        Accounts[_Acct].Bal -= userPrice;
+
+        //add user to the account
+        Accounts[_Acct].Users.length++;
+        uint numUsersInAcct = Accounts[_Acct].Users.length-1;
+        Accounts[_Acct].Users[numUsersInAcct].UserAddy = _User;
+        //give write permission
+        Accounts[_Acct].Users[numUsersInAcct].CanExecute = true;
+    }
+
     function giveOwnership(uint _Acct, address _newowner) public {
         //ensure message sender is admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to transfer ownership");
@@ -116,6 +130,7 @@ contract AccountMngmt {
     }
 
     // TODO optmize permissions -> can we have only 1 function instead of 6 for permissions?
+    // OPTIMIZE:
     function disallowRead(uint _Acct, uint _UserNum) public {
         //ensure message sender is admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to disallow read");
@@ -153,6 +168,7 @@ contract AccountMngmt {
         Accounts[_Acct].Users[_UserNum].CanExecute = true;
     }
 
+    // TODO: delete sets user to zero. will still be included in counts etc.
     function deleteUser(uint _Acct, uint _UserNum) public {
         //ensure message sender is admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to delete users");
@@ -161,8 +177,9 @@ contract AccountMngmt {
     }
 
     // View functions
-    function usersOfAccount(uint _Acct, uint _User) public view returns(address, bool){
-        return (Accounts[_Acct].Users[_User].UserAddy,Accounts[_Acct].Users[_User].CanWrite );
+    // TODO // OPTIMIZE:
+    function usersOfAccount(uint _Acct, uint _User) public view returns(address, bool, bool, bool){
+        return (Accounts[_Acct].Users[_User].UserAddy,Accounts[_Acct].Users[_User].CanRead, Accounts[_Acct].Users[_User].CanWrite, Accounts[_Acct].Users[_User].CanExecute);
     }
     function accountCount() public view returns(uint) {
         return Accounts.length;
