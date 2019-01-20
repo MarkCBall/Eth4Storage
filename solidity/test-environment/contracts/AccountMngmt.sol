@@ -1,9 +1,9 @@
 //deployed to 0x14A0038Cb38C5e530c85995A335F16a1A4817B02 ropsten - deployed from dylan's mac
 
-pragma solidity ^0.4.23;
-    
+pragma solidity >=0.4.22 <0.6.0;
+
 contract AccountMngmt {
-    
+
     address public owner;
     uint public accPrice;
     uint public userPrice;
@@ -12,8 +12,8 @@ contract AccountMngmt {
     Account[] public Accounts;
     struct Account {address AdminAddr; uint Bal; User[] Users;}
     struct User {address UserAddy; bool CanWrite;}
-    
-    constructor() public { 
+
+    constructor() public {
         owner = msg.sender;
         // currency unit is wei
         accPrice = 500000000000000000;
