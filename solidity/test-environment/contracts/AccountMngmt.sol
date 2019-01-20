@@ -2,7 +2,7 @@
 
 pragma solidity >=0.4.22 <0.6.0;
 
-// This contract manages account permissions
+// This contract manages account creation, user additions and permissions
 contract AccountMngmt {
 
     address public owner;
@@ -68,6 +68,20 @@ contract AccountMngmt {
     //TODO rm approveViewer/approveWriter -> addUser
     //TODO add allow/disallow read/write/execetue
 
+    // TODO add permissions as parameter to initialize new user
+    function addUser(uint _Acct, address _User) public {
+      //ensure message sender is admin of the account and has sufficient balance
+      require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
+      require(Accounts[_Acct].Bal >= userPrice, "Not enough funds!");
+      Accounts[_Acct].Bal -= userPrice;
+
+      //add the user linked to the account
+      Accounts[_Acct].Users.length++;
+      uint numUsersInAcct = Accounts[_Acct].Users.length-1;
+      Accounts[_Acct].Users[numUsersInAcct].UserAddy = _User;
+    }
+
+    // TODO should remove this function?
     function approveViewer(uint _Acct, address _User) public {
         //ensure message sender is admin of the account and has sufficient balance
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
@@ -79,6 +93,8 @@ contract AccountMngmt {
         uint numUsersInAcct = Accounts[_Acct].Users.length-1;
         Accounts[_Acct].Users[numUsersInAcct].UserAddy = _User;
     }
+
+    // TODO should remove this function?
     function approveWriter(uint _Acct, address _User) public {
         //ensure message sender is admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
@@ -98,6 +114,20 @@ contract AccountMngmt {
         //change the account’s admin
         Accounts[_Acct].AdminAddr = _newowner;
     }
+
+    // TODO optmize permissions -> can we have only 1 function instead of 6 for permissions?
+    function disallowRead(uint _Acct, uint _UserNum) public {
+        //ensure message sender is admin of the account
+        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to disallow read");
+        //remove user’s write access
+        Accounts[_Acct].Users[_UserNum].CanRead = false;
+    }
+    function allowRead(uint _Acct, uint _UserNum) public {
+        //ensure message sender is admin of the account
+        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to allow read");
+        //give the user write access
+        Accounts[_Acct].Users[_UserNum].CanRead = true;
+    }
     function disallowWrite(uint _Acct, uint _UserNum) public {
         //ensure message sender is admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to disallow writers");
@@ -110,6 +140,19 @@ contract AccountMngmt {
         //give the user write access
         Accounts[_Acct].Users[_UserNum].CanWrite = true;
     }
+    function disallowExecute(uint _Acct, uint _UserNum) public {
+        //ensure message sender is admin of the account
+        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to disallow execute");
+        //remove user’s write access
+        Accounts[_Acct].Users[_UserNum].CanExecute = false;
+    }
+    function allowExecute(uint _Acct, uint _UserNum) public {
+        //ensure message sender is admin of the account
+        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to allow execute");
+        //give the user write access
+        Accounts[_Acct].Users[_UserNum].CanExecute = true;
+    }
+
     function deleteUser(uint _Acct, uint _UserNum) public {
         //ensure message sender is admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to delete users");
