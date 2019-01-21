@@ -13,24 +13,55 @@ import ContractABI, { ContractAddress } from "../ContractABI";
 import "./Header.css";
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      //addyPermission: {}
-    };
-    this.contractToState();
-  }
+    constructor(props) {
+        super(props)
+        this.state = {
+            //addyPermission: {}
+        }
+        this.contractToState();
+    }
 
-  // //WHERE WOULD THE GLOBAL STATE IDEALLY BE SET?????????
-  // //its done here in the header since the header only loads once... better ideas?
+    // //WHERE WOULD THE GLOBAL STATE IDEALLY BE SET?????????
+    // //its done here in the header since the header only loads once... better ideas?
 
-  promisify = inner =>
-    new Promise((resolve, reject) =>
-      inner((err, res) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(res);
+
+    promisify = (inner) =>
+        new Promise((resolve, reject) =>
+            inner((err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(res);
+                }
+            })
+        )
+
+    addAccountData(Contract, acctNum) {
+        Contract.Accounts(acctNum, (e,resAcct)=>{
+            console.log(resAcct)
+            this.props.addAccount({ key: acctNum, own: resAcct, bal: resAcct[1].toString(10) })
+        })
+    }
+
+    addUserData(Contract, acctNum, userNum) {
+        Contract.usersOfAccount(acctNum, userNum, (e,resUser)=>{
+            this.props.addUserToAccount(acctNum, { key: userNum, addy: resUser[0], canWrite: resUser[1] });
+        })
+    }
+
+    iterateUsers(Contract, acctNum) {
+        Contract.userCountsInAccount.call(acctNum, (e,resNumUsers)=>{
+        let numUsers = resNumUsers.toString(10);
+            for (let userNum = 0; userNum < numUsers; userNum++) {
+                this.addUserData(Contract, acctNum, userNum);
+            }
+        })
+    }
+    iterateAccounts(Contract,numAccts){
+        for (let acctNum = 0; acctNum < numAccts; acctNum++) {
+            this.addAccountData(Contract, acctNum)
+            this.iterateUsers(Contract,acctNum)
+
         }
       })
     );

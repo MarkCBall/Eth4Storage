@@ -28,31 +28,31 @@ class UserManagement extends Component {
     return window.web3.eth.contract(ContractABI).at(ContractAddress);
   }
 
-  //changes the status of is users are displayed under the account
-  ToggleUsers(acctNum) {
-    let tmparr = this.state.isExpanded;
-    tmparr[acctNum] = !this.state.isExpanded[acctNum];
-    this.setState({ isExpanded: tmparr });
-  }
-  //interacts with the smart contract to add a account
-  addAccount = () => {
-    this.GetContract().accPrice.call((e, r) => {
-      this.GetContract().createAccount(
-        { from: window.web3.eth.accounts[0], value: r },
-        function(e, r) {}
-      );
-    });
-  };
-  /////////////////////////////////////////////////////////////////////////////////////////////////////
-  render() {
-    return (
-      <div className="main-tile">
-        <br />
-        <br />
-        <TitleTile title="User Management Page">
-          <p>
-            The contract address is: <strong>{ContractAddress}</strong> and it
-            has
+    //changes the status of is users are displayed under the account
+    ToggleUsers(acctNum) {
+        let tmparr = this.state.isExpanded;
+        tmparr[acctNum] = !this.state.isExpanded[acctNum];
+        this.setState({ isExpanded: tmparr });
+    }
+    //interacts with the smart contract to add a account
+    addAccount = () => {
+        this.GetContract().accPrice.call((e, r) => {
+            this.GetContract().createAccount(
+                { from: window.web3.eth.accounts[0], value: 0 },
+                function (e, r) { }
+            );
+        });
+    };
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    render() {
+        return (
+            <div className="main-tile">
+            <br /><br />
+                <TitleTile title="User Management Page">
+                    <p>
+                        The contract address is: <strong>{ContractAddress}</strong> and it
+                        has
+
             <strong> {this.props.state.todo.accounts.length}</strong> account(s)
           </p>
         </TitleTile>
