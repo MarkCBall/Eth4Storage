@@ -1,12 +1,12 @@
 {
-    "name": "solidity",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "solc": "*"
-    },
-    "devDependencies": {
-        "chai": "^4.2.0",
-        "mocha": "^5.2.0"
-    }
+  "name": "solidity",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "solc": "*"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
+  }
 }

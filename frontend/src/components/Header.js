@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 //relative imports redux items
 import { addAccount } from "../redux/actions/todo";
 import { addUserToAccount } from "../redux/actions/todo";
 
 //relative imports smart contract data
-import ContractABI, { ContractAddress } from '../ContractABI';
+import ContractABI, { ContractAddress } from "../ContractABI";
 
 //CSS Files
-import './Header.css';
-
-
+import "./Header.css";
 
 class Header extends Component {
     constructor(props) {
@@ -63,32 +61,71 @@ class Header extends Component {
         for (let acctNum = 0; acctNum < numAccts; acctNum++) {
             this.addAccountData(Contract, acctNum)
             this.iterateUsers(Contract,acctNum)
+
         }
+      })
+    );
+
+  addAccountData(Contract, acctNum) {
+    Contract.Accounts(acctNum, (e, resAcct) => {
+      this.props.addAccount({
+        key: acctNum,
+        own: resAcct[0],
+        bal: resAcct[1].toString(10)
+      });
+    });
+  }
+
+  addUserData(Contract, acctNum, userNum) {
+    Contract.usersOfAccount(acctNum, userNum, (e, resUser) => {
+      this.props.addUserToAccount(acctNum, {
+        key: userNum,
+        addy: resUser[0],
+        canWrite: resUser[1]
+      });
+    });
+  }
+
+  iterateUsers(Contract, acctNum) {
+    Contract.userCountsInAccount.call(acctNum, (e, resNumUsers) => {
+      let numUsers = resNumUsers.toString(10);
+      for (let userNum = 0; userNum < numUsers; userNum++) {
+        this.addUserData(Contract, acctNum, userNum);
+      }
+    });
+  }
+  iterateAccounts(Contract, numAccts) {
+    for (let acctNum = 0; acctNum < numAccts; acctNum++) {
+      this.addAccountData(Contract, acctNum);
+      this.iterateUsers(Contract, acctNum);
     }
+  }
 
-    async contractToState() {
-        let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-        let resNumAccts = await this.promisify(cb => Contract.accountCount.call(cb))
-        let numAccts = parseInt(resNumAccts.toString(10));
-        await this.iterateAccounts(Contract,numAccts)
-        // for (let acctNum = 0; acctNum < numAccts; acctNum++) {
-        //     this.addAccountData(Contract, acctNum)
-        //     this.iterateUsers(Contract,acctNum)
-        // }
+  async contractToState() {
+    let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+    let resNumAccts = await this.promisify(cb =>
+      Contract.accountCount.call(cb)
+    );
+    let numAccts = parseInt(resNumAccts.toString(10));
+    await this.iterateAccounts(Contract, numAccts);
+    // for (let acctNum = 0; acctNum < numAccts; acctNum++) {
+    //     this.addAccountData(Contract, acctNum)
+    //     this.iterateUsers(Contract,acctNum)
+    // }
+  }
 
-    }
-
-    render() {
-        return (
-          <div></div>
-        );
-    };
-};
-
-const mapStateToProps = function (state) {
-    return {
-        state
-    }
+  render() {
+    return <div />;
+  }
 }
 
-export default connect(mapStateToProps, { addAccount, addUserToAccount })(Header)
+const mapStateToProps = function(state) {
+  return {
+    state
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { addAccount, addUserToAccount }
+)(Header);

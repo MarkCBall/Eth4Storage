@@ -9,13 +9,11 @@ This frontend interfaces with a ropstein ethereum smart contract manages authent
 On the upload page, administrators are able to upload a string representing transcript grades/info.Similarly, all the uploaded data is displayed on the download page to both admin and view only permissioned users. This data is restricted by the smart contract and account number.
 
 #### NOTE---You must have created an account AND be logged in with that account to see the account owner's functionality.
-<br><br>
 
+<br><br>
 
 From the terminal do the following commands to start the app on<br>
 NPM Install in the MyServer Directory<br>
 NPM Start in the MyServer Directory<br>
 NPM Install in the frontend Directory<br>
 NPM Start in the frontend Directory<br>
-
-
