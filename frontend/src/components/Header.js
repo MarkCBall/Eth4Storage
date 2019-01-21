@@ -40,7 +40,8 @@ class Header extends Component {
 
     addAccountData(Contract, acctNum) {
         Contract.Accounts(acctNum, (e,resAcct)=>{
-            this.props.addAccount({ key: acctNum, own: resAcct[0], bal: resAcct[1].toString(10) })
+            console.log(resAcct)
+            this.props.addAccount({ key: acctNum, own: resAcct, bal: resAcct[1].toString(10) })
         })
     }
 
