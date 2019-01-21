@@ -10,7 +10,7 @@ contract AccountMngmt {
     //STATE user management
     address public owner;
     Account[] public Accounts;
-    struct Account {address AdminAddr; uint Bal; User[] Users;}
+    struct Account {address AdminAddr; User[] Users;}
     struct User {address UserAddy; byte Permissions;}
     uint public accPrice;//price to make an account
     uint public userPrice;//price to add a user
@@ -19,12 +19,22 @@ contract AccountMngmt {
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
     
+    event TokensBought(address indexed buyer, uint TokenAmount, uint weiAmount);
+    event TokensSold(address indexed seller, uint TokenAmount, uint weiAmount);
+    
     //constructor function
     constructor() public {
         owner = msg.sender;
         // currency unit is wei
-        accPrice = 50000000000000000;
-        userPrice = 10000000000000000;
+        accPrice = 500;
+        userPrice = 100;
+    }
+    
+    function ownerWithdrawChange() public {
+        //not functioning - but why???
+        // require(msg.sender==owner);
+        uint numTokensUnburnt = _totalSupply - balances[0x0000000000000000000000000000000000000000];
+        owner.transfer(address(this).balance - priceForSelling(_totalSupply, numTokensUnburnt) * numTokensUnburnt);
     }
 
     //SETTER FUNCTIONS
@@ -69,35 +79,47 @@ contract AccountMngmt {
         return true;
     }
 
-    //bonding curve functions - need to do math to figure out #tokens given #eth -- // need to add events to buy and sell tokens
-    function priceAdjusted(uint s, uint b) public pure returns (uint){
-    //let p = Price of tokens in eth/token
-    //let s = Total current supply of tokens
-    //let e = Total ethereum in the smart contract
-    //let b = the number of tokens to buy
-    //the price for a token will be the total supply^2
-    //p=s^2
-    //The integral of p=s^2 is e= ⅓ supply^3
-    //The number of eth needed to buy b tokens is given by:
-    // (1 / 3)(s+b)^3 - (1 / 3)(s)^3
-    //refactored to s^2+b^2 /3+sb
-    //The average price to buy b tokens is number of eth needed divided by b
-    //NOTE THIS FAILS DUE TO ROUNDING ERRORS AND FRONT RUNNING CONCERNS
-    return (s*b +   s*s + (b*b/3))/b;
+    // //bonding curve functions - need to do math to figure out #tokens given #eth -- // need to add events to buy and sell tokens
+    // function priceAdjusted(uint s, uint b) public pure returns (uint){
+    // //let p = Price of tokens in eth/token
+    // //let s = Total current supply of tokens
+    // //let e = Total ethereum in the smart contract
+    // //let b = the number of tokens to buy
+    // //the price for a token will be the total supply^2
+    // //p=s^2
+    // //The integral of p=s^2 is e= ⅓ supply^3
+    // //The number of eth needed to buy b tokens is given by:
+    // // (1 / 3)(s+b)^3 - (1 / 3)(s)^3
+    // //refactored to s^2+b^2 /3+sb
+    // //The average price to buy b tokens is number of eth needed divided by b
+    // //NOTE THIS FAILS DUE TO ROUNDING ERRORS AND FRONT RUNNING CONCERNS
+    // return (s*b +   s*s + (b*b/3))/b;
+    // }
+    
+    function priceForBuying(uint s, uint b) public pure returns (uint){
+        return (( s*s + s*b + (b*b/3))/b)*101/100;
     }
+    function priceForSelling(uint s, uint b) public pure returns (uint){
+        return (s*s - s*b + (b*b/3))/b;
+    }
+    
+    
     function buyTokens(uint numTokens) public payable{
-        uint equivEth = priceAdjusted(_totalSupply,numTokens)*numTokens;
+        uint equivEth = priceForBuying(_totalSupply,numTokens)*numTokens;
         require(msg.value >= equivEth, "You didn't send enough Eth");
         balances[msg.sender]+=numTokens;
         _totalSupply+=numTokens;
-        msg.sender.transfer(msg.value - equivEth)
+        msg.sender.transfer(msg.value - equivEth);
+        emit TokensBought(msg.sender, numTokens, equivEth);
+        
     }
     function sellTokens(uint numTokens) public{
-        uint equivEth = priceAdjusted(_totalSupply,numTokens)*numTokens;
+        uint equivEth = priceForSelling(_totalSupply,numTokens)*numTokens;
         require(balances[msg.sender]>=numTokens, "You are trying to sell more tokens than you have");
         balances[msg.sender] -= numTokens;
         _totalSupply -= numTokens;
         msg.sender.transfer(equivEth);
+        emit TokensSold(msg.sender, numTokens, equivEth);
         //make it so eth isnt withdrawn instantly to prevent someone from using a service and withdrawing instantly. Delay by 100, 1000 blocks?//create a mapping (address -> WithdrawableEth)//struct WithdrawableEth {timestamp, amount of eth}
     }
     
