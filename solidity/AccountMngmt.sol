@@ -112,7 +112,7 @@ contract AccountMngmt {
     function createAccount() public {
         require(balances[msg.sender] >= accPrice, "You do not have enough funds to create an account");
         //require()//this eth address doesn't already have an account//require that this address doesn't have an account//indicate that this address has an account now//OR can an address have multiple accounts?
-        0x0000000000000000000000000000000000000000.transfer(accPrice);
+        transfer(0x0000000000000000000000000000000000000000,accPrice);
         Accounts.length++;
         uint acctN = Accounts.length-1;
         Accounts[acctN].AdminAddr = msg.sender;
@@ -121,6 +121,7 @@ contract AccountMngmt {
     function createUserInAccount(uint _Acct, address _User, byte _Permissions) public{
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
         require(balances[msg.sender] >= userPrice, "Not enough funds!");
+        transfer(0x0000000000000000000000000000000000000000,userPrice);
         Accounts[_Acct].Users.length++;
         uint numUsersInAcct = Accounts[_Acct].Users.length-1;
         //can the two lines below be optimized?

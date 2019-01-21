@@ -38,7 +38,7 @@ class UserManagement extends Component {
     addAccount = () => {
         this.GetContract().accPrice.call((e, r) => {
             this.GetContract().createAccount(
-                { from: window.web3.eth.accounts[0], value: r },
+                { from: window.web3.eth.accounts[0], value: 0 },
                 function (e, r) { }
             );
         });
