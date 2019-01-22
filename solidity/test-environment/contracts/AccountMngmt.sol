@@ -1,23 +1,33 @@
 //deployed to 0x14A0038Cb38C5e530c85995A335F16a1A4817B02 ropsten - deployed from dylan's mac
 
-pragma solidity ^0.4.23;
-    
+pragma solidity >=0.4.22 <0.6.0;
+
+// This contract manages account creation, user additions and permissions
 contract AccountMngmt {
-    
+
     address public owner;
     uint public accPrice;
     uint public userPrice;
     uint public initialBal;
 
     Account[] public Accounts;
-    struct Account {address AdminAddr; uint Bal; User[] Users;}
-    struct User {address UserAddy; bool CanWrite;}
-    
-    constructor() public { 
+
+    struct Account {
+      address AdminAddr;
+      uint Bal;
+      User[] Users;
+    };
+
+    struct User {
+      address UserAddy;
+      uint8 Permission;
+    }
+
+    constructor() public {
         owner = msg.sender;
         // currency unit is wei
-        accPrice = 500000000000000000;
-        userPrice = 100000000000000000;
+        accPrice   = 500000000000000000;
+        userPrice  = 100000000000000000;
         initialBal = 325000000000000000;
     }
 
@@ -53,48 +63,40 @@ contract AccountMngmt {
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to add funds");
         Accounts[_Acct].Bal += msg.value;
     }
-    function approveViewer(uint _Acct, address _User) public {
-        //ensure message sender is admin of the account and has sufficient balance
-        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
-        require(Accounts[_Acct].Bal >= userPrice, "Not enough funds!");
-        Accounts[_Acct].Bal -= userPrice;
 
-        //add the user linked to the account
-        Accounts[_Acct].Users.length++;
-        uint numUsersInAcct = Accounts[_Acct].Users.length-1;
-        Accounts[_Acct].Users[numUsersInAcct].UserAddy = _User;
-    }
-    function approveWriter(uint _Acct, address _User) public {
-        //ensure message sender is admin of the account
-        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
-        require(Accounts[_Acct].Bal >= userPrice, "Not enough funds!");
-        Accounts[_Acct].Bal -= userPrice;
+    // TODO add permissions as parameter to initialize new user & remove other approve funcs
+    function addUser(uint _Acct, address _User, uint8 _Permission) public {
+      //ensure message sender is admin of the account and has sufficient balance
+      require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to add users");
+      require(Accounts[_Acct].Bal >= userPrice, "Not enough funds!");
+      Accounts[_Acct].Bal -= userPrice;
 
-        //add user to the account
-        Accounts[_Acct].Users.length++;
-        uint numUsersInAcct = Accounts[_Acct].Users.length-1;
-        Accounts[_Acct].Users[numUsersInAcct].UserAddy = _User;
-        //give write permission
-        Accounts[_Acct].Users[numUsersInAcct].CanWrite = true;
+      //add the user linked to the account
+      Accounts[_Acct].Users.length++;
+      uint numUsersInAcct = Accounts[_Acct].Users.length-1;
+      Accounts[_Acct].Users[numUsersInAcct].UserAddy = _User;
+
+      // permissions
+      Accounts[_Acct].Users[numUsersInAcct].Permission = _Permission;
     }
+
     function giveOwnership(uint _Acct, address _newowner) public {
         //ensure message sender is admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to transfer ownership");
         //change the account’s admin
         Accounts[_Acct].AdminAddr = _newowner;
     }
-    function disallowWrite(uint _Acct, uint _UserNum) public {
-        //ensure message sender is admin of the account
-        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to disallow writers");
-        //remove user’s write access
-        Accounts[_Acct].Users[_UserNum].CanWrite = false;
+
+    // TODO optmize permissions -> can we have only 1 function instead of 6 for permissions?
+    // OPTIMIZE:
+    function updatePermission(uint _Acct, uint _UserNum, uint8 _Permission) public {
+      //ensure message sender is admin of the account
+      require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to update permissions");
+      //remove user’s write access
+      Accounts[_Acct].Users[_UserNum].Permission = _Permission;
     }
-    function allowWrite(uint _Acct, uint _UserNum) public {
-        //ensure message sender is admin of the account
-        require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to allow writers");
-        //give the user write access
-        Accounts[_Acct].Users[_UserNum].CanWrite = true;
-    }
+
+    // TODO: delete sets user to zero. will still be included in counts etc.
     function deleteUser(uint _Acct, uint _UserNum) public {
         //ensure message sender is admin of the account
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to delete users");
@@ -103,8 +105,9 @@ contract AccountMngmt {
     }
 
     // View functions
-    function usersOfAccount(uint _Acct, uint _User) public view returns(address, bool){
-        return (Accounts[_Acct].Users[_User].UserAddy,Accounts[_Acct].Users[_User].CanWrite );
+    // TODO // OPTIMIZE: permissions
+    function usersOfAccount(uint _Acct, uint _User) public view returns(address, uint8){
+        return (Accounts[_Acct].Users[_User].UserAddy,Accounts[_Acct].Users[_User].Permission);
     }
     function accountCount() public view returns(uint) {
         return Accounts.length;

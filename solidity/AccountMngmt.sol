@@ -1,5 +1,5 @@
 pragma solidity ^0.4.25;
-    
+
 contract AccountMngmt {
     
     //STATE ERC20 based 
@@ -10,6 +10,7 @@ contract AccountMngmt {
     //STATE user management
     address public owner;
     Account[] public Accounts;
+
     struct Account {address AdminAddr; User[] Users;}
     struct User {address UserAddy; byte Permissions;}
     uint public accPrice;//price to make an account
