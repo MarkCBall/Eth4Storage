@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+//import store from "../redux/index";
 
 //relative imports redux items
 import { addAccount } from "../redux/actions/todo";
@@ -22,30 +23,18 @@ class Header extends Component {
     // //its done here in the header since the header only loads once... better ideas?
 
 
-    //promisify used to learn more code
-    promisify = (inner) =>
-        new Promise((resolve, reject) =>
-            inner((err, res) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(res);
-                }
-            })
-        )
+
     //pulls smart contract data semi-asyncronously
-    async contractToState() {
+    contractToState() {
         let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-        //find the number of account in the contract - done with promise
-        let resNumAccts = await this.promisify(cb =>
-            Contract.accountCount.call(cb)
-        );
-        let numAccts = parseInt(resNumAccts.toString(10));
-        //iterate over the accounts in the contract
-        for (let acctNum = 0; acctNum < numAccts; acctNum++) {
-            this.addAccountData(Contract, acctNum)
-            this.iterateUsers(Contract, acctNum)
-        }
+
+        Contract.accountCount.call((e, resNumAccts) => {
+            let numAccts = parseInt(resNumAccts.toString(10));
+            for (let acctNum = 0; acctNum < numAccts; acctNum++) {
+                this.addAccountData(Contract, acctNum)
+                this.iterateUsers(Contract, acctNum)
+            }
+        })
     }
     //adds the ethereum address of admin to each account
     addAccountData(Contract, acctNum) {
@@ -90,7 +79,12 @@ const mapStateToProps = function (state) {
     };
 };
 
+// const mapDispatchToProps = dispatch => ({
+//     addAccount:   (i) =>   dispatch(addAccount(i))    , 
+//     addUserToAccount: (i) >  dispatch(addAccount( i))
+// })
+
 export default connect(
     mapStateToProps,
-    { addAccount, addUserToAccount }
+    { addAccount, addUserToAccount } //mapDispatchToProps
 )(Header);
