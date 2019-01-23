@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import ContractABI, { ContractAddress } from "../../ContractABI";
+//import ContractABI, { ContractAddress } from "../../ContractABI";
 
 //CSS Files
 import "./RenderSubRow.css";
@@ -13,18 +13,18 @@ class RenderSubRow extends Component {
   }
   //call smart contract to delete user
   deleteUser(acctN, userN) {
-    var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-    MyContract.deleteUser(acctN, userN, (e, r) => {});
+    //var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+    this.props.Contract.deleteUser(acctN, userN, (e, r) => {});
   }
   //call smart contract to disable write access
   disableWrite(acctN, userN) {
-    var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-    MyContract.disallowWrite(acctN, userN, (e, r) => {});
+    //var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+    this.props.Contract.disallowWrite(acctN, userN, (e, r) => {});
   }
   //call smart contract to enable write access
   enableWrite(acctN, userN) {
-    var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-    MyContract.allowWrite(acctN, userN, (e, r) => {});
+    //var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+    this.props.Contract.allowWrite(acctN, userN, (e, r) => {});
   }
 
   //searches the global state for account# and returns the associated user array
@@ -90,7 +90,8 @@ class RenderSubRow extends Component {
 //export default RenderSubRow;
 const mapStateToProps = function(state) {
   return {
-    Accounts:state.QueryContract.accounts
+    Accounts:state.QueryContract.accounts,
+    Contract:state.QueryContract.contract
   };
 };
 
