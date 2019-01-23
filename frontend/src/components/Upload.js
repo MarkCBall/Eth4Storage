@@ -12,8 +12,8 @@ class Upload extends Component {
   }
 
   getPermissions = () => {
-    if (this.props.verifiedAddress in this.props.state.QueryContract.addyPermission) {
-      let permissionedAddresses = this.props.state.QueryContract.addyPermission[
+    if (this.props.verifiedAddress in this.props.permissionsByAddress) {
+      let permissionedAddresses = this.props.permissionsByAddress[
         this.props.verifiedAddress
       ];
       //filter only entries with write permission == true
@@ -105,7 +105,7 @@ class Upload extends Component {
 
 const mapStateToProps = function(state) {
   return {
-    state
+    permissionsByAddress:state.QueryContract.addyPermission
   };
 };
 export default connect(mapStateToProps)(Upload);

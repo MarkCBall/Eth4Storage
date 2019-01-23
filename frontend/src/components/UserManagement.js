@@ -53,7 +53,7 @@ class UserManagement extends Component {
                         The contract address is: <strong>{ContractAddress}</strong> and it
                         has
 
-            <strong> {this.props.state.QueryContract.accounts.length}</strong> account(s)
+            <strong> {this.props.Accounts.length}</strong> account(s)
           </p>
         </TitleTile>
         <br />
@@ -64,7 +64,7 @@ class UserManagement extends Component {
             // row3="Balance (Ether)"
             row4="Permissions"
           />
-          {this.props.state.QueryContract.accounts.map(acct => (
+          {this.props.Accounts.map(acct => (
             <div key={acct.key}>
               <RenderRow
                 account={acct}
@@ -112,7 +112,7 @@ class UserManagement extends Component {
 
 const mapStateToProps = function(state) {
   return {
-    state
+    Accounts:state.QueryContract.accounts
   };
 };
 
