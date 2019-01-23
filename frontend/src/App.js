@@ -13,6 +13,7 @@ import Download from "./components/Download";
 import UserManagement from "./components/UserManagement";
 import Home from "./components/Home";
 import NavHeader from "./components/navHeader";
+import Footer from "./components/Footer";
 
 //CSS Files
 import "./App.css";
@@ -105,6 +106,7 @@ class App extends Component {
             />
           </Switch>
         </div>
+        <Footer />
       </Provider>
     );
   }

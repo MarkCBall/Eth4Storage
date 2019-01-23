@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Footer from "./Footer";
+
 
 class Download extends Component {
   constructor(props) {
@@ -84,7 +84,7 @@ class Download extends Component {
           </div>
         </div>
 
-        <Footer />
+       
       </div>
     );
   }

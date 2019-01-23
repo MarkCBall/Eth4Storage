@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Footer from "./Footer";
 import "./Upload.css";
 
 class Upload extends Component {
@@ -95,7 +94,7 @@ class Upload extends Component {
           </div>
         </div>
 
-        <Footer />
+       
       </div>
     );
   }
