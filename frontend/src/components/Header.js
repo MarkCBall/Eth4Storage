@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import store from "../redux/index";
+//import store from "../redux/index";
 
 //relative imports redux items
 import todoActions from "../redux/actions/todo";
@@ -37,7 +37,6 @@ class Header extends Component {
             }
         })
     }
-
     //pulls user info from contract into state
     iterateUsers(Contract, acctNum) {
         //find the number of users in the account - done as a callback
@@ -45,23 +44,11 @@ class Header extends Component {
             let numUsers = resNumUsers.toString(10);
             //iterate over each user in the account -- should this be async????
             for (let userNum = 0; userNum < numUsers; userNum++) {
-
-
-                //HERE ITS BROKEN
-                this.addUserData(Contract, acctNum, userNum);
+                this.props.addUserToAccount(acctNum, userNum);
             }
         });
     }
-    //adds user's address and permission
-    addUserData(Contract, acctNum, userNum) {
-        Contract.usersOfAccount(acctNum, userNum, (e, resUser) => {
-            this.props.addUserToAccount(acctNum, {
-                key: userNum,
-                addy: resUser[0],
-                canWrite: resUser[1]
-            });
-        });
-    }
+ 
 
 
     render() {

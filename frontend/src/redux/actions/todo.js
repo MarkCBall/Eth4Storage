@@ -18,7 +18,7 @@ export default {
             })
         });
         //WHATS GOING ON HERE - it works, but why - why is this line needed?
-        return () => {
+        return (dispatch) => {
             //takes a promise 
             return AccountDataAsPromise.then((res) =>
                 dispatch({
@@ -32,19 +32,31 @@ export default {
         }
     },
 
+    addUserToAccount: (dispatch, acctNum, userNum) => {
+    //move this contract to global state
+    let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+    //REFACTOR ME AWAY - (contract)
 
-
-        addUserToAccount: (dispatch, acctN, user) => {
+    //putting the callback into a promise - error handling not done?
+    let UserDataAsPromise = new Promise((resolve, reject) => {
+        Contract.usersOfAccount(acctNum, userNum, (e, resUser) => {
+            resolve(resUser);
+        })
+    });
             return dispatch => {
-                dispatch({
-                    type: ADD_USER_TO_ACCOUNT,
-                    payload: { acctN: acctN, user: user }
-                })
+                return UserDataAsPromise.then((res) =>
+                    dispatch({
+                        type: ADD_USER_TO_ACCOUNT,
+                        payload: { 
+                            user: {
+                                key: acctNum,
+                                addy: res[0],
+                                canWrite: true// THIS NEEDS TO BE CHANGED AND DOWNSTREAM AS WELL
+                            },
+                            acctN: acctNum,
+                        }
+                    })
+                )
             }
         }
-
-
-
-
-
     }
