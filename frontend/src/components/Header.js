@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-//import store from "../redux/index";
 
 //relative imports redux items
 import todoActions from "../redux/actions/todo";
-//import { addAccount } from "../redux/actions/todo";
-//import { addUserToAccount } from "../redux/actions/todo";
 
 //relative imports smart contract data
 import ContractABI, { ContractAddress } from "../ContractABI";
@@ -14,15 +11,8 @@ import ContractABI, { ContractAddress } from "../ContractABI";
 class Header extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            //addyPermission: {}
-        }
         this.contractToState();
     }
-
-    // //WHERE WOULD THE GLOBAL STATE IDEALLY BE SET?????????
-    // //its done here in the header since the header only loads once... better ideas?
-
 
 
     //pulls smart contract data semi-asyncronously
@@ -56,11 +46,6 @@ class Header extends Component {
     }
 }
 
-const mapStateToProps = function (state) {
-    return {
-        state
-    };
-};
 
 function mapDispatchToProps(dispatch){
     return {
@@ -73,7 +58,4 @@ function mapDispatchToProps(dispatch){
     }
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps//{ addAccount, addUserToAccount } 
-)(Header);
+export default connect(null,mapDispatchToProps)(Header);
