@@ -4,14 +4,19 @@ import { connect } from "react-redux";
 //relative imports redux items
 import QueryContractActions from "../redux/actions/QueryContract";
 
-//relative imports smart contract data
-import ContractABI, { ContractAddress } from "../ContractABI";
 
 class ContractData extends Component {
     constructor(props) {
         super(props)
         this.setContract();
-        this.contractToState();
+        //give half a second for contract to get into state before moving on
+        //how can this be improved??
+        setTimeout(
+            (
+                () => 
+                this.contractToState()
+            )
+        ,500);
     }
 
     setContract(){
@@ -20,20 +25,18 @@ class ContractData extends Component {
 
     //pulls smart contract data semi-asyncronously
     contractToState() {
-        let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-
-        Contract.accountCount.call((e, resNumAccts) => {
-            let numAccts = parseInt(resNumAccts.toString(10));
-            for (let acctNum = 0; acctNum < numAccts; acctNum++) {
-                this.props.addAccount(acctNum);
-                this.iterateUsers(Contract, acctNum)
-            }
-        })
+                this.props.Contract.accountCount.call((e, resNumAccts) => {
+                    let numAccts = parseInt(resNumAccts.toString(10));
+                    for (let acctNum = 0; acctNum < numAccts; acctNum++) {
+                        this.props.addAccount(acctNum);
+                        this.iterateUsers(acctNum)
+                    }
+                }) 
     }
     //pulls user info from contract into state
-    iterateUsers(Contract, acctNum) {
+    iterateUsers(acctNum) {
         //find the number of users in the account - done as a callback 
-        Contract.userCountsInAccount.call(acctNum, (e, resNumUsers) => {
+        this.props.Contract.userCountsInAccount.call(acctNum, (e, resNumUsers) => {
             let numUsers = resNumUsers.toString(10);
             //iterate over each user in the account -- should this be async????
             for (let userNum = 0; userNum < numUsers; userNum++) {
@@ -43,6 +46,13 @@ class ContractData extends Component {
     }
     render() {
         return <div />;
+    }
+}
+
+
+function mapStateToProps(state){
+    return {
+        Contract: state.QueryContract.contract
     }
 }
 
@@ -60,4 +70,6 @@ function mapDispatchToProps(dispatch){
     }
 }
 
-export default connect(null,mapDispatchToProps)(ContractData);
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(ContractData);
