@@ -32,52 +32,11 @@ class Header extends Component {
         Contract.accountCount.call((e, resNumAccts) => {
             let numAccts = parseInt(resNumAccts.toString(10));
             for (let acctNum = 0; acctNum < numAccts; acctNum++) {
-                this.props.addAccount({key: acctNum});
-                //this.addAccountData(Contract, acctNum)
+                this.props.addAccount(acctNum);
                 this.iterateUsers(Contract, acctNum)
             }
         })
     }
-    //adds the ethereum address of admin to each account
-    // addAccountData(Contract, acctNum) {
-    //     Contract.Accounts(acctNum, (e, resAcct) => {
-    //         //let dispatch = store.dispatch;
-
-    // //         //return (dispatch) => {
-    // //             store.dispatch(
-    // //                 {
-    // //                     type: "ADD_ACCOUNT",
-    // //                     payload: 
-    // //                     {
-    // //                         key: acctNum,
-    // //                         own: resAcct
-    // //                     }
-    // //                 }
-    // //             )
-    // //         //}
-    // //     });
-    // // }
-
-
-
-
-
-    //         this.props.addAccount(
-    //             {
-    //                 key: acctNum,
-    //                 own: resAcct//account admin's ethereum address
-    //             }
-    //         );
-
-            
-    //     });
-    // }
-
-    // addAccountData(Contract, acctNum){
-    //     this.props.addAccount({key: acctNum});
-    // }
-
-
 
     //pulls user info from contract into state
     iterateUsers(Contract, acctNum) {
@@ -126,11 +85,6 @@ function mapDispatchToProps(dispatch){
         }
     }
 }
-
-// const mapDispatchToProps = dispatch => ({
-//     addAccount:   (i) =>   dispatch(addAccount(i))    , 
-//     addUserToAccount: (i) >  dispatch(addAccount( i))
-// })
 
 export default connect(
     mapStateToProps,

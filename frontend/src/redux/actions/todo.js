@@ -6,101 +6,45 @@ import ContractABI, { ContractAddress } from "../../ContractABI";
 
 export default {
 
-      addAccount: (dispatch, obj) => {
-        
-        
-        // let promisify = (inner) =>
-        //     new Promise((resolve, reject) =>
-        //         inner((err, res) => {
-        //             if (err) {
-        //                 reject(err);
-        //             } else {
-        //                 resolve(res);
-        //             }
-        //         })
-        //     )
-
+    addAccount: (dispatch, acctNum) => {
+        //move this contract to global state
         let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-        let acctNum = obj.key
+        //REFACTOR ME AWAY - (contract)
 
-        let testFunc2 = new Promise ((resolve, reject) =>{
+        //putting the callback into a promise - error handling not done?
+        let AccountDataAsPromise = new Promise((resolve, reject) => {
             Contract.Accounts(acctNum, (e, resAcct) => {
-                //resolve(2)
                 resolve(resAcct);
             })
         });
-
-        testFunc2.then(res => console.log(res));
-
-                //return dispatch => {
-                    return dispatch => {
-                        return testFunc2.then((res)=>
-                                        dispatch({
-                                            type: ADD_ACCOUNT,
-                                            // payload:
-                                            // {
-                                            //     key: acctNum,
-                                            //     own: resAcct
-                                            // }
-                                            payload: {
-                                                key:acctNum,//+testFunc2(),
-                                                own:res 
-                                                //...obj 
-                                            }
-                                        })
-                        )
-                                           
-                                        }
-                    //}
-
-
-
-
-        // //return dispatch => {
-        //                     return dispatch => {
-        //     //return testFunc2().then((res)=>
-        //                     dispatch({
-        //                         type: ADD_ACCOUNT,
-        //                         // payload:
-        //                         // {
-        //                         //     key: acctNum,
-        //                         //     own: resAcct
-        //                         // }
-        //                         payload: {
-        //                             key:obj.key,//+testFunc2(),
-        //                             own:obj.own 
-        //                             //...obj 
-        //                         }
-        //                     })
-        //     //)
-                               
-        //                     }
-        // //}
-
+        //WHATS GOING ON HERE - it works, but why - why is this line needed?
+        return () => {
+            //takes a promise 
+            return AccountDataAsPromise.then((res) =>
+                dispatch({
+                    type: ADD_ACCOUNT,
+                    payload: {
+                        key: acctNum,
+                        own: res
+                    }
+                })
+            )
+        }
     },
 
-    //WORKING CODE
-    // addAccount: (dispatch, obj) => {
-    //     return dispatch => {
-    //         dispatch({
-    //             type: ADD_ACCOUNT,
-    //             payload: { ...obj }
-    //         })
-    //     }
-    // },
 
 
-    addUserToAccount : (dispatch, acctN, user) => {
-        return dispatch => {
-            dispatch({
-                type: ADD_USER_TO_ACCOUNT,
-                payload: { acctN: acctN, user: user }
-            })
+        addUserToAccount: (dispatch, acctN, user) => {
+            return dispatch => {
+                dispatch({
+                    type: ADD_USER_TO_ACCOUNT,
+                    payload: { acctN: acctN, user: user }
+                })
+            }
         }
+
+
+
+
+
     }
-
-
-
-
-
-}
