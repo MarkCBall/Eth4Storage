@@ -1,23 +1,30 @@
 import { ADD_ACCOUNT } from "../constants/QueryContract";
 import { ADD_USER_TO_ACCOUNT } from "../constants/QueryContract";
+import { SET_CONTRACT } from "../constants/QueryContract";
 import ContractABI, { ContractAddress } from "../../ContractABI";
 
 export default {
 
-    addAccount: (dispatch, acctNum) => {
-        //move this contract to global state
+    setContract:() =>{
         let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-        //REFACTOR ME AWAY - (contract)
+        
+        return (dispatch) =>
+        dispatch ({
+            type: SET_CONTRACT,
+            payload: Contract    //window.web3.eth.contract(ContractABI).at(ContractAddress) }
+        }) 
+    },
 
-        //putting the callback into a promise - error handling not done?
-        let AccountDataAsPromise = new Promise((resolve, reject) => {
-            Contract.Accounts(acctNum, (e, resAcct) => {
-                resolve(resAcct);
-            })
-        });
-        //WHATS GOING ON HERE - it works, but why - why is this line needed?
-        return (dispatch) => {
-            //takes a promise 
+    addAccount: (dispatch, acctNum) => {
+
+        return ((dispatch, state) => {
+            let Contract =state().QueryContract.contract;
+            let AccountDataAsPromise = new Promise((resolve, reject) => {
+                Contract.Accounts(acctNum, (e, resAcct) => {
+                    resolve(resAcct);
+                })
+            });
+
             return AccountDataAsPromise.then((res) =>
                 dispatch({
                     type: ADD_ACCOUNT,
@@ -27,21 +34,18 @@ export default {
                     }
                 })
             )
-        }
+        })
     },
 
     addUserToAccount: (dispatch, acctNum, userNum) => {
-    //move this contract to global state
-    let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-    //REFACTOR ME AWAY - (contract)
 
-    //putting the callback into a promise - error handling not done?
-    let UserDataAsPromise = new Promise((resolve, reject) => {
-        Contract.usersOfAccount(acctNum, userNum, (e, resUser) => {
-            resolve(resUser);
-        })
-    });
-            return dispatch => {
+            return (dispatch,state) => {
+                let Contract =state().QueryContract.contract;
+                let UserDataAsPromise = new Promise((resolve, reject) => {
+                    Contract.usersOfAccount(acctNum, userNum, (e, resUser) => {
+                        resolve(resUser);
+                    })
+                });
                 return UserDataAsPromise.then((res) =>
                     dispatch({
                         type: ADD_USER_TO_ACCOUNT,

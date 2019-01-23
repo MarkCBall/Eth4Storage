@@ -10,8 +10,14 @@ import ContractABI, { ContractAddress } from "../ContractABI";
 class ContractData extends Component {
     constructor(props) {
         super(props)
+        this.setContract();
         this.contractToState();
     }
+
+    setContract(){
+        this.props.setContract();
+    }
+
     //pulls smart contract data semi-asyncronously
     contractToState() {
         let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
@@ -47,7 +53,10 @@ function mapDispatchToProps(dispatch){
         },
         addUserToAccount:(acctNum,user) => {
             dispatch(QueryContractActions.addUserToAccount(dispatch,acctNum,user))
-        }
+        },
+        setContract:() =>{
+            dispatch(QueryContractActions.setContract())
+        },
     }
 }
 
