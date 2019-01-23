@@ -50,7 +50,7 @@ class Login extends Component {
         &nbsp;&nbsp;
         <button
           type="button"
-          class="btn btn-primary"
+          className="btn btn-primary"
           onClick={this.initLogin.bind(this)}
         >
           Login

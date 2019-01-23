@@ -13,7 +13,7 @@ class Home extends Component {
           <br />
           <br />
           <h1>Welcome to</h1>
-          <img alt="Banner image" src={IMAGE_URL} className="banner-image" />
+          <img alt="Banner" src={IMAGE_URL} className="banner-image" />
 
           <p>A blockchain solution to manage student transcripts</p>
         </div>
