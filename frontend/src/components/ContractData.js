@@ -7,7 +7,7 @@ import QueryContractActions from "../redux/actions/QueryContract";
 //relative imports smart contract data
 import ContractABI, { ContractAddress } from "../ContractABI";
 
-class Header extends Component {
+class ContractData extends Component {
     constructor(props) {
         super(props)
         this.contractToState();
@@ -51,4 +51,4 @@ function mapDispatchToProps(dispatch){
     }
 }
 
-export default connect(null,mapDispatchToProps)(Header);
+export default connect(null,mapDispatchToProps)(ContractData);

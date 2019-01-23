@@ -6,7 +6,7 @@ import ethUtil from "ethereumjs-util";
 import { Switch, Route } from "react-router-dom";
 
 //Relative Imports
-import Header from "./components/Header";
+import ContractData from "./components/ContractData";
 import Login from "./components/Login";
 import Upload from "./components/Upload";
 import Download from "./components/Download";
@@ -64,7 +64,7 @@ class App extends Component {
             setAddressFromSignature={this.setAddressFromSignature.bind(this)}
           />
 
-          <Header />
+          <ContractData />
 
           <Switch>
             <Route
