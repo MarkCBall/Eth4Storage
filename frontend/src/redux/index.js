@@ -1,10 +1,10 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 
-import todo from "./reducers/todo";
+import QueryContract from "./reducers/QueryContract";
 //import test from "./reducers/test";
 const rootReducer = combineReducers({
-  todo,
+  QueryContract,
   //test
 });
 

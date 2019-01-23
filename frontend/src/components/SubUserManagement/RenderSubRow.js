@@ -29,7 +29,7 @@ class RenderSubRow extends Component {
 
   //searches the global state for account# and returns the associated user array
   getUserArray(acctN) {
-    let accounts = this.props.state.todo.accounts;
+    let accounts = this.props.state.QueryContract.accounts;
     let arrIndex = accounts.findIndex(o => o.key === acctN);
     if (accounts[arrIndex].users) return accounts[arrIndex].users;
     return [];

@@ -10,8 +10,8 @@ class Download extends Component {
     };
   }
   getPermissions() {
-    return this.props.verifiedAddress in this.props.state.todo.addyPermission
-      ? this.props.state.todo.addyPermission[this.props.verifiedAddress]
+    return this.props.verifiedAddress in this.props.state.QueryContract.addyPermission
+      ? this.props.state.QueryContract.addyPermission[this.props.verifiedAddress]
       : [["0", true]];
   }
 

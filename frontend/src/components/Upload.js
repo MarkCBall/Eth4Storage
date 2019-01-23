@@ -12,8 +12,8 @@ class Upload extends Component {
   }
 
   getPermissions = () => {
-    if (this.props.verifiedAddress in this.props.state.todo.addyPermission) {
-      let permissionedAddresses = this.props.state.todo.addyPermission[
+    if (this.props.verifiedAddress in this.props.state.QueryContract.addyPermission) {
+      let permissionedAddresses = this.props.state.QueryContract.addyPermission[
         this.props.verifiedAddress
       ];
       //filter only entries with write permission == true

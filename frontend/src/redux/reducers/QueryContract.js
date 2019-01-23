@@ -1,5 +1,5 @@
-import { ADD_ACCOUNT } from "../constants/todo";
-import { ADD_USER_TO_ACCOUNT } from "../constants/todo";
+import { ADD_ACCOUNT } from "../constants/QueryContract";
+import { ADD_USER_TO_ACCOUNT } from "../constants/QueryContract";
 
 const initialState = {
   accounts: [],
