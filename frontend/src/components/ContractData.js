@@ -19,6 +19,8 @@ class ContractData extends Component {
         ,500);
     }
 
+    //on this.props.contract changed --> run contractToState
+
     setContract(){
         this.props.setContract();
     }

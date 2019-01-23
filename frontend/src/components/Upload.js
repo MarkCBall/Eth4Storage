@@ -53,11 +53,11 @@ class Upload extends Component {
         <hr />
         <nav className="navbar navbar-expand-lg">
           {this.getPermissions().map(acct => (
-            <div>
+            <div key={acct[0]}>
               <button
                 type="button"
                 className="btn btn-outline-info"
-                key={acct[0]}
+                
                 onClick={() => this.handleSelection(acct[0])}
               >
                 Student #{acct[0]}
