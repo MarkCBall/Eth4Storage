@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-//import store from "../redux/index";
+import store from "../redux/index";
 
 //relative imports redux items
-import { addAccount } from "../redux/actions/todo";
-import { addUserToAccount } from "../redux/actions/todo";
+import todoActions from "../redux/actions/todo";
+//import { addAccount } from "../redux/actions/todo";
+//import { addUserToAccount } from "../redux/actions/todo";
 
 //relative imports smart contract data
 import ContractABI, { ContractAddress } from "../ContractABI";
@@ -31,20 +32,53 @@ class Header extends Component {
         Contract.accountCount.call((e, resNumAccts) => {
             let numAccts = parseInt(resNumAccts.toString(10));
             for (let acctNum = 0; acctNum < numAccts; acctNum++) {
-                this.addAccountData(Contract, acctNum)
+                this.props.addAccount({key: acctNum});
+                //this.addAccountData(Contract, acctNum)
                 this.iterateUsers(Contract, acctNum)
             }
         })
     }
     //adds the ethereum address of admin to each account
-    addAccountData(Contract, acctNum) {
-        Contract.Accounts(acctNum, (e, resAcct) => {
-            this.props.addAccount({
-                key: acctNum,
-                own: resAcct//account admin's ethereum address
-            });
-        });
-    }
+    // addAccountData(Contract, acctNum) {
+    //     Contract.Accounts(acctNum, (e, resAcct) => {
+    //         //let dispatch = store.dispatch;
+
+    // //         //return (dispatch) => {
+    // //             store.dispatch(
+    // //                 {
+    // //                     type: "ADD_ACCOUNT",
+    // //                     payload: 
+    // //                     {
+    // //                         key: acctNum,
+    // //                         own: resAcct
+    // //                     }
+    // //                 }
+    // //             )
+    // //         //}
+    // //     });
+    // // }
+
+
+
+
+
+    //         this.props.addAccount(
+    //             {
+    //                 key: acctNum,
+    //                 own: resAcct//account admin's ethereum address
+    //             }
+    //         );
+
+            
+    //     });
+    // }
+
+    // addAccountData(Contract, acctNum){
+    //     this.props.addAccount({key: acctNum});
+    // }
+
+
+
     //pulls user info from contract into state
     iterateUsers(Contract, acctNum) {
         //find the number of users in the account - done as a callback
@@ -52,6 +86,9 @@ class Header extends Component {
             let numUsers = resNumUsers.toString(10);
             //iterate over each user in the account -- should this be async????
             for (let userNum = 0; userNum < numUsers; userNum++) {
+
+
+                //HERE ITS BROKEN
                 this.addUserData(Contract, acctNum, userNum);
             }
         });
@@ -79,6 +116,17 @@ const mapStateToProps = function (state) {
     };
 };
 
+function mapDispatchToProps(dispatch){
+    return {
+        addAccount:(acctNum) =>{
+            dispatch(todoActions.addAccount(dispatch,acctNum))
+        },
+        addUserToAccount:(acctNum,user) => {
+            dispatch(todoActions.addUserToAccount(dispatch,acctNum,user))
+        }
+    }
+}
+
 // const mapDispatchToProps = dispatch => ({
 //     addAccount:   (i) =>   dispatch(addAccount(i))    , 
 //     addUserToAccount: (i) >  dispatch(addAccount( i))
@@ -86,5 +134,5 @@ const mapStateToProps = function (state) {
 
 export default connect(
     mapStateToProps,
-    { addAccount, addUserToAccount } //mapDispatchToProps
+    mapDispatchToProps//{ addAccount, addUserToAccount } 
 )(Header);
