@@ -7,7 +7,7 @@ import RenderRow from "./SubUserManagement/RenderRow";
 import RenderSubRow from "./SubUserManagement/RenderSubRow";
 import HeaderRow from "./SubUserManagement/HeaderRow";
 import FooterSubRow from "./SubUserManagement/FooterSubRow";
-import Footer from "./Footer";
+
 
 //relative imports smart contract data
 import ContractABI, { ContractAddress } from "../ContractABI";
@@ -104,7 +104,7 @@ class UserManagement extends Component {
         <br />
         <br />
 
-        <Footer />
+        
       </div>
     );
   }
