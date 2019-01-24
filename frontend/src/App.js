@@ -6,13 +6,14 @@ import ethUtil from "ethereumjs-util";
 import { Switch, Route } from "react-router-dom";
 
 //Relative Imports
-import Header from "./components/Header";
+import ContractData from "./components/ContractData";
 import Login from "./components/Login";
 import Upload from "./components/Upload";
 import Download from "./components/Download";
 import UserManagement from "./components/UserManagement";
 import Home from "./components/Home";
 import NavHeader from "./components/navHeader";
+import Footer from "./components/Footer";
 
 //CSS Files
 import "./App.css";
@@ -64,7 +65,7 @@ class App extends Component {
             setAddressFromSignature={this.setAddressFromSignature.bind(this)}
           />
 
-          <Header />
+          <ContractData />
 
           <Switch>
             <Route
@@ -105,6 +106,7 @@ class App extends Component {
             />
           </Switch>
         </div>
+        <Footer />
       </Provider>
     );
   }

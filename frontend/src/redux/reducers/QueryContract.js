@@ -1,13 +1,21 @@
-import { ADD_ACCOUNT } from "../constants/todo";
-import { ADD_USER_TO_ACCOUNT } from "../constants/todo";
+
+import { ADD_ACCOUNT } from "../constants/QueryContract";
+import { ADD_USER_TO_ACCOUNT } from "../constants/QueryContract";
+import { SET_CONTRACT } from "../constants/QueryContract";
 
 const initialState = {
   accounts: [],
-  addyPermission: {}
+  addyPermission: {},
+  contract: {}
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+
+    case SET_CONTRACT:
+    //console.log(action.payload)
+    return {...state,contract:action.payload}
+
     case ADD_ACCOUNT:
       //console.log("adding acct#",action.payload.key)
       let acctsAr = state.accounts.slice();
@@ -25,9 +33,7 @@ export default function(state = initialState, action) {
       //set user to payload
       acctsArr[acctN].users[userN] = action.payload.user;
       //console.log("acct#"+acctN+" has added user#",acctsArr[acctN].users[userN].key)
-
       let addy = action.payload.user.addy;
-
       return {
         ...state,
         accounts: acctsArr,

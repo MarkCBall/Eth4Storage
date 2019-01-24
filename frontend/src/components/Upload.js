@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Footer from "./Footer";
 import "./Upload.css";
 
 class Upload extends Component {
@@ -12,8 +11,8 @@ class Upload extends Component {
   }
 
   getPermissions = () => {
-    if (this.props.verifiedAddress in this.props.state.todo.addyPermission) {
-      let permissionedAddresses = this.props.state.todo.addyPermission[
+    if (this.props.verifiedAddress in this.props.permissionsByAddress) {
+      let permissionedAddresses = this.props.permissionsByAddress[
         this.props.verifiedAddress
       ];
       //filter only entries with write permission == true
@@ -53,11 +52,11 @@ class Upload extends Component {
         <hr />
         <nav className="navbar navbar-expand-lg">
           {this.getPermissions().map(acct => (
-            <div>
+            <div key={acct[0]}>
               <button
                 type="button"
                 className="btn btn-outline-info"
-                key={acct[0]}
+                
                 onClick={() => this.handleSelection(acct[0])}
               >
                 Student #{acct[0]}
@@ -79,6 +78,7 @@ class Upload extends Component {
             <div className="form-inline my-5 my-lg-0 upload-box">
               <input
                 className="form-control my-sm-5"
+
                 placeholder="Enter grades to add to transcript"
                 aria-label="Upload"
                 id="inputTxtBox"
@@ -94,7 +94,7 @@ class Upload extends Component {
           </div>
         </div>
 
-        <Footer />
+       
       </div>
     );
   }
@@ -104,7 +104,7 @@ class Upload extends Component {
 
 const mapStateToProps = function(state) {
   return {
-    state
+    permissionsByAddress:state.QueryContract.addyPermission
   };
 };
 export default connect(mapStateToProps)(Upload);

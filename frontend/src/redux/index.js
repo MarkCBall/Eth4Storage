@@ -1,10 +1,13 @@
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
-import todo from "./reducers/todo";
+import QueryContract from "./reducers/QueryContract";
+import VerifySignature from "./reducers/VerifySignature";
+
 //import test from "./reducers/test";
 const rootReducer = combineReducers({
-  todo,
-  //test
+  QueryContract,
+  VerifySignature
 });
 
-export default createStore(rootReducer);
+export default createStore(rootReducer, applyMiddleware(thunk));

@@ -7,7 +7,7 @@ import RenderRow from "./SubUserManagement/RenderRow";
 import RenderSubRow from "./SubUserManagement/RenderSubRow";
 import HeaderRow from "./SubUserManagement/HeaderRow";
 import FooterSubRow from "./SubUserManagement/FooterSubRow";
-import Footer from "./Footer";
+
 
 //relative imports smart contract data
 import ContractABI, { ContractAddress } from "../ContractABI";
@@ -53,7 +53,7 @@ class UserManagement extends Component {
                         The contract address is: <strong>{ContractAddress}</strong> and it
                         has
 
-            <strong> {this.props.state.todo.accounts.length}</strong> account(s)
+            <strong> {this.props.Accounts.length}</strong> account(s)
           </p>
         </TitleTile>
         <br />
@@ -64,7 +64,7 @@ class UserManagement extends Component {
             // row3="Balance (Ether)"
             row4="Permissions"
           />
-          {this.props.state.todo.accounts.map(acct => (
+          {this.props.Accounts.map(acct => (
             <div key={acct.key}>
               <RenderRow
                 account={acct}
@@ -104,7 +104,7 @@ class UserManagement extends Component {
         <br />
         <br />
 
-        <Footer />
+        
       </div>
     );
   }
@@ -112,7 +112,7 @@ class UserManagement extends Component {
 
 const mapStateToProps = function(state) {
   return {
-    state
+    Accounts:state.QueryContract.accounts
   };
 };
 

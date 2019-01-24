@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import ContractABI, { ContractAddress } from "../../ContractABI";
+import { connect } from "react-redux";
 
-class RenderRow extends Component {
+
+class FooterSubRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,18 +16,18 @@ class RenderRow extends Component {
       alert("Not a valid Ethereum Address");
       return;
     }
-    var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-    MyContract.giveOwnership(acctN, addy, (e, r) => {});
+    //var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+    this.props.Contract.giveOwnership(acctN, addy, (e, r) => {});
   }
   //calls the smart contract to create a new user with view only priviledges
   approveViewer(acctN, addy) {
-    var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-    MyContract.approveViewer(acctN, addy, (e, r) => {});
+    //ar MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+    this.props.Contract.approveViewer(acctN, addy, (e, r) => {});
   }
   //calls the smart contract to create a new user with view and write priviledges
   approveWriter(acctN, addy) {
-    var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-    MyContract.approveWriter(acctN, addy, (e, r) => {});
+    //var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+    this.props.Contract.approveWriter(acctN, addy, (e, r) => {});
   }
   //checks if the address is valid and calls appropriate create user account based on checkbox
   handleCreate = e => {
@@ -55,8 +56,8 @@ class RenderRow extends Component {
     //   if (window.confirm("You want to add "+ fundsToAdd/1000000000000000000 +" eth to your account?")){
     //     console.log("adding funds")
     //   }
-    var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-    MyContract.addFunds(acctN, { from: fromAddy, value: fundsToAdd }, function(
+    //var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+    this.props.Contract.addFunds(acctN, { from: fromAddy, value: fundsToAdd }, function(
       e,
       r
     ) {});
@@ -104,4 +105,10 @@ class RenderRow extends Component {
   }
 }
 
-export default RenderRow;
+const mapStateToProps = function(state) {
+    return {
+      Contract:state.QueryContract.contract
+    };
+  };
+  
+  export default connect(mapStateToProps)(FooterSubRow);
