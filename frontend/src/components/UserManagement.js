@@ -10,9 +10,6 @@ import FooterRow from "./SubUserManagement/FooterRow";
 import TitleTile from "./SubUserManagement/TitleTile";
 
 
-//relative imports smart contract data
-import ContractABI, { ContractAddress } from "../ContractABI";
-
 //CSS Files
 import "./SubUserManagement/UserManagement.css";
 //import AddFunds from "./SubUserManagement/AddFunds";
@@ -25,10 +22,6 @@ class UserManagement extends Component {
     };
   }
 
-  //hook this to global state and remove this function
-  GetContract() {
-    return window.web3.eth.contract(ContractABI).at(ContractAddress);
-  }
 
     //changes the status of is users are displayed under the account
     ToggleUsers(acctNum) {
@@ -38,8 +31,8 @@ class UserManagement extends Component {
     }
     //interacts with the smart contract to add a account
     addAccount = () => {
-        this.GetContract().accPrice.call((e, r) => {
-            this.GetContract().createAccount(
+        this.props.Contract.accPrice.call((e, r) => {
+            this.props.Contract.createAccount(
                 { from: window.web3.eth.accounts[0], value: 0 },
                 function (e, r) { }
             );
@@ -47,11 +40,11 @@ class UserManagement extends Component {
     };
 
     BuyTokens = () => {
-        this.GetContract().buyTokens(500,{value: 10000000000000},(e, r) => { } );
+        this.props.Contract.buyTokens(500,{value: 10000000000000},(e, r) => { } );
     };
 
     SellTokens = () => {
-        this.GetContract().sellTokens(100,(e, r) => {} );
+        this.props.Contract.sellTokens(100,(e, r) => {} );
     };
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     render() {
@@ -59,13 +52,7 @@ class UserManagement extends Component {
             <div className="main-tile">
             <br /><br />
             <TitleTile title="User Management Page"></TitleTile>
-            <TitleTile>
-            <p>
-                        The contract address is: <strong>{ContractAddress}</strong> and it
-                        has
-            <strong> {this.props.Accounts.length}</strong> account(s)
-          </p>
-        </TitleTile>
+
         <br />
         <div className="container-full">
           <HeaderRow
@@ -132,7 +119,8 @@ class UserManagement extends Component {
 
 const mapStateToProps = function(state) {
   return {
-    Accounts:state.QueryContract.accounts
+    Accounts:state.QueryContract.accounts,
+    Contract: state.QueryContract.contract
   };
 };
 
