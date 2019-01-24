@@ -21,7 +21,8 @@ class FooterRow extends Component {
       <div className="row">
         <div className="col-1 col-solid" />
         <div className="col-4 col-solid"/>
-        <div className="col-7">
+        <div className="col-1 col-solid" />
+        <div className="col-6">
             <button onClick={e => this.addUserSelectPermissions(e)}>Add New User</button>
         </div>
       </div>

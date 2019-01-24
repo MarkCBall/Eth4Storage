@@ -13,6 +13,9 @@ class HeaderRow extends Component {
         <div className="col-4 col-solid">
           <b>{this.props.row2}</b>
         </div>
+        <div className="col-1 col-solid">
+            <b>{this.props.row3}</b>
+        </div>
         <div className="col-6">
           <b>{this.props.row4}</b>
         </div>

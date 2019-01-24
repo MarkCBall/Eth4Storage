@@ -71,7 +71,7 @@ class UserManagement extends Component {
           <HeaderRow
             row1="Student #"
             row2="Account Owner's Address"
-            // row3="Balance (Ether)"
+            row3="Token Bal"
             row4="Permissions"
           />
           {this.props.Accounts.map(acct => (
@@ -107,7 +107,7 @@ class UserManagement extends Component {
         <br />
         <br />
 
-        //THIS SHOULD BE IN A NEW CONTAINER
+        THIS SHOULD BE IN A NEW CONTAINER
         <button className="btn btn-primary" onClick={this.addAccount}>
           Add New Account
         </button>

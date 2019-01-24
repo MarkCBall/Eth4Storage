@@ -8,7 +8,7 @@ import QueryContractActions from "../redux/actions/QueryContract";
 class ContractData extends Component {
     constructor(props) {
         super(props)
-        this.setContract();
+        this.props.setContract();
         //give half a second for contract to get into state before moving on
         //how can this be improved??
         setTimeout(
@@ -17,12 +17,6 @@ class ContractData extends Component {
                 this.contractToState()
             )
         ,500);
-    }
-
-    //on this.props.contract changed --> run contractToState
-
-    setContract(){
-        this.props.setContract();
     }
 
     //pulls smart contract data semi-asyncronously
@@ -50,7 +44,6 @@ class ContractData extends Component {
         return <div />;
     }
 }
-
 
 function mapStateToProps(state){
     return {
