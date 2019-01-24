@@ -1,0 +1,3 @@
+export const ADD_SIGNATURE = "ADD_SIGNATURE";
+export const CALC_ADDRESS = "CALC_ADDRESS";
+
