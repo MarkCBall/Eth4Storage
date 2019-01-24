@@ -46,12 +46,17 @@ class UserManagement extends Component {
     SellTokens = () => {
         this.props.Contract.sellTokens(100,(e, r) => {} );
     };
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     render() {
         return (
             <div className="main-tile">
             <br /><br />
-            <TitleTile title="User Management Page"></TitleTile>
+            <TitleTile title="User Management Page">
+            Cost to add a Account: --put this and get from global state--
+            <br/>
+            Cost to add a User: --put this and get from global state--
+            </TitleTile>
 
         <br />
         <div className="container-full">
@@ -89,6 +94,8 @@ class UserManagement extends Component {
               )}
             </div>
           ))}
+
+          
         </div>
         <br />
         <br />
