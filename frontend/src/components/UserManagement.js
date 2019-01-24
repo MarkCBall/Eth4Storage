@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 
 //relative imports react items
 import TitleTile from "./SubUserManagement/TitleTile";
-import RenderRow from "./SubUserManagement/RenderRow";
-import RenderSubRow from "./SubUserManagement/RenderSubRow";
+import AccountRow from "./SubUserManagement/AccountRow";
+import UserRow from "./SubUserManagement/UserRow";
 import HeaderRow from "./SubUserManagement/HeaderRow";
-import FooterSubRow from "./SubUserManagement/FooterSubRow";
+import FooterRow from "./SubUserManagement/FooterRow";
 
 
 //relative imports smart contract data
@@ -66,20 +66,20 @@ class UserManagement extends Component {
           />
           {this.props.Accounts.map(acct => (
             <div key={acct.key}>
-              <RenderRow
+              <AccountRow
                 account={acct}
                 isExpanded={this.state.isExpanded}
                 expanded={this.ToggleUsers.bind(this)}
               />
               {this.state.isExpanded[acct.key] ? (
                 <>
-                  <RenderSubRow
+                  <UserRow
                     verifiedAddress={this.props.verifiedAddress}
                     acctAddy={acct.own}
                     acctNum={acct.key}
                   />
                   {this.props.verifiedAddress === acct.own ? (
-                    <FooterSubRow
+                    <FooterRow
                       account={acct}
                       verifiedAddress={this.props.verifiedAddress}
                     />

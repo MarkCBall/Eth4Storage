@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 
-class FooterSubRow extends Component {
+class FooterRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -111,4 +111,4 @@ const mapStateToProps = function(state) {
     };
   };
   
-  export default connect(mapStateToProps)(FooterSubRow);
+  export default connect(mapStateToProps)(FooterRow);

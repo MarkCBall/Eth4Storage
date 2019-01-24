@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 //import ContractABI, { ContractAddress } from "../../ContractABI";
 
 //CSS Files
-import "./RenderSubRow.css";
+import "./UserRow.css";
 
-class RenderSubRow extends Component {
+class UserRow extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -87,7 +87,7 @@ class RenderSubRow extends Component {
   }
 }
 
-//export default RenderSubRow;
+//export default UserRow;
 const mapStateToProps = function(state) {
   return {
     Accounts:state.QueryContract.accounts,
@@ -95,4 +95,4 @@ const mapStateToProps = function(state) {
   };
 };
 
-export default connect(mapStateToProps)(RenderSubRow);
+export default connect(mapStateToProps)(UserRow);

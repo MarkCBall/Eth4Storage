@@ -3,7 +3,7 @@ import React, { Component } from "react";
 //CSS Files
 import "./RowTopBorder.css";
 
-class RenderRow extends Component {
+class AccountRow extends Component {
   ShowMoreLessText(acct) {
     return this.props.isExpanded[this.props.account.key]
       ? "Show less"
@@ -26,4 +26,4 @@ class RenderRow extends Component {
   }
 }
 
-export default RenderRow;
+export default AccountRow;
