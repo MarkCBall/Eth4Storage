@@ -47,21 +47,11 @@ class UserManagement extends Component {
     };
 
     BuyTokens = () => {
-        this.GetContract().accPrice.call((e, r) => {
-            this.GetContract().createAccount(
-                { from: window.web3.eth.accounts[0], value: 0 },
-                function (e, r) { }
-            );
-        });
+        this.GetContract().buyTokens(500,{value: 10000000000000},(e, r) => { } );
     };
 
     SellTokens = () => {
-        this.GetContract().accPrice.call((e, r) => {
-            this.GetContract().createAccount(
-                { from: window.web3.eth.accounts[0], value: 0 },
-                function (e, r) { }
-            );
-        });
+        this.GetContract().sellTokens(100,(e, r) => {} );
     };
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     render() {
@@ -123,11 +113,11 @@ class UserManagement extends Component {
         </button>
 
         <button className="btn btn-primary" onClick={this.BuyTokens}>
-        BuyTokens
+        Buy 500 Tokens
         </button>
 
         <button className="btn btn-primary" onClick={this.SellTokens}>
-        SellTokens
+        Sell 100 Tokens
         </button>
         <br />
 
