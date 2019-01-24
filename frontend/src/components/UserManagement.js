@@ -25,6 +25,7 @@ class UserManagement extends Component {
     };
   }
 
+  //hook this to global state and remove this function
   GetContract() {
     return window.web3.eth.contract(ContractABI).at(ContractAddress);
   }
@@ -37,6 +38,24 @@ class UserManagement extends Component {
     }
     //interacts with the smart contract to add a account
     addAccount = () => {
+        this.GetContract().accPrice.call((e, r) => {
+            this.GetContract().createAccount(
+                { from: window.web3.eth.accounts[0], value: 0 },
+                function (e, r) { }
+            );
+        });
+    };
+
+    BuyTokens = () => {
+        this.GetContract().accPrice.call((e, r) => {
+            this.GetContract().createAccount(
+                { from: window.web3.eth.accounts[0], value: 0 },
+                function (e, r) { }
+            );
+        });
+    };
+
+    SellTokens = () => {
         this.GetContract().accPrice.call((e, r) => {
             this.GetContract().createAccount(
                 { from: window.web3.eth.accounts[0], value: 0 },
@@ -97,8 +116,18 @@ class UserManagement extends Component {
         <br />
         <br />
         <br />
+
+        //THIS SHOULD BE IN A NEW CONTAINER
         <button className="btn btn-primary" onClick={this.addAccount}>
           Add New Account
+        </button>
+
+        <button className="btn btn-primary" onClick={this.BuyTokens}>
+        BuyTokens
+        </button>
+
+        <button className="btn btn-primary" onClick={this.SellTokens}>
+        SellTokens
         </button>
         <br />
 
