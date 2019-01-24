@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 //import ContractABI, { ContractAddress } from "../../ContractABI";
 
 //CSS Files
-import "./RenderSubRow.css";
+import "./UserRow.css";
 
-class RenderSubRow extends Component {
+class UserRow extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -16,16 +16,11 @@ class RenderSubRow extends Component {
     //var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
     this.props.Contract.deleteUser(acctN, userN, (e, r) => {});
   }
-  //call smart contract to disable write access
-  disableWrite(acctN, userN) {
-    //var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-    this.props.Contract.disallowWrite(acctN, userN, (e, r) => {});
+
+  changePermissions() {
+    //YANESH , you can do your magic here
   }
-  //call smart contract to enable write access
-  enableWrite(acctN, userN) {
-    //var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-    this.props.Contract.allowWrite(acctN, userN, (e, r) => {});
-  }
+
 
   //searches the global state for account# and returns the associated user array
   getUserArray(acctN) {
@@ -51,23 +46,11 @@ class RenderSubRow extends Component {
               {usr.addy}
               {this.props.acctAddy === this.props.verifiedAddress ? (
                 <>
-                  {usr.canWrite ? (
-                    <button
-                      onClick={() => {
-                        this.disableWrite(this.props.acctNum, usr.key);
-                      }}
-                    >
-                      Disable
+                  
+                    <button onClick={() => {this.changePermissions(this.props.acctNum, usr.key);}}>
+                      Change Permissions
                     </button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        this.enableWrite(this.props.acctNum, usr.key);
-                      }}
-                    >
-                      Enable
-                    </button>
-                  )}
+                  
                   <button
                     onClick={() => {
                       this.deleteUser(this.props.acctNum, usr.key);
@@ -87,7 +70,7 @@ class RenderSubRow extends Component {
   }
 }
 
-//export default RenderSubRow;
+//export default UserRow;
 const mapStateToProps = function(state) {
   return {
     Accounts:state.QueryContract.accounts,
@@ -95,4 +78,4 @@ const mapStateToProps = function(state) {
   };
 };
 
-export default connect(mapStateToProps)(RenderSubRow);
+export default connect(mapStateToProps)(UserRow);

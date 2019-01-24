@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 //relative imports react items
-import TitleTile from "./SubUserManagement/TitleTile";
-import RenderRow from "./SubUserManagement/RenderRow";
-import RenderSubRow from "./SubUserManagement/RenderSubRow";
+//import TitleTile from "./SubUserManagement/TitleTile";
+import AccountRow from "./SubUserManagement/AccountRow";
+import UserRow from "./SubUserManagement/UserRow";
 import HeaderRow from "./SubUserManagement/HeaderRow";
-import FooterSubRow from "./SubUserManagement/FooterSubRow";
+import FooterRow from "./SubUserManagement/FooterRow";
+import TitleTile from "./SubUserManagement/TitleTile";
 
 
 //relative imports smart contract data
@@ -24,6 +25,7 @@ class UserManagement extends Component {
     };
   }
 
+  //hook this to global state and remove this function
   GetContract() {
     return window.web3.eth.contract(ContractABI).at(ContractAddress);
   }
@@ -43,16 +45,24 @@ class UserManagement extends Component {
             );
         });
     };
+
+    BuyTokens = () => {
+        this.GetContract().buyTokens(500,{value: 10000000000000},(e, r) => { } );
+    };
+
+    SellTokens = () => {
+        this.GetContract().sellTokens(100,(e, r) => {} );
+    };
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     render() {
         return (
             <div className="main-tile">
             <br /><br />
-                <TitleTile title="User Management Page">
-                    <p>
+            <TitleTile title="User Management Page"></TitleTile>
+            <TitleTile>
+            <p>
                         The contract address is: <strong>{ContractAddress}</strong> and it
                         has
-
             <strong> {this.props.Accounts.length}</strong> account(s)
           </p>
         </TitleTile>
@@ -66,20 +76,20 @@ class UserManagement extends Component {
           />
           {this.props.Accounts.map(acct => (
             <div key={acct.key}>
-              <RenderRow
+              <AccountRow
                 account={acct}
                 isExpanded={this.state.isExpanded}
                 expanded={this.ToggleUsers.bind(this)}
               />
               {this.state.isExpanded[acct.key] ? (
                 <>
-                  <RenderSubRow
+                  <UserRow
                     verifiedAddress={this.props.verifiedAddress}
                     acctAddy={acct.own}
                     acctNum={acct.key}
                   />
                   {this.props.verifiedAddress === acct.own ? (
-                    <FooterSubRow
+                    <FooterRow
                       account={acct}
                       verifiedAddress={this.props.verifiedAddress}
                     />
@@ -96,8 +106,18 @@ class UserManagement extends Component {
         <br />
         <br />
         <br />
+
+        //THIS SHOULD BE IN A NEW CONTAINER
         <button className="btn btn-primary" onClick={this.addAccount}>
           Add New Account
+        </button>
+
+        <button className="btn btn-primary" onClick={this.BuyTokens}>
+        Buy 500 Tokens
+        </button>
+
+        <button className="btn btn-primary" onClick={this.SellTokens}>
+        Sell 100 Tokens
         </button>
         <br />
 
