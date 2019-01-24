@@ -2,15 +2,20 @@
 import { ADD_ACCOUNT } from "../constants/QueryContract";
 import { ADD_USER_TO_ACCOUNT } from "../constants/QueryContract";
 import { SET_CONTRACT } from "../constants/QueryContract";
+import { SET_PRICES } from "../constants/QueryContract";
 
 const initialState = {
   accounts: [],
   addyPermission: {},
-  contract: {}
+  contract: {},
+  prices: {}
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
+
+    case SET_PRICES:
+    return {...state, prices:action.payload}//{AccPrice:action.payload.res.AccPrice,UserPrice:action.payload.res.UserPrice} }
 
     case SET_CONTRACT:
     //console.log(action.payload)

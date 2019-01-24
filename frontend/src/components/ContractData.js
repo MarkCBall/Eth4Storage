@@ -13,8 +13,10 @@ class ContractData extends Component {
         //how can this be improved??
         setTimeout(
             (
-                () => 
-                this.contractToState()
+                () => {
+                this.contractToState();
+                this.props.setPrices();
+                }
             )
         ,500);
     }
@@ -61,6 +63,9 @@ function mapDispatchToProps(dispatch){
         },
         setContract:() =>{
             dispatch(QueryContractActions.setContract())
+        },
+        setPrices:() =>{
+            dispatch(QueryContractActions.setPrices())
         },
     }
 }

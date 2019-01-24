@@ -53,9 +53,9 @@ class UserManagement extends Component {
             <div className="main-tile">
             <br /><br />
             <TitleTile title="User Management Page">
-            Cost to add a Account: --put this and get from global state--
+            Cost to add a Account: {this.props.Prices.AccPrice}
             <br/>
-            Cost to add a User: --put this and get from global state--
+            Cost to add a User: {this.props.Prices.UserPrice}
             </TitleTile>
 
         <br />
@@ -127,7 +127,8 @@ class UserManagement extends Component {
 const mapStateToProps = function(state) {
   return {
     Accounts:state.QueryContract.accounts,
-    Contract: state.QueryContract.contract
+    Contract: state.QueryContract.contract,
+    Prices: state.QueryContract.prices
   };
 };
 

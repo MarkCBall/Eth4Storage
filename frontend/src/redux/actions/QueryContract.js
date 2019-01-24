@@ -1,6 +1,7 @@
 import { ADD_ACCOUNT } from "../constants/QueryContract";
 import { ADD_USER_TO_ACCOUNT } from "../constants/QueryContract";
 import { SET_CONTRACT } from "../constants/QueryContract";
+import { SET_PRICES } from "../constants/QueryContract";
 import ContractABI, { ContractAddress } from "../../ContractABI";
 
 export default {
@@ -13,6 +14,41 @@ export default {
             type: SET_CONTRACT,
             payload: Contract    //window.web3.eth.contract(ContractABI).at(ContractAddress) }
         }) 
+    },
+    setPrices:() =>{
+
+        return ((dispatch, state) => {
+            let Contract =state().QueryContract.contract;
+
+            let PricesAsPromise = new Promise((resolve, reject) => {
+                Contract.accPrice.call((e, resAccPriceBN) => {
+                    Contract.userPrice.call((e, resUserPriceBN) => {
+                    
+                        resolve(
+                            {
+                                AccPrice:parseInt(resAccPriceBN.toString(10)),
+                                UserPrice: parseInt(resUserPriceBN.toString(10))
+                            }
+                        );
+                    })
+                })
+            });
+
+            return PricesAsPromise.then((res) =>
+                dispatch({
+                    type: SET_PRICES,
+                    payload: 
+                    {
+                        AccPrice:res.AccPrice,
+                        UserPrice:res.UserPrice
+
+                        //res.AccPrice:AccPrice,
+                        //res.UserPrice:UserPrice
+                    }
+                })
+            )
+        })
+
     },
 
     addAccount: (dispatch, acctNum) => {
