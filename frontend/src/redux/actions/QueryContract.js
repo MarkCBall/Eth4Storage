@@ -20,8 +20,18 @@ export default {
         return ((dispatch, state) => {
             let Contract =state().QueryContract.contract;
             let AccountDataAsPromise = new Promise((resolve, reject) => {
-                Contract.Accounts(acctNum, (e, resAcct) => {
-                    resolve(resAcct);
+                Contract.Accounts(acctNum, (e, resAcctAddress) => {
+                    Contract.balanceOf.call(resAcctAddress,(e, r) => {
+
+                        //         resolve(parseInt(r.toString(10)));
+                    
+                        resolve(
+                            {
+                                AdminAddress:resAcctAddress,
+                                Balance: parseInt(r.toString(10))
+                            }
+                        );
+                    })
                 })
             });
 
@@ -30,7 +40,8 @@ export default {
                     type: ADD_ACCOUNT,
                     payload: {
                         key: acctNum,
-                        own: res
+                        own: res.AdminAddress,
+                        bal: res.Balance
                     }
                 })
             )

@@ -21,6 +21,7 @@ export default function(state = initialState, action) {
       let acctsAr = state.accounts.slice();
       let actN = action.payload.key;
       acctsAr[actN] = { users: [], ...acctsAr[actN], ...action.payload };
+      //console.log(acctsAr)
       return { ...state, accounts: acctsAr };
 
     case ADD_USER_TO_ACCOUNT:
