@@ -79,7 +79,6 @@ class Upload extends Component {
             <div className="form-inline my-5 my-lg-0 upload-box">
               <input
                 className="form-control my-sm-5"
-                type="search"
                 placeholder="Enter grades to add to transcript"
                 aria-label="Upload"
                 id="inputTxtBox"
