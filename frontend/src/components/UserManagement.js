@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 //relative imports react items
-import TitleTile from "./SubUserManagement/TitleTile";
+//import TitleTile from "./SubUserManagement/TitleTile";
 import AccountRow from "./SubUserManagement/AccountRow";
 import UserRow from "./SubUserManagement/UserRow";
 import HeaderRow from "./SubUserManagement/HeaderRow";
@@ -48,14 +48,14 @@ class UserManagement extends Component {
         return (
             <div className="main-tile">
             <br /><br />
-                <TitleTile title="User Management Page">
+                {/* <TitleTile title="User Management Page">
                     <p>
                         The contract address is: <strong>{ContractAddress}</strong> and it
                         has
 
             <strong> {this.props.Accounts.length}</strong> account(s)
           </p>
-        </TitleTile>
+        </TitleTile> */}
         <br />
         <div className="container-full">
           <HeaderRow
