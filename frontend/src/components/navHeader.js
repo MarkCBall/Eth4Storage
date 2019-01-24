@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 //why is Router and Route needed?
 
+
 // CSS
 //import "./navHeader.css";
 // url strings

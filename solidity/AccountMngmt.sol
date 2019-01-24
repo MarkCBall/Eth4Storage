@@ -3,10 +3,11 @@ pragma solidity ^0.4.25;
 contract AccountMngmt {
     
     //STATE ERC20 based 
-    // string public symbol;// string public  name;// uint8 public decimals;
+    //string public symbol;//string public name;//uint8 public decimals;
     uint _totalSupply;
     mapping(address => uint) balances;
     mapping(address => mapping(address => uint)) allowed;
+
     //STATE user management
     address public owner;
     Account[] public Accounts;
@@ -35,7 +36,8 @@ contract AccountMngmt {
         //not functioning - but why???
         // require(msg.sender==owner);
         uint numTokensUnburnt = (_totalSupply - balances[address(0x0000000000000000000000000000000000000000)] );
-        owner.transfer( address(this).balance - (avgPriceBetween(balances[address(0x0000000000000000000000000000000000000000)],_totalSupply ) * numTokensUnburnt) );
+        owner.transfer(address(this).balance - 
+            (avgPriceBetween(balances[address(0x0000000000000000000000000000000000000000)],_totalSupply) * numTokensUnburnt));
     }
 
     //SETTER FUNCTIONS
@@ -59,7 +61,7 @@ contract AccountMngmt {
         return allowed[tokenOwner][spender];
     }
     function transfer(address to, uint tokens) public returns (bool success){
-        require(balances[msg.sender] >= tokens , "You don't have that many tokens");
+        require(balances[msg.sender] >= tokens,"You don't have that many tokens");
         balances[msg.sender] -= tokens;
         balances[to] += tokens;
         emit Transfer(msg.sender, to, tokens);
@@ -80,7 +82,6 @@ contract AccountMngmt {
         return true;
     }
 
-   
     //bonding curve function used --> price (tkns/wei) = totalTokenSupply ^ 2
     //integral of y=x^2 --> integral(y) = x^3  /3
     function avgPriceBetween(uint low, uint high) public pure returns (uint){
@@ -92,10 +93,10 @@ contract AccountMngmt {
     }
     function buyTokens(uint numTokens) public payable{
         uint equivEth = avgPriceBetween(_totalSupply,_totalSupply+numTokens)*numTokens;
-        uint ethFee = equivEth *101/100;//1% fee to buy tokens
+        uint ethFee = equivEth * 101/100;//1% fee to buy tokens
         require(msg.value >= ethFee, "You didn't send enough Eth");
-        balances[msg.sender]+=numTokens;
-        _totalSupply+=numTokens;
+        balances[msg.sender] += numTokens;
+        _totalSupply += numTokens;
         msg.sender.transfer(msg.value - ethFee);
         emit TokensBought(msg.sender, numTokens, ethFee);
         
@@ -109,7 +110,6 @@ contract AccountMngmt {
         emit TokensSold(msg.sender, numTokens, equivEth);
         //make it so eth isnt withdrawn instantly to prevent someone from using a service and withdrawing instantly. Delay by 100, 1000 blocks?//create a mapping (address -> WithdrawableEth)//struct WithdrawableEth {timestamp, amount of eth}
     }
-
     function createAccount() public {
         require(balances[msg.sender] >= accPrice, "You do not have enough funds to create an account");
         //require()//this eth address doesn't already have an account//require that this address doesn't have an account//indicate that this address has an account now//OR can an address have multiple accounts?
@@ -118,7 +118,6 @@ contract AccountMngmt {
         uint acctN = Accounts.length-1;
         Accounts[acctN].AdminAddr = msg.sender;
     }
-
     function createUserInAccount(uint _Acct, address _User, byte _Permissions) public{
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to approve viewers");
         require(balances[msg.sender] >= userPrice, "Not enough funds!");
@@ -129,18 +128,14 @@ contract AccountMngmt {
         Accounts[_Acct].Users[numUsersInAcct].UserAddy = _User;
         Accounts[_Acct].Users[numUsersInAcct].Permissions = _Permissions;
     }
-
     function modifyUserPermissions(uint _Acct, uint _UserNum, byte _Permissions) public{
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to change user permissions");
         Accounts[_Acct].Users[_UserNum].Permissions = _Permissions;
     }
-
     function deleteUser(uint _Acct, uint _UserNum) public {
         require(Accounts[_Acct].AdminAddr == msg.sender, "You must be the account admin to delete users");
         delete Accounts[_Acct].Users[_UserNum];
     }
-
-
 
     // View functions- do we need more
     function usersOfAccount(uint _Acct, uint _UserNum) public view returns(address, byte){
