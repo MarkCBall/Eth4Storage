@@ -7,6 +7,7 @@ import AccountRow from "./SubUserManagement/AccountRow";
 import UserRow from "./SubUserManagement/UserRow";
 import HeaderRow from "./SubUserManagement/HeaderRow";
 import FooterRow from "./SubUserManagement/FooterRow";
+import TitleTile from "./SubUserManagement/TitleTile";
 
 
 //relative imports smart contract data
@@ -48,6 +49,14 @@ class UserManagement extends Component {
         return (
             <div className="main-tile">
             <br /><br />
+            <TitleTile title="User Management Page"></TitleTile>
+            <TitleTile>
+            <p>
+                        The contract address is: <strong>{ContractAddress}</strong> and it
+                        has
+            <strong> {this.props.Accounts.length}</strong> account(s)
+          </p>
+        </TitleTile>
         <br />
         <div className="container-full">
           <HeaderRow
