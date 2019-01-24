@@ -48,14 +48,6 @@ class UserManagement extends Component {
         return (
             <div className="main-tile">
             <br /><br />
-                {/* <TitleTile title="User Management Page">
-                    <p>
-                        The contract address is: <strong>{ContractAddress}</strong> and it
-                        has
-
-            <strong> {this.props.Accounts.length}</strong> account(s)
-          </p>
-        </TitleTile> */}
         <br />
         <div className="container-full">
           <HeaderRow
