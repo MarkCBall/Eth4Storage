@@ -31,8 +31,11 @@ class FooterRow extends Component {
 
     let inputAddress = this.state.inputValue;
     let accountN = this.props.account.key;
-    let perms = "0x" + this.state.permission.toString(16);  // Convert to hex
 
+    // Convert permission to hex and pad first 4 bits with 0
+    let perms = "0x0" + this.state.permission.toString(16);
+
+    // DEBUG
     log(inputAddress, accountN, perms);
 
     this.props.Contract.createUserInAccount(accountN, inputAddress, perms, (e, r) => {});
@@ -47,7 +50,7 @@ class FooterRow extends Component {
         <div className="col-1 col-solid" />
         <div className="col-6">
 
-        <div className="col-6">
+        <div className="col-8">
   <>
     <input
       type="text"
@@ -70,7 +73,7 @@ class FooterRow extends Component {
       })}
       type="checkbox"
     />
-    eXecute:
+    Execute:
     <input ref="execute"
       onChange={() => this.setState({
         permission: setPerms(this.state.permission, x, this.refs.execute.checked)
