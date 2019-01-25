@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-//import ContractABI, { ContractAddress } from "../../ContractABI";
-
 //CSS Files
 import "./UserRow.css";
 
 class UserRow extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+//   constructor(props) {
+//     super(props);
+//     this.state = {};
+//   }
   //call smart contract to delete user
   deleteUser(acctN, userN) {
     //var MyContract = window.web3.eth.contract(ContractABI).at(ContractAddress);
@@ -74,7 +72,8 @@ class UserRow extends Component {
 const mapStateToProps = function(state) {
   return {
     Accounts:state.QueryContract.accounts,
-    Contract:state.QueryContract.contract
+    Contract:state.QueryContract.contract,
+    verifiedAddress:state.VerifySignature.verifiedAddress,
   };
 };
 

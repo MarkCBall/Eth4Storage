@@ -76,14 +76,12 @@ class UserManagement extends Component {
               {this.state.isExpanded[acct.key] ? (
                 <>
                   <UserRow
-                    verifiedAddress={this.props.verifiedAddress}
                     acctAddy={acct.own}
                     acctNum={acct.key}
                   />
                   {this.props.verifiedAddress === acct.own ? (
                     <FooterRow
                       account={acct}
-                      verifiedAddress={this.props.verifiedAddress}
                     />
                   ) : (
                     <></>
@@ -128,7 +126,8 @@ const mapStateToProps = function(state) {
   return {
     Accounts:state.QueryContract.accounts,
     Contract: state.QueryContract.contract,
-    Prices: state.QueryContract.prices
+    Prices: state.QueryContract.prices,
+    verifiedAddress:state.VerifySignature.verifiedAddress,
   };
 };
 
