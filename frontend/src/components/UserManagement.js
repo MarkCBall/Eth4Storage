@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import AccountRow from "./SubUserManagement/AccountRow";
 import UserRow from "./SubUserManagement/UserRow";
 import HeaderRow from "./SubUserManagement/HeaderRow";
-import FooterRow from "./SubUserManagement/FooterRow";
+
 import TitleTile from "./SubUserManagement/TitleTile";
 
 
@@ -81,22 +81,15 @@ class UserManagement extends Component {
               />
 
               {this.state.isExpanded[acct.key] ? (
-                <>
                   <UserRow
                     acctAddy={acct.own}
                     acctNum={acct.key}
                   />
-                  {this.props.verifiedAddress === acct.own ? (
-                    <FooterRow
-                      account={acct}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                </>
-              ) : (
-                <></>
-              )}
+              ) : ( <></> )}
+
+
+
+
             </div>
           ))}
 
