@@ -52,6 +52,27 @@ class FooterRow extends Component {
 
         <div className="col-8">
   <>
+  Read
+  <input ref="read"
+  onChange={() => this.setState({
+    permission: setPerms(this.state.permission, r, this.refs.read.checked)
+  })}
+  type="checkbox"
+  />
+  &nbsp;Write
+  <input ref="write"
+  onChange={() => this.setState({
+    permission: setPerms(this.state.permission, w, this.refs.write.checked)
+  })}
+  type="checkbox"
+  />
+  &nbsp;Execute
+  <input ref="execute"
+  onChange={() => this.setState({
+    permission: setPerms(this.state.permission, x, this.refs.execute.checked)
+  })}
+  type="checkbox"
+  />
     <input
       type="text"
       placeholder="new user's address"
@@ -59,27 +80,6 @@ class FooterRow extends Component {
       onChange={e => this.setState({ inputValue: e.target.value })}
     />
     <button onClick={e => this.addUserSelectPermissions(e)}>Add New User</button>
-    &nbsp;Read
-    <input ref="read"
-      onChange={() => this.setState({
-        permission: setPerms(this.state.permission, r, this.refs.read.checked)
-      })}
-      type="checkbox"
-    />
-    &nbsp;Write
-    <input ref="write"
-      onChange={() => this.setState({
-        permission: setPerms(this.state.permission, w, this.refs.write.checked)
-      })}
-      type="checkbox"
-    />
-    &nbsp;Execute
-    <input ref="execute"
-      onChange={() => this.setState({
-        permission: setPerms(this.state.permission, x, this.refs.execute.checked)
-      })}
-      type="checkbox"
-    />
   </>
 </div>
         </div>
