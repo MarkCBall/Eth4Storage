@@ -58,22 +58,22 @@ class FooterRow extends Component {
       value={this.state.inputValue}
       onChange={e => this.setState({ inputValue: e.target.value })}
     />
-    <button onClick={e => this.addUserSelectPermissions(e)}>Create</button>
-    Read:
+    <button onClick={e => this.addUserSelectPermissions(e)}>Add New User</button>
+    &nbsp;Read
     <input ref="read"
       onChange={() => this.setState({
         permission: setPerms(this.state.permission, r, this.refs.read.checked)
       })}
       type="checkbox"
     />
-    Write:
+    &nbsp;Write
     <input ref="write"
       onChange={() => this.setState({
         permission: setPerms(this.state.permission, w, this.refs.write.checked)
       })}
       type="checkbox"
     />
-    Execute:
+    &nbsp;Execute
     <input ref="execute"
       onChange={() => this.setState({
         permission: setPerms(this.state.permission, x, this.refs.execute.checked)
@@ -82,7 +82,6 @@ class FooterRow extends Component {
     />
   </>
 </div>
-            <button onClick={e => this.addUserSelectPermissions(e)}>Add New User</button>
         </div>
       </div>
     );

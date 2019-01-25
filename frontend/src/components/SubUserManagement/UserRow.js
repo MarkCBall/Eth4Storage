@@ -17,10 +17,13 @@ const adminPerms = r | w | x;
 // To check permission apply bitwise AND:
 // adminPerms & r ? 'yes' : 'no'
 
+
 class UserRow extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      permission: 0
+    };
   }
   //call smart contract to delete user
   deleteUser(acctN, userN) {
@@ -41,6 +44,7 @@ class UserRow extends Component {
     return [];
   }
   render() {
+
     return (
       <>
         {this.getUserArray(this.props.acctNum).map(usr => (
@@ -49,19 +53,20 @@ class UserRow extends Component {
             <div className="col-4 col-solid" />
             <div className="col-1 col-dotted"></div>
             <div className="col-6">
-              {usr.canWrite ? (
-                <div className="dot green" />
-              ) : (
-                <div className="dot red" />
-              )}
+                <span>(
+                  {usr.permission << 0 & r ? 'r' : '-'}
+                  {usr.permission << 0 & w ? 'w' : '-'}
+                  {usr.permission << 0 & x ? 'x' : '-'}
+                )&nbsp;
+                </span>
               {usr.addy}
               {this.props.acctAddy === this.props.verifiedAddress ? (
                 <>
-                  
-                    <button onClick={() => {this.changePermissions(this.props.acctNum, usr.key);}}>
+
+                    <button onClick={() => {console.log(usr, r, w, x)}}>
                       Change Permissions
                     </button>
-                  
+
                   <button
                     onClick={() => {
                       this.deleteUser(this.props.acctNum, usr.key);
