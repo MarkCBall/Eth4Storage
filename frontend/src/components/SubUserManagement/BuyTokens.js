@@ -6,11 +6,11 @@ class BuyTokens extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          transactionAmount: 100,
-          currentTotalMinted: 1000
-
+          transactionAmount: 0,
+          weiToBuy:0,
+          weiToSell:0
         };
-        this.setSupply();
+        //this.setSupply();
       }
 
     
@@ -25,23 +25,34 @@ class BuyTokens extends Component {
     };
 
     BuyTokens = () => {
-        this.props.Contract.buyTokens(500, { value: 10000000000000 }, (e, r) => { });
+        this.props.Contract.buyTokens(this.state.transactionAmount, { value: parseInt(this.state.weiToBuy*1.1) }, (e, r) => { });
     };
 
     SellTokens = () => {
-        this.props.Contract.sellTokens(100, (e, r) => { });
+        this.props.Contract.sellTokens(this.state.transactionAmount, (e, r) => { });
     };
 
     avgPriceBetween = (low, high) => {
         //calculates the bonding curve instead of querying the blockchain
         //need to fix to use big number later?
         if (low===high)
-            return low^2;
+            return low*low;
         return (((high*high*high) - (low*low*low)) / 3 / (high-low))
     };
 
-    handleTransactionAmountChange(){
+    handleTransactionAmountChange = (event) => {
+        let totSupply = this.props.totalSupply;
+        let transactionAmountString = event.target.value;
+        let transactionAmountInt = parseInt(transactionAmountString)
+        let newSupplyWithBuy = totSupply + transactionAmountInt
+        let newSupplyWithSell = totSupply - transactionAmountInt
+        
 
+        this.setState({
+            transactionAmount:transactionAmountString,
+            weiToBuy:this.avgPriceBetween(totSupply,newSupplyWithBuy)*transactionAmountInt,
+            weiToSell:this.avgPriceBetween(newSupplyWithSell,totSupply)*transactionAmountInt,
+        })
     }
 
 
@@ -55,38 +66,37 @@ class BuyTokens extends Component {
                 </button>
                 <br/><br/>
 
-                Tokens to buy/sell:               
+                Tokens to buy/sell: &nbsp;              
                 <input
                     placeholder="Tokens to buy/sell"
                     id="inputTxtBox"
                     type="textbox"
-                    //onClick=
+                    value={this.state.transactionAmount}
+                    onChange={this.handleTransactionAmountChange}
                 />  
               <br/>
                 
-                There are currently {"xxx"} tokens created, making the price per token {"xxx"}<br/>
-                {/* Cost to buy {"xx"} tokens estimated at: {"x"}<br/>
-                Cost to sell {"xx"} tokens estimated at: {"x"}<br/> */}
+                There are currently &nbsp;
+                {this.props.totalSupply} 
+                &nbsp; tokens created, making the price per token &nbsp;
+                {this.avgPriceBetween(this.props.totalSupply,this.props.totalSupply)}
+                &nbsp; wei
+                <br/>
+
 
                 
                 <br/>
                 <button className="btn btn-primary" onClick={this.BuyTokens}>
                     Buy {this.state.transactionAmount} Tokens costing:<br/>
-                    {this.avgPriceBetween(
-                        this.state.currentTotalMinted,
-                        this.state.currentTotalMinted+this.state.transactionAmount
-                    )*this.state.transactionAmount
-                    }
+                    {this.state.weiToBuy}
                     <br/>wei
                 </button>
+                
+                &nbsp;&nbsp;&nbsp;
         
                 <button className="btn btn-primary" onClick={this.SellTokens}>
                     Sell {this.state.transactionAmount} Tokens returning:<br/>
-                    {this.avgPriceBetween(
-                        this.state.currentTotalMinted-this.state.transactionAmount,
-                        this.state.currentTotalMinted
-                    )*this.state.transactionAmount
-                    }
+                    {this.state.weiToSell}
                     <br/>wei
 
                 </button>
@@ -100,8 +110,10 @@ class BuyTokens extends Component {
 const mapStateToProps = function(state) {
     return {
       Contract: state.QueryContract.contract,
+      totalSupply: state.QueryContract.prices.totalSupply,
     };
   };
   
   export default connect(mapStateToProps)(BuyTokens);
   
+

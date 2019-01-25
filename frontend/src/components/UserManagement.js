@@ -71,21 +71,10 @@ class UserManagement extends Component {
                     acctNum={acct.key}
                   />
               ) : ( <></> )}
-
-
-
-
             </div>
           ))}
-
-          
         </div>
-
-
         <BuyTokens/>
-
-
-        
       </div>
     );
   }
