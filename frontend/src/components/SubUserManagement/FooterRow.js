@@ -2,6 +2,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 let log = console.log;
+// permissions
+const x = 1;  // execute  00000001
+const w = 2;  // write    00000010
+const r = 4;  // read     00000100
+
+// To set permissions apply bitwise OR:
+const adminPerms = r | w | x;
+
+// To check permission apply bitwise AND:
+// adminPerms & r ? 'yes' : 'no'
 
 class FooterRow extends Component {
   constructor(props) {

@@ -100,7 +100,7 @@ export default {
                             user: {
                                 key: acctNum,
                                 addy: res[0],
-                                permission: '0x07' // THIS NEEDS TO BE CHANGED AND DOWNSTREAM AS WELL
+                                permission: res[1] // THIS NEEDS TO BE CHANGED AND DOWNSTREAM AS WELL
                             },
                             acctN: acctNum,
                         }
