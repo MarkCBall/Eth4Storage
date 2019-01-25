@@ -25,9 +25,15 @@ class UserManagement extends Component {
 
     //changes the status of is users are displayed under the account
     ToggleUsers(acctNum) {
-        let tmparr = this.state.isExpanded;
-        tmparr[acctNum] = !this.state.isExpanded[acctNum];
-        this.setState({ isExpanded: tmparr });
+        // let tmparr = this.state.isExpanded;
+        // tmparr[acctNum] = !tmparr[acctNum];
+        // this.setState({ isExpanded: tmparr });
+        this.setState( prevState => ({
+            isExpanded: {
+                ...prevState.isExpanded,
+                [acctNum]:!prevState.isExpanded[acctNum]
+            }
+        }))
     }
     //interacts with the smart contract to add a account
     addAccount = () => {
@@ -73,6 +79,7 @@ class UserManagement extends Component {
                 isExpanded={this.state.isExpanded}
                 expanded={this.ToggleUsers.bind(this)}
               />
+
               {this.state.isExpanded[acct.key] ? (
                 <>
                   <UserRow
