@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import FooterRow from "./FooterRow";
 
 //CSS Files
 import "./UserRow.css";
@@ -58,13 +57,6 @@ class UserRow extends Component {
                   >
                     Delete
                   </button>
-
-                  <FooterRow
-                      account={this.props.acctNum}
-                    />
-
-
-
                 </>
               ) : ( <></> )}
 

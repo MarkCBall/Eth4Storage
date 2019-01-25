@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import AddUserButton from "./AddUserButton";
+
 //CSS Files
 import "./RowTopBorder.css";
 
@@ -28,6 +30,9 @@ class AccountRow extends Component {
                     onClick={() => this.props.expanded(this.props.account.key)}
                 >
                     {this.ShowMoreLessText()}
+                    {this.props.account.own === this.props.verifiedAddress ? (
+                        <AddUserButton account={this.props.acctNum}/>
+                    ) : ( <></> )}
                 </div>
             </div>
         );
@@ -36,7 +41,8 @@ class AccountRow extends Component {
 
 function mapStateToProps(state){
     return {
-        Contract: state.QueryContract.contract
+        Contract: state.QueryContract.contract,
+        verifiedAddress:state.VerifySignature.verifiedAddress,
     }
 }
 

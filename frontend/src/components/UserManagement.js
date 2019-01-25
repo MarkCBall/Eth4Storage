@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import AccountRow from "./SubUserManagement/AccountRow";
 import UserRow from "./SubUserManagement/UserRow";
 import HeaderRow from "./SubUserManagement/HeaderRow";
+import BuyTokens from "./SubUserManagement/BuyTokens";
 
 import TitleTile from "./SubUserManagement/TitleTile";
 
@@ -35,23 +36,7 @@ class UserManagement extends Component {
             }
         }))
     }
-    //interacts with the smart contract to add a account
-    addAccount = () => {
-        this.props.Contract.accPrice.call((e, r) => {
-            this.props.Contract.createAccount(
-                { from: window.web3.eth.accounts[0], value: 0 },
-                function (e, r) { }
-            );
-        });
-    };
 
-    BuyTokens = () => {
-        this.props.Contract.buyTokens(500,{value: 10000000000000},(e, r) => { } );
-    };
-
-    SellTokens = () => {
-        this.props.Contract.sellTokens(100,(e, r) => {} );
-    };
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     render() {
@@ -95,26 +80,10 @@ class UserManagement extends Component {
 
           
         </div>
-        <br />
-        <br />
-        <br />
 
-        THIS SHOULD BE IN A NEW CONTAINER
-        <button className="btn btn-primary" onClick={this.addAccount}>
-          Add New Account
-        </button>
 
-        <button className="btn btn-primary" onClick={this.BuyTokens}>
-        Buy 500 Tokens
-        </button>
+        <BuyTokens/>
 
-        <button className="btn btn-primary" onClick={this.SellTokens}>
-        Sell 100 Tokens
-        </button>
-        <br />
-
-        <br />
-        <br />
 
         
       </div>
@@ -125,7 +94,7 @@ class UserManagement extends Component {
 const mapStateToProps = function(state) {
   return {
     Accounts:state.QueryContract.accounts,
-    Contract: state.QueryContract.contract,
+    //Contract: state.QueryContract.contract,
     Prices: state.QueryContract.prices,
     verifiedAddress:state.VerifySignature.verifiedAddress,
   };
