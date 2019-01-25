@@ -2,13 +2,17 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 let log = console.log;
-// permissions
-const x = 1;  // execute  00000001
-const w = 2;  // write    00000010
-const r = 4;  // read     00000100
 
-// To set permissions apply bitwise OR:
-const adminPerms = r | w | x;
+// permissions            1 byte = 2 hex values
+const x = 1;  // execute  0000 0001
+const w = 2;  // write    0000 0010
+const r = 4;  // read     0000 0100
+
+// To set permissions apply bitwise OR
+// To remove permissions apply bitwise XOR
+function setPerms(initialState, perm, checked) {
+  return !checked ? initialState ^ perm : initialState | perm;
+}
 
 // To check permission apply bitwise AND:
 // adminPerms & r ? 'yes' : 'no'
@@ -22,26 +26,16 @@ class FooterRow extends Component {
     };
   }
 
-
   addUserSelectPermissions() {
     //YANESH PUT YOUR LOGIC HERE
 
-    // if (!this.validStateAddress()) {
-    //   alert("Not a valid Ethereum Address");
-    //   return;
-    // }
-    //log(acctN, fromAddy)
-
     let inputAddress = this.state.inputValue;
     let accountN = this.props.account.key;
+    let perms = "0x" + this.state.permission.toString(16);  // Convert to hex
 
-    log(inputAddress, accountN);
+    log(inputAddress, accountN, perms);
 
-    // if (this.state.checkbox) this.approveWriter(accountN, inputAddress);
-    // else this.approveViewer(accountN, inputAddress);
-
-    console.log(this.props.Contract);
-    this.props.Contract.createUserInAccount(accountN, inputAddress, '0x06', (e, r) => {});
+    this.props.Contract.createUserInAccount(accountN, inputAddress, perms, (e, r) => {});
 
   }
 
@@ -62,11 +56,27 @@ class FooterRow extends Component {
       onChange={e => this.setState({ inputValue: e.target.value })}
     />
     <button onClick={e => this.addUserSelectPermissions(e)}>Create</button>
-    <input
-      onChange={() => this.setState({ checkbox: !this.state.checkbox })}
+    Read:
+    <input ref="read"
+      onChange={() => this.setState({
+        permission: setPerms(this.state.permission, r, this.refs.read.checked)
+      })}
       type="checkbox"
     />
-    New user can write
+    Write:
+    <input ref="write"
+      onChange={() => this.setState({
+        permission: setPerms(this.state.permission, w, this.refs.write.checked)
+      })}
+      type="checkbox"
+    />
+    eXecute:
+    <input ref="execute"
+      onChange={() => this.setState({
+        permission: setPerms(this.state.permission, x, this.refs.execute.checked)
+      })}
+      type="checkbox"
+    />
   </>
 </div>
             <button onClick={e => this.addUserSelectPermissions(e)}>Add New User</button>
