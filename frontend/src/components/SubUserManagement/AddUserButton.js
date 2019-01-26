@@ -21,20 +21,13 @@ class AddUserButton extends Component {
     };
   }
 
-
   addUserSelectPermissions() {
     let inputAddress = this.state.inputValue;
     let accountN = this.props.account;
-
     // Convert permission to hex and pad first 4 bits with 0
     let perms = "0x0" + this.state.permission.toString(16);
 
-    // DEBUG
-    console.log(this);
-    console.log(inputAddress, accountN, perms);
-
     this.props.Contract.createUserInAccount(accountN, inputAddress, perms, (e, r) => {});
-
   }
 
   render() {
@@ -43,32 +36,32 @@ class AddUserButton extends Component {
       <>
       Read
       <input ref="read"
-      onChange={() => this.setState({
-      permission: setPerms(this.state.permission, r, this.refs.read.checked)
-      })}
-      type="checkbox"
+        onChange={() => this.setState({
+        permission: setPerms(this.state.permission, r, this.refs.read.checked)
+        })}
+        type="checkbox"
       />
       &nbsp;Write
       <input ref="write"
-      onChange={() => this.setState({
-      permission: setPerms(this.state.permission, w, this.refs.write.checked)
-      })}
-      type="checkbox"
+        onChange={() => this.setState({
+        permission: setPerms(this.state.permission, w, this.refs.write.checked)
+        })}
+        type="checkbox"
       />
       &nbsp;Execute
       <input ref="execute"
-      onChange={() => this.setState({
-      permission: setPerms(this.state.permission, x, this.refs.execute.checked)
-      })}
-      type="checkbox"
+        onChange={() => this.setState({
+        permission: setPerms(this.state.permission, x, this.refs.execute.checked)
+        })}
+        type="checkbox"
       />
       <input
-      type="text"
-      placeholder="new user's address"
-      value={this.state.inputValue}
-      onChange={e => this.setState({ inputValue: e.target.value })}
+        type="text"
+        placeholder="new user's address"
+        value={this.state.inputValue}
+        onChange={e => this.setState({ inputValue: e.target.value })}
       />
-      <button onClick={e => this.addUserSelectPermissions(e)}>Add New User</button>
+        <button onClick={e => this.addUserSelectPermissions(e)}>Add New User</button>
       </>
       </div>
 
