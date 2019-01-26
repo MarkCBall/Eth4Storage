@@ -23,13 +23,15 @@ export default {
             let PricesAsPromise = new Promise((resolve, reject) => {
                 Contract.accPrice.call((e, resAccPriceBN) => {
                     Contract.userPrice.call((e, resUserPriceBN) => {
-                    
-                        resolve(
-                            {
-                                AccPrice:parseInt(resAccPriceBN.toString(10)),
-                                UserPrice: parseInt(resUserPriceBN.toString(10))
-                            }
-                        );
+                        Contract.totalSupply.call((e,resTotalSupply) =>{
+                            resolve(
+                                {
+                                    AccPrice:parseInt(resAccPriceBN.toString(10)),
+                                    UserPrice: parseInt(resUserPriceBN.toString(10)),
+                                    totalSupply:parseInt(resTotalSupply.toString(10))
+                                }
+                            );
+                        })
                     })
                 })
             });
@@ -40,7 +42,8 @@ export default {
                     payload: 
                     {
                         AccPrice:res.AccPrice,
-                        UserPrice:res.UserPrice
+                        UserPrice:res.UserPrice,
+                        totalSupply:res.totalSupply
 
                         //res.AccPrice:AccPrice,
                         //res.UserPrice:UserPrice

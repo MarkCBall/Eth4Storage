@@ -27,8 +27,8 @@ class Download extends Component {
       mode: "cors", // no-cors, cors, *same-origin
       headers: {
         data: JSON.stringify({
-          date: this.props.date,
-          dateSignature: this.props.dateSignature,
+          date: this.props.msg,
+          dateSignature: this.props.msgSig,
           accountId: this.state.selectedAcct
         })
       }
@@ -89,12 +89,13 @@ class Download extends Component {
     );
   }
 }
-
 const mapStateToProps = function(state) {
-  return {
-    permissionsByAddress:state.QueryContract.addyPermission
+    return {
+      permissionsByAddress:state.QueryContract.addyPermission,
+      verifiedAddress:state.VerifySignature.verifiedAddress,
+      msg:state.VerifySignature.msg,
+      msgSig:state.VerifySignature.msgSig
+    };
   };
-};
-export default connect(mapStateToProps)(Download);
-
-
+  export default connect(mapStateToProps)(Download);
+  

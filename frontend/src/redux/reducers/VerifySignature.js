@@ -1,19 +1,27 @@
-// import { ADD_SIGNATURE } from "../constants/VerifySignature";
-// import { CALC_ADDRESS } from "../constants/VerifySignature";
+import { ADD_SIGNATURE } from "../constants/VerifySignature";
+import { CALC_ADDRESS } from "../constants/VerifySignature";
 
 
 
-// const initialState = {
+const initialState = {
 
-//       msg: "(Not logged in)",
-//       msgSignature:"064cbd7b47fd30dd677034b401b",
-//       verifiedAddress: "(Not logged in)"
-//     };
-//   }
+    msg: "(Not logged in)",
+    msgSig: "default signature",
+    verifiedAddress: "(Not logged in)"
+};
 
-//   export default function(state = initialState, action) {
-//     switch (action.type) {
-  
-//       case SET_CONTRACT:
+export default function (state = initialState, action) {
+    switch (action.type) {
 
-  
+        case ADD_SIGNATURE:
+        return { ...state, ...action.payload }
+
+
+        case CALC_ADDRESS:
+        return { ...state, verifiedAddress:action.payload }
+
+        default:
+        return state;
+    }
+}
+
