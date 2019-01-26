@@ -8,12 +8,12 @@ export default {
 
     setContract:() =>{
         let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
-        
+
         return (dispatch) =>
         dispatch ({
             type: SET_CONTRACT,
             payload: Contract    //window.web3.eth.contract(ContractABI).at(ContractAddress) }
-        }) 
+        })
     },
     setPrices:() =>{
 
@@ -39,7 +39,7 @@ export default {
             return PricesAsPromise.then((res) =>
                 dispatch({
                     type: SET_PRICES,
-                    payload: 
+                    payload:
                     {
                         AccPrice:res.AccPrice,
                         UserPrice:res.UserPrice,
@@ -63,7 +63,7 @@ export default {
                     Contract.balanceOf.call(resAcctAddress,(e, r) => {
 
                         //         resolve(parseInt(r.toString(10)));
-                    
+
                         resolve(
                             {
                                 AdminAddress:resAcctAddress,
@@ -99,11 +99,11 @@ export default {
                 return UserDataAsPromise.then((res) =>
                     dispatch({
                         type: ADD_USER_TO_ACCOUNT,
-                        payload: { 
+                        payload: {
                             user: {
                                 key: acctNum,
                                 addy: res[0],
-                                canWrite: true// THIS NEEDS TO BE CHANGED AND DOWNSTREAM AS WELL
+                                permission: res[1] // THIS NEEDS TO BE CHANGED AND DOWNSTREAM AS WELL
                             },
                             acctN: acctNum,
                         }
