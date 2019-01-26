@@ -38,6 +38,12 @@ const NavHeader = props => {
               </Link>
             </li>
             <li className="nav-item">
+              <Link to="Compute" className="nav-link">
+                {" "}
+                Compute &nbsp;&nbsp;
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link to="UserManagement" className="nav-link">
                 {" "}
                 User-Management{" "}
