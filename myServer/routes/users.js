@@ -61,4 +61,12 @@ router.post("/", cors(), function(req, res, next) {
   res.end();
 });
 
+router.get("/compute", cors(), function(req, res, next) {
+  let reqHData = JSON.parse(req.headers.data);
+  let inputData = reqHData.input;
+
+  //console.log("processding response from "+address+addyMsgs[address])
+  
+  res.json(JSON.stringify({ answer: "answer here" }));
+});
 module.exports = router;

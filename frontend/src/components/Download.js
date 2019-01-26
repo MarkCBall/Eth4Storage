@@ -18,7 +18,7 @@ class Download extends Component {
             let eligibleAccounts = this.props.permissionsByAddress[this.props.verifiedAddress]
             for(var prop in eligibleAccounts) {
                 if ((eligibleAccounts[prop] % 8) >= 4)//if the bit representing 4 is on
-                    permittedArray[prop]=true;    
+                    permittedArray[prop]=true;
             }
         }
         return permittedArray
