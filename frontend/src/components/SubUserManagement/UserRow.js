@@ -10,6 +10,7 @@ const x = 1;  // execute  0000 0001
 const w = 2;  // write    0000 0010
 const r = 4;  // read     0000 0100
 
+// returns permission in hex format
 function getPerms(read, write, exe) {
   let permInt = read ? r : 0 | write ? w : 0 | exe ? x : 0;
   return "0x0" + permInt.toString(16);
@@ -51,19 +52,19 @@ class UserRow extends Component {
             <div className="col-6">
             &nbsp;Read
             <input ref="read"
-              checked={usr.permission << 0 & r}
+              checked={(usr.permission << 0) & r}
               disabled={!(this.props.acctAddy === this.props.verifiedAddress)}
               type="checkbox"
             />
             &nbsp;Write
             <input ref="write"
-              checked={usr.permission << 0 & w}
+              checked={(usr.permission << 0) & w}
               disabled={!(this.props.acctAddy === this.props.verifiedAddress)}
               type="checkbox"
             />
             &nbsp;Execute
             <input ref="execute"
-              checked={usr.permission << 0 & x}
+              checked={(usr.permission << 0) & x}
               disabled={!(this.props.acctAddy === this.props.verifiedAddress)}
               type="checkbox"
             />

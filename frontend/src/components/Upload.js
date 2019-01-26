@@ -15,6 +15,7 @@ class Upload extends Component {
       let permissionedAddresses = this.props.permissionsByAddress[
         this.props.verifiedAddress
       ];
+      console.log(this)
       //filter only entries with write permission == true
       console.log("asdfasdf", permissionedAddresses);
       return Object.entries(permissionedAddresses).filter(o => o[1]);
@@ -56,7 +57,7 @@ class Upload extends Component {
               <button
                 type="button"
                 className="btn btn-outline-info"
-                
+
                 onClick={() => this.handleSelection(acct[0])}
               >
                 Student #{acct[0]}
@@ -94,7 +95,7 @@ class Upload extends Component {
           </div>
         </div>
 
-       
+
       </div>
     );
   }

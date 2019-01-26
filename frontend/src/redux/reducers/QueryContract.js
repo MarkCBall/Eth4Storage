@@ -40,6 +40,7 @@ export default function(state = initialState, action) {
       acctsArr[acctN].users[userN] = action.payload.user;
       //console.log("acct#"+acctN+" has added user#",acctsArr[acctN].users[userN].key)
       let addy = action.payload.user.addy;
+      console.log('addy state', state);
       return {
         ...state,
         accounts: acctsArr,
@@ -48,11 +49,7 @@ export default function(state = initialState, action) {
           [addy]: {
             ...state.addyPermission[addy],
             [acctN]:
-              action.payload.user.canWrite ||
-              (addy in state.addyPermission &&
-                acctN in state.addyPermission[addy] &&
-                state.addyPermission[addy][acctN]) ||
-              false
+              action.payload.user.permission
           }
         }
       };
