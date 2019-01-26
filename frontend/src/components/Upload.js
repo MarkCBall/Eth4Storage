@@ -6,7 +6,7 @@ class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedAcct: 0
+      selectedAcct: "NA"
     };
   }
 
