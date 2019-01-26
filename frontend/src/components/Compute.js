@@ -6,14 +6,23 @@ class Compute extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedAcct: 0
+      selectedAcct: "NA"
     };
   }
   getPermissions() {
-    return this.props.verifiedAddress in this.props.permissionsByAddress
-      ? this.props.permissionsByAddress[this.props.verifiedAddress]
-      : [["0", true]];
-  }
+    //01 bit is compute
+    //02 bit is write
+    //04 bit is read
+    let permittedArray = [];
+    if (this.props.verifiedAddress in this.props.permissionsByAddress){
+        let eligibleAccounts = this.props.permissionsByAddress[this.props.verifiedAddress]
+        for(var prop in eligibleAccounts) {
+            if ((eligibleAccounts[prop] % 2) >= 1)//if the bit representing 1 is on
+                permittedArray[prop]=true;    
+        }
+    }
+    return permittedArray
+}
 
   handleSelection(acctN) {
     this.setState({ selectedAcct: acctN });

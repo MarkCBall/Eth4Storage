@@ -90,7 +90,7 @@ export default {
           type: ADD_USER_TO_ACCOUNT,
           payload: {
             user: {
-              key: acctNum,
+              key: userNum,
               addy: res[0],
               permission: res[1] // THIS NEEDS TO BE CHANGED AND DOWNSTREAM AS WELL
             },

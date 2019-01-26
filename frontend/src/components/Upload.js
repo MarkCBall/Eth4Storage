@@ -6,22 +6,24 @@ class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedAcct: 0
+      selectedAcct: "NA"
     };
   }
 
-  getPermissions = () => {
-    if (this.props.verifiedAddress in this.props.permissionsByAddress) {
-      let permissionedAddresses = this.props.permissionsByAddress[
-        this.props.verifiedAddress
-      ];
-      console.log(this)
-      //filter only entries with write permission == true
-      console.log("asdfasdf", permissionedAddresses);
-      return Object.entries(permissionedAddresses).filter(o => o[1]);
+getPermissions() {
+    //01 bit is compute
+    //02 bit is write
+    //04 bit is read
+    let permittedArray = [];
+    if (this.props.verifiedAddress in this.props.permissionsByAddress){
+        let eligibleAccounts = this.props.permissionsByAddress[this.props.verifiedAddress]
+        for(var prop in eligibleAccounts) {
+            if ((eligibleAccounts[prop] % 4) >= 2)//if the bit representing 2 is on
+                permittedArray[prop]=true;    
+        }
     }
-    return [["0", true]];
-  };
+    return permittedArray
+}
 
   handleSelection(acctN) {
     this.setState({ selectedAcct: acctN });
@@ -52,7 +54,7 @@ class Upload extends Component {
         <h1>Upload grades to student transcript</h1>
         <hr />
         <nav className="navbar navbar-expand-lg">
-          {this.getPermissions().map(acct => (
+        {Object.keys(this.getPermissions()).map(acct => (
             <div key={acct[0]}>
               <button
                 type="button"
