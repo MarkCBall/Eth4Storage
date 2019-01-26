@@ -5,110 +5,99 @@ import { SET_PRICES } from "../constants/QueryContract";
 import ContractABI, { ContractAddress } from "../../ContractABI";
 
 export default {
+  setContract: () => {
+    let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
 
-    setContract:() =>{
-        let Contract = window.web3.eth.contract(ContractABI).at(ContractAddress);
+    return dispatch =>
+      dispatch({
+        type: SET_CONTRACT,
+        payload: Contract //window.web3.eth.contract(ContractABI).at(ContractAddress) }
+      });
+  },
+  setPrices: () => {
+    return (dispatch, state) => {
+      let Contract = state().QueryContract.contract;
 
-        return (dispatch) =>
-        dispatch ({
-            type: SET_CONTRACT,
-            payload: Contract    //window.web3.eth.contract(ContractABI).at(ContractAddress) }
-        })
-    },
-    setPrices:() =>{
-
-        return ((dispatch, state) => {
-            let Contract =state().QueryContract.contract;
-
-            let PricesAsPromise = new Promise((resolve, reject) => {
-                Contract.accPrice.call((e, resAccPriceBN) => {
-                    Contract.userPrice.call((e, resUserPriceBN) => {
-                        Contract.totalSupply.call((e,resTotalSupply) =>{
-                            resolve(
-                                {
-                                    AccPrice:parseInt(resAccPriceBN.toString(10)),
-                                    UserPrice: parseInt(resUserPriceBN.toString(10)),
-                                    totalSupply:parseInt(resTotalSupply.toString(10))
-                                }
-                            );
-                        })
-                    })
-                })
+      let PricesAsPromise = new Promise((resolve, reject) => {
+        Contract.accPrice.call((e, resAccPriceBN) => {
+          Contract.userPrice.call((e, resUserPriceBN) => {
+            Contract.getTotalSupply.call((e, resTotalSupply) => {
+              resolve({
+                AccPrice: parseInt(resAccPriceBN.toString(10)),
+                UserPrice: parseInt(resUserPriceBN.toString(10)),
+                totalSupply: parseInt(resTotalSupply.toString(10))
+              });
             });
+          });
+        });
+      });
 
-            return PricesAsPromise.then((res) =>
-                dispatch({
-                    type: SET_PRICES,
-                    payload:
-                    {
-                        AccPrice:res.AccPrice,
-                        UserPrice:res.UserPrice,
-                        totalSupply:res.totalSupply
+      return PricesAsPromise.then(res =>
+        dispatch({
+          type: SET_PRICES,
+          payload: {
+            AccPrice: res.AccPrice,
+            UserPrice: res.UserPrice,
+            totalSupply: res.totalSupply
 
-                        //res.AccPrice:AccPrice,
-                        //res.UserPrice:UserPrice
-                    }
-                })
-            )
+            //res.AccPrice:AccPrice,
+            //res.UserPrice:UserPrice
+          }
         })
+      );
+    };
+  },
 
-    },
+  addAccount: (dispatch, acctNum) => {
+    return (dispatch, state) => {
+      let Contract = state().QueryContract.contract;
+      let AccountDataAsPromise = new Promise((resolve, reject) => {
+        Contract.Accounts(acctNum, (e, resAcctAddress) => {
+          Contract.balanceOf.call(resAcctAddress, (e, r) => {
+            //         resolve(parseInt(r.toString(10)));
 
-    addAccount: (dispatch, acctNum) => {
-
-        return ((dispatch, state) => {
-            let Contract =state().QueryContract.contract;
-            let AccountDataAsPromise = new Promise((resolve, reject) => {
-                Contract.Accounts(acctNum, (e, resAcctAddress) => {
-                    Contract.balanceOf.call(resAcctAddress,(e, r) => {
-
-                        //         resolve(parseInt(r.toString(10)));
-
-                        resolve(
-                            {
-                                AdminAddress:resAcctAddress,
-                                Balance: parseInt(r.toString(10))
-                            }
-                        );
-                    })
-                })
+            resolve({
+              AdminAddress: resAcctAddress,
+              Balance: parseInt(r.toString(10))
             });
+          });
+        });
+      });
 
-            return AccountDataAsPromise.then((res) =>
-                dispatch({
-                    type: ADD_ACCOUNT,
-                    payload: {
-                        key: acctNum,
-                        own: res.AdminAddress,
-                        bal: res.Balance
-                    }
-                })
-            )
+      return AccountDataAsPromise.then(res =>
+        dispatch({
+          type: ADD_ACCOUNT,
+          payload: {
+            key: acctNum,
+            own: res.AdminAddress,
+            bal: res.Balance
+          }
         })
-    },
+      );
+    };
+  },
 
-    addUserToAccount: (dispatch, acctNum, userNum) => {
-
-            return (dispatch,state) => {
-                let Contract =state().QueryContract.contract;
-                let UserDataAsPromise = new Promise((resolve, reject) => {
-                    Contract.usersOfAccount(acctNum, userNum, (e, resUser) => {
-                        resolve(resUser);
-                    })
-                });
-                return UserDataAsPromise.then((res) =>
-                    dispatch({
-                        type: ADD_USER_TO_ACCOUNT,
-                        payload: {
-                            user: {
-                                key: acctNum,
-                                addy: res[0],
-                                permission: res[1] // THIS NEEDS TO BE CHANGED AND DOWNSTREAM AS WELL
-                            },
-                            acctN: acctNum,
-                        }
-                    })
-                )
-            }
-        }
-    }
+  addUserToAccount: (dispatch, acctNum, userNum) => {
+    return (dispatch, state) => {
+      let Contract = state().QueryContract.contract;
+      let UserDataAsPromise = new Promise((resolve, reject) => {
+        Contract.userInfo(acctNum, userNum, (e, resUser) => {
+          resolve(resUser);
+        });
+      });
+      return UserDataAsPromise.then(res =>
+        dispatch({
+          type: ADD_USER_TO_ACCOUNT,
+          payload: {
+            user: {
+              key: acctNum,
+              addy: res[0],
+              permission: res[1] // THIS NEEDS TO BE CHANGED AND DOWNSTREAM AS WELL
+            },
+            acctN: acctNum
+          }
+        })
+      );
+    };
+  }
+};
