@@ -52,7 +52,7 @@ class UserManagement extends Component {
         <br />
         <div className="container-full">
           <HeaderRow
-            row1="Student #"
+            row1="Account #"
             row2="Account Owner's Address"
             row3="Token Bal"
             row4="Permissions"

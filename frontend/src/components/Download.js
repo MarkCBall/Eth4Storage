@@ -18,7 +18,7 @@ class Download extends Component {
             let eligibleAccounts = this.props.permissionsByAddress[this.props.verifiedAddress]
             for(var prop in eligibleAccounts) {
                 if ((eligibleAccounts[prop] % 8) >= 4)//if the bit representing 4 is on
-                    permittedArray[prop]=true;    
+                    permittedArray[prop]=true;
             }
         }
         return permittedArray
@@ -63,7 +63,7 @@ class Download extends Component {
             <div className="main-tile">
                 <br />
                 <br />
-                <h1>Download student transcript</h1>
+                <h1>Download data</h1>
                 <hr />
                 <nav className="navbar navbar-expand-lg">
                     {Object.keys(this.getPermissions()).map(acct => (
@@ -84,9 +84,9 @@ class Download extends Component {
                 <div className="card">
                     <div className="card-body">
                         <h4 className="card-title">
-                            Viewing transcript for: Student #{this.state.selectedAcct}
+                            Viewing data for: Account #{this.state.selectedAcct}
                         </h4>
-                        <p className="card-text">Select student to view their transcript</p>
+                        <p className="card-text">Select account to view their data</p>
 
                         <hr />
                         <div id="transcript-output" />

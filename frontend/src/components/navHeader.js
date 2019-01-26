@@ -13,7 +13,7 @@ const NavHeader = props => {
     <div className="fixed-header">
       <nav className="navbar navbar-expand-lg navbar-dark bg-success">
         <Link to="/" className="navbar-brand">
-          Transcript Blockchain
+          Eth4Storage
         </Link>
         <img alt="logo" className="header-img" src={ICON_URL} />
         &nbsp;
@@ -50,17 +50,6 @@ const NavHeader = props => {
               </Link>
             </li>
           </ul>
-          <form className="form-inline my-2 my-lg-0">
-            <input
-              className="form-control mr-sm-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-light my-2 my-sm-0">
-              Search
-            </button>
-          </form>
         </div>
       </nav>
     </div>

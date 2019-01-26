@@ -19,7 +19,7 @@ getPermissions() {
         let eligibleAccounts = this.props.permissionsByAddress[this.props.verifiedAddress]
         for(var prop in eligibleAccounts) {
             if ((eligibleAccounts[prop] % 4) >= 2)//if the bit representing 2 is on
-                permittedArray[prop]=true;    
+                permittedArray[prop]=true;
         }
     }
     return permittedArray
@@ -51,7 +51,7 @@ getPermissions() {
       <div className="main-tile">
         <br />
         <br />
-        <h1>Upload grades to student transcript</h1>
+        <h1>Upload data to the server</h1>
         <hr />
         <nav className="navbar navbar-expand-lg">
         {Object.keys(this.getPermissions()).map(acct => (
@@ -62,7 +62,7 @@ getPermissions() {
 
                 onClick={() => this.handleSelection(acct[0])}
               >
-                Student #{acct[0]}
+                Account #{acct[0]}
               </button>
               &nbsp;&nbsp;
             </div>
@@ -72,10 +72,10 @@ getPermissions() {
         <div className="card">
           <div className="card-body">
             <h4 className="card-title">
-              Post transcript data for: Student #{this.state.selectedAcct}
+              Post data for: Account #{this.state.selectedAcct}
             </h4>
             <p className="card-text">
-              Student #{this.state.selectedAcct} selected, enter grade data and
+              Account #{this.state.selectedAcct} selected, enter data and
               click Upload.
             </p>
             <div className="form-inline my-5 my-lg-0 upload-box">
