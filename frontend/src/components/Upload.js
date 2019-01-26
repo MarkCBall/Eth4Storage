@@ -36,8 +36,8 @@ class Upload extends Component {
       body: JSON.stringify({
         input_text: document.getElementById("inputTxtBox").value,
         accountId: this.state.selectedAcct,
-        date: this.props.date,
-        dateSignature: this.props.dateSignature
+        date: this.props.msg,
+        dateSignature: this.props.msgSig
       })
     });
     //console.log("/n"+document.getElementById("inputTxtBox").value);
@@ -104,7 +104,11 @@ class Upload extends Component {
 
 const mapStateToProps = function(state) {
   return {
-    permissionsByAddress:state.QueryContract.addyPermission
+    permissionsByAddress:state.QueryContract.addyPermission,
+    verifiedAddress:state.VerifySignature.verifiedAddress,
+    msg:state.VerifySignature.msg,
+    msgSig:state.VerifySignature.msgSig
+
   };
 };
 export default connect(mapStateToProps)(Upload);

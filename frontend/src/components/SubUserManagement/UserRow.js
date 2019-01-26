@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-//import ContractABI, { ContractAddress } from "../../ContractABI";
 
 //CSS Files
 import "./UserRow.css";
@@ -99,9 +98,8 @@ class UserRow extends Component {
                     Delete
                   </button>
                 </>
-              ) : (
-                <></>
-              )}
+              ) : ( <></> )}
+
             </div>
           </div>
         ))}
@@ -114,7 +112,8 @@ class UserRow extends Component {
 const mapStateToProps = function(state) {
   return {
     Accounts:state.QueryContract.accounts,
-    Contract:state.QueryContract.contract
+    Contract:state.QueryContract.contract,
+    verifiedAddress:state.VerifySignature.verifiedAddress,
   };
 };
 

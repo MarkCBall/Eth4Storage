@@ -1,0 +1,5 @@
+// ROPSTEN DEPLOYMENTS
+
+// ERC20Interface.sol - 0x730874af39984e4d16d05133504f4c632e677701
+// Token.sol - 0x797019a2f5a5ead1a9a21f51158af7981c3b5a3e
+// AccountManager.sol - 0xaa74ff065693ca5f413d29a0c16344dc1e12c3bc
