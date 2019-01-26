@@ -6,19 +6,12 @@ import { connect } from "react-redux";
 import "./UserRow.css";
 
 // permissions
-const x = 1;  // execute  00000001
-const w = 2;  // write    00000010
-const r = 4;  // read     00000100
+const x = 1;  // execute  0000 0001
+const w = 2;  // write    0000 0010
+const r = 4;  // read     0000 0100
 
-// To set permissions apply bitwise OR:
-const adminPerms = r | w | x;
-
-// To check permission apply bitwise AND:
-// adminPerms & r ? 'yes' : 'no'
 function getPerms(read, write, exe) {
   let permInt = read ? r : 0 | write ? w : 0 | exe ? x : 0;
-  console.log(read, write, exe, permInt);
-
   return "0x0" + permInt.toString(16);
 }
 
@@ -36,12 +29,8 @@ class UserRow extends Component {
   }
 
   changePermissions(acctN, userN, userP) {
-    //YANESH , you can do your magic here
-    console.log(acctN, userN, userP);
     this.props.Contract.modifyUserPermissions(acctN, userN, userP, (e,r)=>{});
   }
-
-
 
   //searches the global state for account# and returns the associated user array
   getUserArray(acctN) {
