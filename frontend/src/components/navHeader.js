@@ -13,7 +13,7 @@ const NavHeader = props => {
     <div className="fixed-header">
       <nav className="navbar navbar-expand-lg navbar-dark bg-success">
         <Link to="/" className="navbar-brand">
-          Transcript Blockchain
+          Eth4Storage
         </Link>
         <img alt="logo" className="header-img" src={ICON_URL} />
         &nbsp;

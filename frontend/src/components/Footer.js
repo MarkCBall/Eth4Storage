@@ -7,7 +7,7 @@ class Footer extends Component {
     return (
       <div className="footer">
         <div className="footer-item">
-          Transcript Blockchain prototype demo § January 2019
+          Eth4Storage - MarkCBall, dylanbaker21, yaneshcode - January 2019
         </div>
       </div>
     );

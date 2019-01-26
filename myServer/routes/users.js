@@ -66,7 +66,7 @@ router.get("/compute", cors(), function(req, res, next) {
   let inputData = reqHData.input;
 
   //console.log("processding response from "+address+addyMsgs[address])
-  
-  res.json(JSON.stringify({ answer: "answer here" }));
+
+  res.json(JSON.stringify({ answer: ~~(Math.random() * parseInt(inputData)) }));
 });
 module.exports = router;

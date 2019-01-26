@@ -46,6 +46,8 @@ class Compute extends Component {
   }
 
   queryServer() {
+    if (this.state.selectedAcct == "NA") { return; }
+
     //get req to server
     fetch("http://localhost:3000/users/compute", {
       method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -61,9 +63,7 @@ class Compute extends Component {
         return response.json();
       })
       .then(data => {
-          document.getElementById("transcript-output").innerHTML = data;
-
-
+          document.getElementById("transcript-output").innerHTML = "Result: " + JSON.parse(data).answer;
       });
   }
 
@@ -101,7 +101,7 @@ class Compute extends Component {
             </p>
             <div className="form-inline my-5 my-lg-0 upload-box">
               <input
-                className="form-control my-sm-5"
+                className="form-control col-md-3"
 
                 placeholder="Get a random number between 0 and ..."
                 aria-label="Compute"
@@ -112,11 +112,13 @@ class Compute extends Component {
                 className="btn btn-primary"
                 onClick={() => this.queryServer()}
               >
-                Upload
+                Compute
               </button>
-              <div id="transcript-output" />
 
             </div>
+            <hr />
+            <div id="transcript-output" />
+
           </div>
         </div>
 
