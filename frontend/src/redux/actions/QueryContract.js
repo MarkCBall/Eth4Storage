@@ -82,7 +82,6 @@ export default {
       let Contract = state().QueryContract.contract;
       let UserDataAsPromise = new Promise((resolve, reject) => {
         Contract.userInfo(acctNum, userNum, (e, resUser) => {
-            //console.log(resUser)
           resolve(resUser);
         });
       });
