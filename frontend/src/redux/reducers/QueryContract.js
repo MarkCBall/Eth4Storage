@@ -48,11 +48,7 @@ export default function(state = initialState, action) {
           [addy]: {
             ...state.addyPermission[addy],
             [acctN]:
-              action.payload.user.canWrite ||
-              (addy in state.addyPermission &&
-                acctN in state.addyPermission[addy] &&
-                state.addyPermission[addy][acctN]) ||
-              false
+              action.payload.user.permission
           }
         }
       };
