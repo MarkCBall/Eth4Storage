@@ -20,10 +20,10 @@ class AccountRow extends Component {
                     {this.props.account.key}
                 </div>
                 <div className="col-4 col-solid">
-                    {this.props.account.own} 
+                    {this.props.account.own}
                 </div>
                 <div className="col-1 col-solid">
-                    {this.props.account.bal} 
+                    {this.props.account.bal}
                 </div>
                 <div
                     className="col-6"
@@ -31,7 +31,7 @@ class AccountRow extends Component {
                 >
                     {this.ShowMoreLessText()}
                     {this.props.account.own === this.props.verifiedAddress ? (
-                        <AddUserButton account={this.props.acctNum}/>
+                        <AddUserButton account={this.props.account.key}/>
                     ) : ( <></> )}
                 </div>
             </div>
@@ -47,4 +47,3 @@ function mapStateToProps(state){
 }
 
 export default connect(mapStateToProps)(AccountRow);
-
