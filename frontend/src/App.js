@@ -9,6 +9,7 @@ import ContractData from "./components/ContractData";
 import Login from "./components/Login";
 import Upload from "./components/Upload";
 import Download from "./components/Download";
+import Compute from "./components/Compute";
 import UserManagement from "./components/UserManagement";
 import Home from "./components/Home";
 import NavHeader from "./components/navHeader";
@@ -55,6 +56,11 @@ class App extends Component {
             <Route
               path="/Download"
               render={() => <Download/>}
+            />
+
+            <Route
+              path="/Compute"
+              render={() => <Compute/>}
             />
 
             <Route
