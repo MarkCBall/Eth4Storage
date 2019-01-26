@@ -40,7 +40,6 @@ export default function(state = initialState, action) {
       acctsArr[acctN].users[userN] = action.payload.user;
       //console.log("acct#"+acctN+" has added user#",acctsArr[acctN].users[userN].key)
       let addy = action.payload.user.addy;
-      console.log('addy state', state);
       return {
         ...state,
         accounts: acctsArr,
