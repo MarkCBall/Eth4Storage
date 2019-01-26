@@ -1,5 +1,5 @@
-var AccountMngmt = artifacts.require("./AccountMngmt.sol");
+var AccountManager = artifacts.require("./AccountManager.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(AccountMngmt);
+  deployer.deploy(AccountManager);
 };
